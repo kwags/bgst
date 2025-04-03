@@ -2,33 +2,52 @@
 //import './App.css';
 import React, { useState } from "react";
 import { v4 as uuidv4 } from 'uuid'; // for creating unique id's for todo items
-import GameSession from './GameSession.js'
+import PlayHistory from "./PlayHistory.js";
 
 
 function App() {
+  
   const [gameSessionName, setGameSessionName] = useState("");
-  const [gameSessionDescription, setGameSessionDescription] = useState("");
-  
-  
-          // all game session items are stored in the web app's memory on the client side (i.e., in the browser's memory)
-          const [items, setItems] = useState([
-            { name: "Game 1", description: "Win", id: '1'},
-            { name: "Game 2", description: "Loss", id: '2' },
-            { name: "Game 3", description: "Win", id: '3' },
-            { name: "Game 4", description: "Loss", id: '4' },
-          ]);
+  const [gameSessionDate, setGameSessionDate] = useState(new Date().toDateString());
+  const [gameSessionComments, setGameSessionComments] = useState("");  
+  const [gameSessionPlayers, setGameSessionPlayers] = useState(0);  
+  const [gameSessionScore, setGameSessionScore] = useState(0);  
+  const [gameSessionWinLoss, setGameSessionWinLoss] = useState("");  
 
-    // a function that creates an array of Game Session UI components
-    function createGameSessionList() {
-      let ret = []; 
-      for (let i = 0; i < items.length; i++) {
-        ret.push( <GameSession key={items[i].id} name={items[i].name} description={items[i].description} id={items[i].id} delete={deleteGameSession} /> );
-      }
-      return ret; 
-    }
-    // functions to add/delete game session items from the array of todos
+
+  // all game session items are stored in the web app's memory on the client side (i.e., in the browser's memory)
+  const [items, setItems] = useState([
+    { name: "Mysterium", 
+      date: "Sat Mar 08 2025", 
+      numPlayers: 4, 
+      score: 4,
+      winloss: "Win", 
+      comments: "First time playing this game",
+      id: "1" },
+    { name: "Carcassonne", 
+      date: "Thu Mar 13 2025", 
+      numPlayers: 3, 
+      score: 105,
+      winloss: "Loss", 
+      comments: "This was really fun!", 
+      id: "2" },
+    { name: "Catan", 
+      date: "Thu Mar 27 2025", 
+      numPlayers: 3, 
+      score: 10,
+      winloss: "Win",
+      comments: "Always a fun game", 
+      id: "3" },
+  ]);
+
+  // functions to add/delete game session items from the array of game sessions (play history)
   function addGameSession() {
-    const newItem = { name: gameSessionName, description: gameSessionDescription, id: uuidv4() };
+    const newItem = { name: gameSessionName, 
+      date: gameSessionDate, 
+      umPlayers: gameSessionPlayers, 
+      score: gameSessionScore, 
+      comments: gameSessionComments, 
+      id: uuidv4() };
     setItems([...items, newItem]); // ... is called the spread operator
   }
 
@@ -36,7 +55,6 @@ function App() {
     const newItemsArray = items.filter((item) => {return item.id !== id});
     setItems(newItemsArray);  
   }
-
 
   return (
     <div className="App">
@@ -57,12 +75,20 @@ function App() {
           <h3>Add a Game to Play History</h3>
           <label>Game Name:</label><br />
           <input id="name" value={gameSessionName} onChange={e => {setGameSessionName(e.target.value)}}/><br />
-          <label>Description:</label><br />
-          <textarea id="description" value={gameSessionDescription} onChange={e => {setGameSessionDescription(e.target.value)}}></textarea><br />
+          <label>Game Session Date:</label><br />
+          <input id="date" value={gameSessionDate} onChange={e => {setGameSessionDate(e.target.value)}}/><br />
+          <label>Number of Players:</label><br />
+          <input id="numPlayers" value={gameSessionPlayers} onChange={e => {setGameSessionPlayers(e.target.value)}}/><br />
+          <label>Score:</label><br />
+          <input id="score" value={gameSessionScore} onChange={e => {setGameSessionScore(e.target.value)}}/><br />
+          <label>Score:</label><br />
+          <input id="winloss" value={gameSessionWinLoss} onChange={e => {setGameSessionWinLoss(e.target.value)}}/><br />
+          <label>Comments:</label><br />
+          <textarea id="description" value={gameSessionComments} onChange={e => {setGameSessionComments(e.target.value)}}></textarea><br />
           <button onClick={addGameSession}>Add</button>
 
           <h2>Play History</h2>
-          { createGameSessionList() }
+          <PlayHistory items={items} deleteGameSession={deleteGameSession} />
 
     </div>
   );

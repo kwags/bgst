@@ -3,21 +3,20 @@
 //import './App.css';
 
 
-function GameSession(props) {
-  const name = props.name;
-  const description = props.description;
-  const id = props.id;
-  const deleteGameSession = props.delete;
+import React from "react";
 
+function GameSession({ name, date, numPlayers, score, winloss, comments, id, deleteGameSession }) {
   return (
-      <div>
-          <h3> { name } </h3>
-          <p> { description } </p>
-          <button onClick={()=>{ deleteGameSession(id) }}>Delete</button>
-      </div>
+    <div>
+      <h4>Board Game Name: {name}</h4>
+      <p>Date: {date}</p>
+      <p>Number of Players: {numPlayers}</p>
+      <p>Score: {score}</p>
+      <p>Win/Loss: {winloss}</p>
+      <p>Comments: {comments}</p>
+      <button onClick={() => deleteGameSession(id)}>Delete</button>
+    </div>
   );
-
 }
 
 export default GameSession;
-
