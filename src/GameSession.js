@@ -12,7 +12,7 @@ function GameSession({ name, date, numPlayers, score, winloss, comments, id, del
       <p>Date: {date}</p>
       <p>Number of Players: {numPlayers}</p>
       <p>Score: {score}</p>
-      <p>Win/Loss: {winloss}</p>
+      <p>Win / Loss: {winloss}</p>
       <p>Comments: {comments}</p>
       <button onClick={() => deleteGameSession(id)}>Delete</button>
     </div>

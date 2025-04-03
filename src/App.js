@@ -81,7 +81,7 @@ function App() {
           <input id="numPlayers" value={gameSessionPlayers} onChange={e => {setGameSessionPlayers(e.target.value)}}/><br />
           <label>Score:</label><br />
           <input id="score" value={gameSessionScore} onChange={e => {setGameSessionScore(e.target.value)}}/><br />
-          <label>Score:</label><br />
+          <label>Win / Loss:</label><br />
           <input id="winloss" value={gameSessionWinLoss} onChange={e => {setGameSessionWinLoss(e.target.value)}}/><br />
           <label>Comments:</label><br />
           <textarea id="description" value={gameSessionComments} onChange={e => {setGameSessionComments(e.target.value)}}></textarea><br />
