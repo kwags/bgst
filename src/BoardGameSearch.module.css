@@ -1,0 +1,63 @@
+
+.container {
+    width: 100%;
+    max-width: 400px; 
+  }
+  
+  .title {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .searchInput {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+  }
+  
+  .searchInput:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 4px rgba(0, 123, 255, 0.3);
+  }
+  
+  .results {
+    margin-top: 0.5rem;
+  }
+  
+  .list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .listItem {
+    padding: 0.5rem;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .listItem:last-child {
+    border-bottom: none;
+  }
+  
+  .gameName {
+    margin: 0 0 0.25rem 0;
+    font-size: 1rem;
+  }
+  
+  .gameInfo {
+    margin: 0;
+    font-size: 0.8rem;
+    color: #666;
+  }
+  
+  .message {
+    font-size: 0.9rem;
+    color: #555;
+    text-align: center;
+    padding: 0.5rem;
+  }

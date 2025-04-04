@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { v4 as uuidv4 } from 'uuid'; // for creating unique id's for todo items
 import PlayHistory from "./PlayHistory.js";
+import BoardGameSearch from './BoardgameSearch.js';
 
 
 function App() {
@@ -66,6 +67,8 @@ function App() {
         </header>
         <p>Demo User Logged In</p>
         <h3>Components</h3>
+
+          <BoardGameSearch/>
 
           <li>Search Board Game Database</li>
           <li>Add Board Game Session to Play History</li>
