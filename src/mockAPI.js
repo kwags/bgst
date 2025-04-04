@@ -16,6 +16,38 @@ export const mockData = {
         { id: 13, name: "Terraforming Mars", players: "1-5", estimatedTime: "120 min" },
       ],
 
+    playHistory: [
+        {
+        id: 1, 
+        name: "Mysterium",
+        date: "2025-03-08",
+        numPlayers: 4,
+        score: 4,
+        winloss: "Win",
+        time: 120,
+        comments: "First time playing this game",
+        },
+        {
+        id: 2,
+        name: "Carcassonne",
+        date: "2025-03-13",
+        numPlayers: 3,
+        score: 105,
+        winloss: "Loss",
+        time: 180,
+        comments: "This was really fun!",
+        },
+        {
+        id: 3,
+        name: "Catan",
+        date: "2025-03-27",
+        numPlayers: 3,
+        score: 10,
+        winloss: "Win",
+        time: 180,
+        comments: "Always a fun game",
+        }
+    ]
 };
 
 
@@ -29,4 +61,13 @@ export const fetchBoardGames = async (searchTerm) => {
             resolve(filteredGames);
         }, 500) // Fake delay in ms to simulate network delay
     })
+};
+
+// Simulate fetching game sessions (play history)
+export const fetchPlayHistory = async () => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(mockData.playHistory); // Return all game session data
+      }, 500); // Fake delay in ms to simulate network delay
+    });
 };
