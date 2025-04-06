@@ -43,14 +43,9 @@ function App() {
         </section>
 
         <section className="app-section">
-          <h2>Play History</h2>
           <PlayHistory items={items} setItems={setItems} />
         </section>
       </main>
-
-      <footer className="app-footer">
-        <p>© 2025 GameTracker. All rights reserved.</p>
-      </footer>
     </div>
   );
 }
