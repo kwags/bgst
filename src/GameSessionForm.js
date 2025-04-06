@@ -10,7 +10,8 @@ function GameSessionForm({ onAdd }) {
   const [gameSessionTime, setGameSessionTime] = useState(0);  
   const [gameSessionComments, setGameSessionComments] = useState("");  
 
-  const handleAdd = () => {
+  const handleAdd = (e) => {
+    e.preventDefault();
 
     onAdd({
       name: gameSessionName,
