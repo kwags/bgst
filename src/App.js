@@ -6,6 +6,7 @@ import BoardGameSearch from './BoardgameSearch.js';
 import GameSessionForm from './GameSessionForm';
 import PlayHistory from "./PlayHistory.js";
 import { fetchPlayHistory } from "./mockAPI";
+import AddBoardGameForm from "./AddBoardGameForm.js";
 
 function App() {
   const [items, setItems] = useState([]);
@@ -34,6 +35,7 @@ function App() {
           <li>View Stats</li>
 
           <BoardGameSearch/>
+          <AddBoardGameForm />
 
           <GameSessionForm
             onAdd={(newItem) => {

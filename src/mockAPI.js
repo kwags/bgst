@@ -1,4 +1,7 @@
 // src/mockData.js
+
+import { v4 as uuidv4 } from 'uuid'; // for creating unique id's
+
 export const mockData = {
     boardgames: [
         { id: 1, name: "Catan", players: "2-4", estimatedTime: "60-120 min" },
@@ -69,5 +72,16 @@ export const fetchPlayHistory = async () => {
       setTimeout(() => {
         resolve(mockData.playHistory); // Return all game session data
       }, 500); // Fake delay in ms to simulate network delay
+    });
+};
+
+// Simulate adding a new board game to the database
+export const addBoardGame = async (newGame) => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const newGameWithId = { id: uuidv4(), ...newGame }; // Use uuid for ID
+        mockData.boardgames.push(newGameWithId);            // Mutate the mock data
+        resolve(newGameWithId);                             // Return the new game
+      }, 300); // Simulated API delay
     });
 };
