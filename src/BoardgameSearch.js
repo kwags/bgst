@@ -1,7 +1,7 @@
 
 import React, {useState} from 'react';
 import { fetchBoardGames } from './mockAPI';
-import styles from './BoardGameSearch.module.css';
+import styles from './styles/BoardGameSearch.module.css';
 
 const BoardGameSearch = () => {
 

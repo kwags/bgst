@@ -1,8 +1,5 @@
-//Game Session Form to Add Game to Play History
-//import logo from './logo.svg';
-//import './App.css';
-
 import React, { useState } from "react";
+import styles from "./styles/GameSessionForm.module.css";
 
 function GameSessionForm({ onAdd }) {
   const [gameSessionName, setGameSessionName] = useState("");
@@ -36,37 +33,54 @@ function GameSessionForm({ onAdd }) {
   };
 
   return (
-    <div>
-      <h3>Add Game Session to Play History</h3>
-      <label>Game Name:</label><br />
-      <input value={gameSessionName} onChange={e => setGameSessionName(e.target.value)} /><br />
+    <form className={styles.form} onSubmit={handleAdd}>
+      <div className={styles.row}>
+        <div className={styles.inputGroup}>
+          <label>Game Name</label>
+          <input value={gameSessionName} onChange={e => setGameSessionName(e.target.value)} />
+        </div>
 
-      <label>Date:</label><br />
-      <input type="date" value={gameSessionDate} onChange={e => setGameSessionDate(e.target.value)} /><br />
+        <div className={styles.inputGroup}>
+          <label>Date</label>
+          <input type="date" value={gameSessionDate} onChange={e => setGameSessionDate(e.target.value)} />
+        </div>
 
-      <label>Players:</label><br />
-      <input type="number" value={gameSessionPlayers} onChange={e => setGameSessionPlayers(Number(e.target.value))} /><br />
+        <div className={styles.inputGroup}>
+          <label>Number of Players</label>
+          <input type="number" value={gameSessionPlayers} onChange={e => setGameSessionPlayers(Number(e.target.value))} />
+        </div>
 
-      <label>Score:</label><br />
-      <input type="number" value={gameSessionScore} onChange={e => setGameSessionScore(Number(e.target.value))} /><br />
+        <div className={styles.inputGroup}>
+          <label>Score</label>
+          <input type="number" value={gameSessionScore} onChange={e => setGameSessionScore(Number(e.target.value))} />
+        </div>
+      </div>
 
-      <label>Win/Loss:</label><br />
-      <select value={gameSessionWinLoss} onChange={(e) => setGameSessionWinLoss(e.target.value)}>
-        <option value="">-- Select Result --</option>
-        <option value="Win">Win</option>
-        <option value="Loss">Loss</option>
-        <option value="Draw">Draw</option>
-        <option value="DNF">DNF</option>
-      </select><br />        
+      <div className={styles.row}>
+        <div className={styles.inputGroup}>
+          <label>Result</label>
+          <select value={gameSessionWinLoss} onChange={e => setGameSessionWinLoss(e.target.value)}>
+            <option value="">-- Select --</option>
+            <option value="Win">Win</option>
+            <option value="Loss">Loss</option>
+            <option value="Draw">Draw</option>
+            <option value="DNF">Did Not Finish</option>
+          </select>
+        </div>
 
-      <label>Amount of Time Played (in mins):</label><br />
-      <input type="number" value={gameSessionTime} onChange={e => setGameSessionTime(Number(e.target.value))} /><br />
+        <div className={styles.inputGroup}>
+          <label>Time Played (minutes)</label>
+          <input type="number" value={gameSessionTime} onChange={e => setGameSessionTime(Number(e.target.value))} />
+        </div>
 
-      <label>Comments:</label><br />
-      <textarea value={gameSessionComments} onChange={e => setGameSessionComments(e.target.value)} /><br /><br />
+        <div className={styles.inputGroup} style={{ flex: 2 }}>
+          <label>Comments</label>
+          <textarea value={gameSessionComments} onChange={e => setGameSessionComments(e.target.value)} />
+        </div>
+      </div>
 
-      <button onClick={handleAdd}>Add</button>
-    </div>
+      <button type="submit">Add Session</button>
+    </form>
   );
 }
 
