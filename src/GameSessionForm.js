@@ -1,27 +1,45 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./styles/GameSessionForm.module.css";
 
-function GameSessionForm({ onAdd }) {
+function GameSessionForm({ onAdd, editingItem, onUpdate, onCancelEdit }) {
   const [gameSessionName, setGameSessionName] = useState("");
-  const [gameSessionDate, setGameSessionDate] = useState(new Date().toDateString());
-  const [gameSessionPlayers, setGameSessionPlayers] = useState(0);  
-  const [gameSessionScore, setGameSessionScore] = useState(0);  
+  const [gameSessionDate, setGameSessionDate] = useState("");
+  const [gameSessionPlayers, setGameSessionPlayers] = useState("");  
+  const [gameSessionScore, setGameSessionScore] = useState("");  
   const [gameSessionResult, setGameSessionResult] = useState("");  
-  const [gameSessionTime, setGameSessionTime] = useState(0);  
+  const [gameSessionTime, setGameSessionTime] = useState("");  
   const [gameSessionComments, setGameSessionComments] = useState("");  
 
-  const handleAdd = (e) => {
+  useEffect(() => {
+    if (editingItem) {
+      setGameSessionName(editingItem.name || "");
+      setGameSessionDate(editingItem.date || "");
+      setGameSessionPlayers(editingItem.numPlayers || "");
+      setGameSessionScore(editingItem.score || "");
+      setGameSessionResult(editingItem.result || "");
+      setGameSessionTime(editingItem.time || "");
+      setGameSessionComments(editingItem.comments || "");
+    }
+  }, [editingItem]);
+  
+  const handleSubmit = (e) => {
     e.preventDefault();
 
-    onAdd({
+  const sessionData = {
       name: gameSessionName,
       date: gameSessionDate,
       numPlayers: gameSessionPlayers,
       score: gameSessionScore,
-      result: setGameSessionResult,
+      result: gameSessionResult,
       time: gameSessionTime,
       comments: gameSessionComments,
-    });
+    };
+
+    if (editingItem) {
+      onUpdate({ ...editingItem, ...sessionData });
+    } else {
+      onAdd(sessionData);
+    }
 
     // Clear form after add
     setGameSessionName("");
@@ -34,34 +52,29 @@ function GameSessionForm({ onAdd }) {
   };
 
   return (
-    <form className={styles.form} onSubmit={handleAdd}>
+    <form className={styles.form} onSubmit={handleSubmit}>
       <div className={styles.row}>
         <div className={styles.inputGroup}>
-          <label>Game Name</label>
-          <input value={gameSessionName} onChange={e => setGameSessionName(e.target.value)} />
+          <input placeholder = "Game Name" value={gameSessionName} onChange={e => setGameSessionName(e.target.value)} />
         </div>
 
         <div className={styles.inputGroup}>
-          <label>Date</label>
-          <input type="date" value={gameSessionDate} onChange={e => setGameSessionDate(e.target.value)} />
+          <input placeholder type="date" value={gameSessionDate} onChange={e => setGameSessionDate(e.target.value)} />
         </div>
 
         <div className={styles.inputGroup}>
-          <label>Number of Players</label>
-          <input type="number" value={gameSessionPlayers} onChange={e => setGameSessionPlayers(Number(e.target.value))} />
+          <input type="number" placeholder="Number of Players" value={gameSessionPlayers} onChange={e => setGameSessionPlayers(Number(e.target.value))}/>
         </div>
 
         <div className={styles.inputGroup}>
-          <label>Score</label>
-          <input type="number" value={gameSessionScore} onChange={e => setGameSessionScore(Number(e.target.value))} />
+          <input type="number" placeholder="Score" value={gameSessionScore} onChange={e => setGameSessionScore(Number(e.target.value))} />
         </div>
       </div>
 
       <div className={styles.row}>
         <div className={styles.inputGroup}>
-          <label>Result</label>
           <select value={gameSessionResult} onChange={e => setGameSessionResult(e.target.value)}>
-            <option value="">-- Select --</option>
+            <option value="">-- Select Result --</option>
             <option value="Win">Win</option>
             <option value="Loss">Loss</option>
             <option value="Draw">Draw</option>
@@ -70,17 +83,20 @@ function GameSessionForm({ onAdd }) {
         </div>
 
         <div className={styles.inputGroup}>
-          <label>Time Played (minutes)</label>
-          <input type="number" value={gameSessionTime} onChange={e => setGameSessionTime(Number(e.target.value))} />
+          <input type="number" placeholder="Minutes Played" value={gameSessionTime} onChange={e => setGameSessionTime(Number(e.target.value))} />
         </div>
 
         <div className={styles.inputGroup} style={{ flex: 2 }}>
-          <label>Comments</label>
-          <textarea value={gameSessionComments} onChange={e => setGameSessionComments(e.target.value)} />
+          <textarea placeholder="Comments" value={gameSessionComments} onChange={e => setGameSessionComments(e.target.value)} />
         </div>
       </div>
 
-      <button type="submit">Add Session</button>
+      <button type="submit">{editingItem ? "Save Changes" : "Add Session"}</button>
+      {editingItem && (
+        <button type="button" onClick={onCancelEdit} style={{ marginLeft: "1rem" }}>
+          Cancel
+        </button>
+      )}
     </form>
   );
 }
