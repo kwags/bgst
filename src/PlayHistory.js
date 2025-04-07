@@ -19,7 +19,7 @@ function PlayHistory({ items, setItems }) {
             <strong>Date:</strong> {item.date}<br/>
             <strong>Players:</strong> {item.numPlayers}<br/>
             <strong>Score:</strong> {item.score}<br/>
-            <strong>Win/Loss:</strong> {item.winloss}<br/>
+            <strong>Result:</strong> {item.result}<br/>
             <strong>Amount of Time Played:</strong> {item.time} mins<br/>
             <strong>Comments:</strong> {item.comments}<br/>
             <button onClick={() => deleteGameSession(item.id)}>Delete</button>
