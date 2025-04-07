@@ -34,6 +34,9 @@ function App() {
         <section className="app-section">
           <h2>Add a Board Game to the Database</h2>
           <AddBoardGameForm />
+        </section>  
+
+        <section className="app-section">
           <h2>Add a Game Session</h2>
           <GameSessionForm
             onAdd={(newItem) => {

@@ -6,7 +6,7 @@ function GameSessionForm({ onAdd }) {
   const [gameSessionDate, setGameSessionDate] = useState(new Date().toDateString());
   const [gameSessionPlayers, setGameSessionPlayers] = useState(0);  
   const [gameSessionScore, setGameSessionScore] = useState(0);  
-  const [gameSessionWinLoss, setGameSessionWinLoss] = useState("");  
+  const [gameSessionResult, setGameSessionResult] = useState("");  
   const [gameSessionTime, setGameSessionTime] = useState(0);  
   const [gameSessionComments, setGameSessionComments] = useState("");  
 
@@ -18,7 +18,7 @@ function GameSessionForm({ onAdd }) {
       date: gameSessionDate,
       numPlayers: gameSessionPlayers,
       score: gameSessionScore,
-      winloss: gameSessionWinLoss,
+      result: setGameSessionResult,
       time: gameSessionTime,
       comments: gameSessionComments,
     });
@@ -28,7 +28,7 @@ function GameSessionForm({ onAdd }) {
     setGameSessionDate(new Date().toDateString());
     setGameSessionPlayers(0);
     setGameSessionScore(0);
-    setGameSessionWinLoss("");
+    setGameSessionResult("");
     setGameSessionTime(0);
     setGameSessionComments("");
   };
@@ -60,7 +60,7 @@ function GameSessionForm({ onAdd }) {
       <div className={styles.row}>
         <div className={styles.inputGroup}>
           <label>Result</label>
-          <select value={gameSessionWinLoss} onChange={e => setGameSessionWinLoss(e.target.value)}>
+          <select value={gameSessionResult} onChange={e => setGameSessionResult(e.target.value)}>
             <option value="">-- Select --</option>
             <option value="Win">Win</option>
             <option value="Loss">Loss</option>
