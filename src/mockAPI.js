@@ -20,8 +20,7 @@ export const mockData = {
       ],
 
     playHistory: [
-        {
-        id: 1, 
+        { id: 1, 
         name: "Mysterium",
         date: "2025-03-08",
         numPlayers: 4,
@@ -30,8 +29,7 @@ export const mockData = {
         time: 120,
         comments: "First time playing this game",
         },
-        {
-        id: 2,
+        { id: 2,
         name: "Carcassonne",
         date: "2025-03-13",
         numPlayers: 3,
@@ -40,8 +38,7 @@ export const mockData = {
         time: 180,
         comments: "This was really fun!",
         },
-        {
-        id: 3,
+        { id: 3,
         name: "Catan",
         date: "2025-03-27",
         numPlayers: 3,
@@ -50,7 +47,52 @@ export const mockData = {
         time: 180,
         comments: "Always a fun game",
         }
-    ]
+    ],
+    
+    collection: [
+      { id: 1, 
+        name: "Catan", 
+        players: "2-4", 
+        estimatedTime: "60-120", 
+        purchaseDate: "2025-03-01",
+        purchasePrice: "25.99", 
+        },
+        
+        { id: 2, 
+        name: "Ticket to Ride", 
+        players: "2-5", 
+        estimatedTime: "30-60",
+        purchaseDate: "2025-03-15",
+        purchasePrice: "29.99", 
+        },
+        { id: 3,
+        name: "Carcassonne", 
+        players: "2-5", 
+        estimatedTime: "30-45", 
+        purchaseDate: "2025-03-20",
+        purchasePrice: "40.99"
+        },
+        { id: 4, 
+        name: "Pandemic", 
+        players: "2-4", 
+        estimatedTime: "45-60",
+        purchaseDate: "2025-04-01",
+        purchasePrice: "19.99"
+        },
+        { id: 5, 
+        name: "Azul", 
+        players: "2-4", 
+        estimatedTime: "30-45",
+        purchaseDate: "2025-04-02",
+        purchasePrice: "31.99"
+        },
+        { id: 6, 
+        name: "7 Wonders", 
+        players: "2-7", 
+        estimatedTime: "30",
+        purchaseDate: "2025-04-05",
+        purchasePrice: "59.99" },
+      ]
 };
 
 
@@ -84,4 +126,13 @@ export const addBoardGame = async (newGame) => {
         resolve(newGameWithId);                             // Return the new game
       }, 300); // Simulated API delay
     });
+};
+
+// Simulate fetching game sessions (play history)
+export const fetchCollection = async () => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(mockData.collection); // Return all game session data
+    }, 500); // Fake delay in ms to simulate network delay
+  });
 };
