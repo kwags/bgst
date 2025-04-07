@@ -1,7 +1,6 @@
-//import logo from './logo.svg';
-//import './App.css';
+import './styles/App.css';
 import React, { useState, useEffect } from "react";
-import { v4 as uuidv4 } from 'uuid'; // for creating unique id's
+import { v4 as uuidv4 } from 'uuid';
 import BoardGameSearch from './BoardgameSearch.js';
 import GameSessionForm from './GameSessionForm';
 import PlayHistory from "./PlayHistory.js";
@@ -11,7 +10,6 @@ import AddBoardGameForm from "./AddBoardGameForm.js";
 function App() {
   const [items, setItems] = useState([]);
 
-  // Fetch mock game session data for Play History
   useEffect(() => {
     const getPlayHistory = async () => {
       const data = await fetchPlayHistory();
@@ -20,34 +18,36 @@ function App() {
     getPlayHistory();
   }, []);
 
-
   return (
-    <div className="App">
-      <header className="App-header">
-        {/* <img src={logo} className="App-logo" alt="logo"  */}
-        <h2> Board Game Statistic Tracker </h2>
-        </header>
-        <p>Demo User Logged In</p>
-        <h3>Components</h3>
-        <li>Search Board Game Database</li>
-          <li>Add Board Game Session to Play History</li>
-          <li>View Play History</li>
-          <li>View Stats</li>
+    <div className="app-container">
+      <header className="app-header">
+        <h1>🎲 Board Game Statistic Tracker</h1>
+        <p className="app-user">Demo User Logged In</p>
+      </header>
 
-          <BoardGameSearch/>
+      <main className="app-main">
+        <section className="app-section">
+          <h2>Search for Board Games</h2>
+          <BoardGameSearch />
+        </section>
+
+        <section className="app-section">
+          <h2>Add a Board Game to the Database</h2>
           <AddBoardGameForm />
-
+          <h2>Add a Game Session</h2>
           <GameSessionForm
             onAdd={(newItem) => {
               setItems([...items, { ...newItem, id: uuidv4() }]);
             }}
           />
+        </section>
 
-        <PlayHistory items={items} setItems={setItems} />
-
+        <section className="app-section">
+          <PlayHistory items={items} setItems={setItems} />
+        </section>
+      </main>
     </div>
   );
 }
-
 
 export default App;
