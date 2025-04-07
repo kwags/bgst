@@ -4,7 +4,7 @@
 
 import React from 'react';
 
-function PlayHistory({ items, setItems }) {
+function PlayHistory({ items, setItems, onEdit }) {
   const deleteGameSession = (id) => {
     setItems(items.filter(item => item.id !== id));
   };
@@ -14,16 +14,17 @@ function PlayHistory({ items, setItems }) {
       <h3>Play History</h3>
       <ul>
         {items.map(item => (
-          <li key={item.id} >
-            <strong>Game:</strong> {item.name}<br/>
+        <div key={item.id} style={{ borderBottom: "1px solid #ccc", padding: "1rem 0" }}>
+            <strong>Game Name:</strong> {item.name}<br/>
             <strong>Date:</strong> {item.date}<br/>
             <strong>Players:</strong> {item.numPlayers}<br/>
             <strong>Score:</strong> {item.score}<br/>
             <strong>Result:</strong> {item.result}<br/>
-            <strong>Amount of Time Played:</strong> {item.time} mins<br/>
+            <strong>Minutes Played:</strong> {item.time} mins<br/>
             <strong>Comments:</strong> {item.comments}<br/>
-            <button onClick={() => deleteGameSession(item.id)}>Delete</button>
-          </li> 
+            <button onClick={() => onEdit(item)}>Edit</button>
+          <button onClick={() => deleteGameSession(item.id)}>Delete</button>
+        </div>
         ))}
       </ul>
     </div>

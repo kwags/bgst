@@ -9,6 +9,7 @@ import AddBoardGameForm from "./AddBoardGameForm.js";
 
 function App() {
   const [items, setItems] = useState([]);
+  const [editingItem, setEditingItem] = useState(null);
 
   useEffect(() => {
     const getPlayHistory = async () => {
@@ -39,14 +40,20 @@ function App() {
         <section className="app-section">
           <h2>Add a Game Session</h2>
           <GameSessionForm
-            onAdd={(newItem) => {
-              setItems([...items, { ...newItem, id: uuidv4() }]);
-            }}
-          />
+  onAdd={(newItem) => {
+    setItems([...items, { ...newItem, id: uuidv4() }]);
+  }}
+  editingItem={editingItem}
+  onUpdate={(updatedItem) => {
+    setItems(items.map(item => item.id === updatedItem.id ? updatedItem : item));
+    setEditingItem(null);
+  }}
+  onCancelEdit={() => setEditingItem(null)}
+/>
         </section>
 
         <section className="app-section">
-          <PlayHistory items={items} setItems={setItems} />
+        <PlayHistory items={items} setItems={setItems} onEdit={(item) => setEditingItem(item)} />
         </section>
       </main>
     </div>
