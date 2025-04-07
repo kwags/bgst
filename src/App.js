@@ -6,18 +6,31 @@ import GameSessionForm from './GameSessionForm';
 import PlayHistory from "./PlayHistory.js";
 import { fetchPlayHistory } from "./mockAPI";
 import AddBoardGameForm from "./AddBoardGameForm.js";
+import Collection from "./Collection.js";
+import { fetchCollection } from "./mockAPI";
 
 function App() {
-  const [items, setItems] = useState([]);
+  const [playHistory, setPlayHistory] = useState([]);
+  const [collection, setCollection] = useState([]);
   const [editingItem, setEditingItem] = useState(null);
-
+  const [items, setItems] = useState([]);
+  
   useEffect(() => {
     const getPlayHistory = async () => {
-      const data = await fetchPlayHistory();
-      setItems(data);
+    const data = await fetchPlayHistory();
+      setPlayHistory(data);
     };
     getPlayHistory();
   }, []);
+
+  useEffect(() => {
+    const getCollection = async () => {
+    const data = await fetchCollection();
+      setCollection(data);
+    };
+    getCollection();
+  }, []);
+
 
   return (
     <div className="app-container">
@@ -39,22 +52,19 @@ function App() {
 
         <section className="app-section">
           <h2>Add a Game Session</h2>
-          <GameSessionForm
-  onAdd={(newItem) => {
-    setItems([...items, { ...newItem, id: uuidv4() }]);
-  }}
-  editingItem={editingItem}
-  onUpdate={(updatedItem) => {
-    setItems(items.map(item => item.id === updatedItem.id ? updatedItem : item));
-    setEditingItem(null);
-  }}
-  onCancelEdit={() => setEditingItem(null)}
-/>
+          <GameSessionForm onAdd={(newItem) => {setItems([...items, { ...newItem, id: uuidv4() }]);
+        }} editingItem={editingItem} onUpdate={(updatedItem) => {setItems(items.map(item => item.id === updatedItem.id ? updatedItem : item)); setEditingItem(null);
+        }} onCancelEdit={() => setEditingItem(null)}/>
         </section>
 
         <section className="app-section">
-        <PlayHistory items={items} setItems={setItems} onEdit={(item) => setEditingItem(item)} />
+          <PlayHistory items={playHistory} setItems={setPlayHistory} onEdit={(item) => setEditingItem(item)} />
         </section>
+
+        <section className="app-section">
+          <Collection items={collection} setItems={setCollection} onEdit={(item) => setEditingItem(item)} />
+        </section>
+
       </main>
     </div>
   );
