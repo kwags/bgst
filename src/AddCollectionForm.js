@@ -21,7 +21,7 @@ function AddCollectionForm({ onAdd, editingItem, onUpdate, onCancelEdit }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-  const sessionData = {
+  const collectionData = {
       name: collectionGameName,
       players: collectionPlayers,
       estimatedTime: collectionTime,
@@ -30,9 +30,9 @@ function AddCollectionForm({ onAdd, editingItem, onUpdate, onCancelEdit }) {
     };
 
     if (editingItem) {
-      onUpdate({ ...editingItem, ...sessionData });
+      onUpdate({ ...editingItem, ...collectionData });
     } else {
-      onAdd(sessionData);
+      onAdd(collectionData);
     }
 
     // Clear form after add

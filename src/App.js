@@ -13,8 +13,9 @@ import AddCollectionForm from './AddCollectionForm.js';
 function App() {
   const [playHistory, setPlayHistory] = useState([]);
   const [collection, setCollection] = useState([]);
-  const [editingItem, setEditingItem] = useState(null);
-  
+  const [editingPlayHistoryItem, setEditingPlayHistoryItem] = useState(null);
+  const [editingCollectionItem, setEditingCollectionItem] = useState(null);
+
   useEffect(() => {
     const getPlayHistory = async () => {
     const data = await fetchPlayHistory();
@@ -56,20 +57,20 @@ function App() {
             onAdd={(newItem) => {
               setPlayHistory([...playHistory, { ...newItem, id: uuidv4() }]);
             }}
-            editingItem={editingItem}
+            editingItem={editingPlayHistoryItem}
             onUpdate={(updatedItem) => { setPlayHistory(playHistory.map(item => item.id === updatedItem.id ? updatedItem : item
               ));
-              setEditingItem(null);
+              setEditingPlayHistoryItem(null);
             }} 
-            onCancelEdit={() => setEditingItem(null)} />
+            onCancelEdit={() => setEditingPlayHistoryItem(null)} />
         </section>
 
         <section className="app-section">
-          <PlayHistory items={playHistory} setItems={setPlayHistory} onEdit={(item) => setEditingItem(item)} />
+          <PlayHistory items={playHistory} setItems={setPlayHistory} onEdit={(item) => setEditingPlayHistoryItem(item)} />
         </section>
 
         <section className="app-section">
-          <Collection items={collection} setItems={setCollection} onEdit={(item) => setEditingItem(item)} />
+          <Collection items={collection} setItems={setCollection} onEdit={(item) => setEditingCollectionItem(item)} />
         </section>
 
         <section className="app-section">
@@ -78,12 +79,12 @@ function App() {
             onAdd={(newItem) => {
               setCollection([...collection, { ...newItem, id: uuidv4() }]);
             }}
-            editingItem={editingItem}
+            editingItem={editingCollectionItem}
             onUpdate={(updatedItem) => { setCollection(collection.map(item => item.id === updatedItem.id ? updatedItem : item
               ));
-              setEditingItem(null);
+              setEditingCollectionItem(null);
             }} 
-            onCancelEdit={() => setEditingItem(null)} />
+            onCancelEdit={() => setEditingCollectionItem(null)} />
         </section>
 
       </main>
