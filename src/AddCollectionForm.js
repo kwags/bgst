@@ -1,0 +1,82 @@
+import React, { useState, useEffect } from "react";
+import styles from "./styles/GameSessionForm.module.css";
+
+function AddCollectionForm({ onAdd, editingItem, onUpdate, onCancelEdit }) {
+  const [collectionGameName, setCollectionGameName] = useState("");
+  const [collectionPlayers, setCollectionPlayers] = useState("");  
+  const [collectionTime, setCollectionTime] = useState("");  
+  const [collecitonDate, setCollectionDate] = useState("");
+  const [collectionPrice, setCollectionPrice] = useState("");   
+
+  useEffect(() => {
+    if (editingItem) {
+      setCollectionGameName(editingItem.name || "");
+      setCollectionPlayers(editingItem.players || "");
+      setCollectionTime(editingItem.estimatedTime || "");
+      setCollectionDate(editingItem.purchaseDate || "");
+      setCollectionPrice(editingItem.purchasePrice || "");
+    }
+  }, [editingItem]);
+  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+  const sessionData = {
+      name: collectionGameName,
+      players: collectionPlayers,
+      estimatedTime: collectionTime,
+      purchaseDate: collecitonDate,
+      purchasePrice: collectionPrice,
+    };
+
+    if (editingItem) {
+      onUpdate({ ...editingItem, ...sessionData });
+    } else {
+      onAdd(sessionData);
+    }
+
+    // Clear form after add
+    setCollectionGameName("");
+    setCollectionPlayers("");
+    setCollectionTime("");
+    setCollectionDate(new Date().toDateString());
+    setCollectionPrice(0);
+  };
+
+  return (
+    <form className={styles.form} onSubmit={handleSubmit}>
+      <div className={styles.row}>
+        <div className={styles.inputGroup}>
+          <input placeholder = "Game Name" value={collectionGameName} onChange={e => setCollectionGameName(e.target.value)} />
+        </div>
+
+        <div className={styles.inputGroup}>
+          <input placeholder="Number of Players" value={collectionPlayers} onChange={e => setCollectionPlayers(e.target.value)}/>
+        </div>
+
+        <div className={styles.inputGroup}>
+          <input placeholder="Estimated Playtime" value={collectionTime} onChange={e => setCollectionTime(e.target.value)} />
+        </div>
+
+        <div className={styles.inputGroup}>
+          <input placeholder ="Purchase Date" type="date" value={collecitonDate} onChange={e => setCollectionDate(e.target.value)} />
+        </div>
+
+        <div className={styles.inputGroup}>
+          <input type="number" step="1.00" placeholder ="Purchase Price" value={collectionPrice} onChange={e => setCollectionPrice(Number(e.target.value))} />
+        </div>
+
+
+      </div>
+
+      <button type="submit">{editingItem ? "Save Changes" : "Add Session"}</button>
+      {editingItem && (
+        <button type="button" onClick={onCancelEdit} style={{ marginLeft: "1rem" }}>
+          Cancel
+        </button>
+      )}
+    </form>
+  );
+}
+
+export default AddCollectionForm;
