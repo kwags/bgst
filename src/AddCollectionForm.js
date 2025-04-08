@@ -76,7 +76,7 @@ function AddCollectionForm({ onAdd, editingItem, onUpdate, onCancelEdit }) {
 
       </div>
 
-      <button type="submit">{editingItem ? "Save Changes" : "Add Session"}</button>
+      <button type="submit">{editingItem ? "Save Changes" : "Add Game"}</button>
       {editingItem && (
         <button type="button" onClick={onCancelEdit} style={{ marginLeft: "1rem" }}>
           Cancel
