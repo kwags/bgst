@@ -70,10 +70,6 @@ function App() {
         </section>
 
         <section className="app-section">
-          <Collection items={collection} setItems={setCollection} onEdit={(item) => setEditingCollectionItem(item)} />
-        </section>
-
-        <section className="app-section">
           <h2>Add a Game to Collection</h2>
           <AddCollectionForm
             onAdd={(newItem) => {
@@ -86,6 +82,12 @@ function App() {
             }} 
             onCancelEdit={() => setEditingCollectionItem(null)} />
         </section>
+
+        <section className="app-section">
+          <Collection items={collection} setItems={setCollection} onEdit={(item) => setEditingCollectionItem(item)} />
+        </section>
+
+       
 
       </main>
     </div>

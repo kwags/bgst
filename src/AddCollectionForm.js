@@ -5,7 +5,7 @@ function AddCollectionForm({ onAdd, editingItem, onUpdate, onCancelEdit }) {
   const [collectionGameName, setCollectionGameName] = useState("");
   const [collectionPlayers, setCollectionPlayers] = useState("");  
   const [collectionTime, setCollectionTime] = useState("");  
-  const [collecitonDate, setCollectionDate] = useState("");
+  const [collectionDate, setCollectionDate] = useState("");
   const [collectionPrice, setCollectionPrice] = useState("");   
 
   useEffect(() => {
@@ -15,17 +15,24 @@ function AddCollectionForm({ onAdd, editingItem, onUpdate, onCancelEdit }) {
       setCollectionTime(editingItem.estimatedTime || "");
       setCollectionDate(editingItem.purchaseDate || "");
       setCollectionPrice(editingItem.purchasePrice || "");
+    } else {
+    // clear form on cancel
+      setCollectionGameName("");
+      setCollectionPlayers("");
+      setCollectionTime("");
+      setCollectionDate(new Date().toDateString());
+      setCollectionPrice(0);
     }
   }, [editingItem]);
   
   const handleSubmit = (e) => {
     e.preventDefault();
 
-  const collectionData = {
+    const collectionData = {
       name: collectionGameName,
       players: collectionPlayers,
       estimatedTime: collectionTime,
-      purchaseDate: collecitonDate,
+      purchaseDate: collectionDate,
       purchasePrice: collectionPrice,
     };
 
@@ -59,7 +66,7 @@ function AddCollectionForm({ onAdd, editingItem, onUpdate, onCancelEdit }) {
         </div>
 
         <div className={styles.inputGroup}>
-          <input placeholder ="Purchase Date" type="date" value={collecitonDate} onChange={e => setCollectionDate(e.target.value)} />
+          <input placeholder ="Purchase Date" type="date" value={collectionDate} onChange={e => setCollectionDate(e.target.value)} />
         </div>
 
         <div className={styles.inputGroup}>
