@@ -19,6 +19,15 @@ function GameSessionForm({ onAdd, editingItem, onUpdate, onCancelEdit }) {
       setGameSessionResult(editingItem.result || "");
       setGameSessionTime(editingItem.time || "");
       setGameSessionComments(editingItem.comments || "");
+    } else {
+      // Clear form on cancel
+      setGameSessionName("");
+      setGameSessionDate(new Date().toDateString());
+      setGameSessionPlayers(0);
+      setGameSessionScore(0);
+      setGameSessionResult("");
+      setGameSessionTime(0);
+      setGameSessionComments("");
     }
   }, [editingItem]);
   
