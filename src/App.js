@@ -8,12 +8,12 @@ import { fetchPlayHistory } from "./mockAPI";
 import AddBoardGameForm from "./AddBoardGameForm.js";
 import Collection from "./Collection.js";
 import { fetchCollection } from "./mockAPI";
+import AddCollectionForm from './AddCollectionForm.js';
 
 function App() {
   const [playHistory, setPlayHistory] = useState([]);
   const [collection, setCollection] = useState([]);
   const [editingItem, setEditingItem] = useState(null);
-  const [items, setItems] = useState([]);
   
   useEffect(() => {
     const getPlayHistory = async () => {
@@ -52,9 +52,16 @@ function App() {
 
         <section className="app-section">
           <h2>Add a Game Session</h2>
-          <GameSessionForm onAdd={(newItem) => {setItems([...items, { ...newItem, id: uuidv4() }]);
-        }} editingItem={editingItem} onUpdate={(updatedItem) => {setItems(items.map(item => item.id === updatedItem.id ? updatedItem : item)); setEditingItem(null);
-        }} onCancelEdit={() => setEditingItem(null)}/>
+          <GameSessionForm
+            onAdd={(newItem) => {
+              setPlayHistory([...playHistory, { ...newItem, id: uuidv4() }]);
+            }}
+            editingItem={editingItem}
+            onUpdate={(updatedItem) => { setPlayHistory(playHistory.map(item => item.id === updatedItem.id ? updatedItem : item
+              ));
+              setEditingItem(null);
+            }} 
+            onCancelEdit={() => setEditingItem(null)} />
         </section>
 
         <section className="app-section">
@@ -63,6 +70,20 @@ function App() {
 
         <section className="app-section">
           <Collection items={collection} setItems={setCollection} onEdit={(item) => setEditingItem(item)} />
+        </section>
+
+        <section className="app-section">
+          <h2>Add a Game to Collection</h2>
+          <AddCollectionForm
+            onAdd={(newItem) => {
+              setCollection([...collection, { ...newItem, id: uuidv4() }]);
+            }}
+            editingItem={editingItem}
+            onUpdate={(updatedItem) => { setCollection(collection.map(item => item.id === updatedItem.id ? updatedItem : item
+              ));
+              setEditingItem(null);
+            }} 
+            onCancelEdit={() => setEditingItem(null)} />
         </section>
 
       </main>
