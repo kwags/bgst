@@ -9,8 +9,10 @@ import AddBoardGameForm from "./AddBoardGameForm.js";
 import Collection from "./Collection.js";
 import { fetchCollection } from "./mockAPI";
 import AddCollectionForm from './AddCollectionForm.js';
+import UserStats from './UserStats.js';
 
 function App() {
+  const [userId, setUserId] = useState(1);
   const [playHistory, setPlayHistory] = useState([]);
   const [collection, setCollection] = useState([]);
   const [editingPlayHistoryItem, setEditingPlayHistoryItem] = useState(null);
@@ -86,7 +88,11 @@ function App() {
         <section className="app-section">
           <Collection items={collection} setItems={setCollection} onEdit={(item) => setEditingCollectionItem(item)} />
         </section>
-
+        
+        <section className='app-section'>
+            <h2>User Stats</h2>
+            <UserStats userId={userId} />
+        </section>
        
 
       </main>
