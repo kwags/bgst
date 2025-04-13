@@ -23,10 +23,10 @@ function GameSessionForm({ onAdd, editingItem, onUpdate, onCancelEdit }) {
       // Clear form on cancel
       setGameSessionName("");
       setGameSessionDate(new Date().toDateString());
-      setGameSessionPlayers(0);
-      setGameSessionScore(0);
+      setGameSessionPlayers("");
+      setGameSessionScore("");
       setGameSessionResult("");
-      setGameSessionTime(0);
+      setGameSessionTime("");
       setGameSessionComments("");
     }
   }, [editingItem]);
@@ -53,10 +53,10 @@ function GameSessionForm({ onAdd, editingItem, onUpdate, onCancelEdit }) {
     // Clear form after add
     setGameSessionName("");
     setGameSessionDate(new Date().toDateString());
-    setGameSessionPlayers(0);
-    setGameSessionScore(0);
+    setGameSessionPlayers("");
+    setGameSessionScore("");
     setGameSessionResult("");
-    setGameSessionTime(0);
+    setGameSessionTime("");
     setGameSessionComments("");
   };
 
@@ -68,7 +68,7 @@ function GameSessionForm({ onAdd, editingItem, onUpdate, onCancelEdit }) {
         </div>
 
         <div className={styles.inputGroup}>
-          <input placeholder type="date" value={gameSessionDate} onChange={e => setGameSessionDate(e.target.value)} />
+          <input type="date" value={gameSessionDate} onChange={e => setGameSessionDate(e.target.value)} />
         </div>
 
         <div className={styles.inputGroup}>

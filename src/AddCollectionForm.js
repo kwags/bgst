@@ -21,7 +21,7 @@ function AddCollectionForm({ onAdd, editingItem, onUpdate, onCancelEdit }) {
       setCollectionPlayers("");
       setCollectionTime("");
       setCollectionDate(new Date().toDateString());
-      setCollectionPrice(0);
+      setCollectionPrice("");
     }
   }, [editingItem]);
   
@@ -47,7 +47,7 @@ function AddCollectionForm({ onAdd, editingItem, onUpdate, onCancelEdit }) {
     setCollectionPlayers("");
     setCollectionTime("");
     setCollectionDate(new Date().toDateString());
-    setCollectionPrice(0);
+    setCollectionPrice("");
   };
 
   return (
@@ -58,11 +58,11 @@ function AddCollectionForm({ onAdd, editingItem, onUpdate, onCancelEdit }) {
         </div>
 
         <div className={styles.inputGroup}>
-          <input placeholder="Number of Players" value={collectionPlayers} onChange={e => setCollectionPlayers(e.target.value)}/>
+          <input type="number" placeholder="Number of Players" value={collectionPlayers} onChange={e => setCollectionPlayers(e.target.value)}/>
         </div>
 
         <div className={styles.inputGroup}>
-          <input placeholder="Estimated Playtime" value={collectionTime} onChange={e => setCollectionTime(e.target.value)} />
+          <input type="number" placeholder="Estimated Playtime" value={collectionTime} onChange={e => setCollectionTime(e.target.value)} />
         </div>
 
         <div className={styles.inputGroup}>
