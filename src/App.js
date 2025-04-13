@@ -79,15 +79,11 @@ function App() {
                 <PlayHistory items={playHistory} setItems={setPlayHistory} onEdit={(item) => setEditingPlayHistoryItem(item)} />
               </section>
 
-        <section className="app-section">
-          <Collection items={collection} setItems={setCollection} onEdit={(item) => setEditingCollectionItem(item)} />
-        </section>
-        
-        <section className='app-section'>
-            <h2>User Stats</h2>
-            <UserStats userId={userId} />
-        </section>
-       
+              <section className='app-section'>
+                <h2>User Stats</h2>
+                 <UserStats userId={userId} />
+              </section>
+
         <section className="app-section">
           <h2>Add a Game to Collection</h2>
           <AddCollectionForm
