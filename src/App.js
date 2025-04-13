@@ -1,5 +1,6 @@
 import './styles/App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import BoardGameDetails from './BoardGameDetails';
 import React, { useState, useEffect } from "react";
 import { v4 as uuidv4 } from 'uuid';
@@ -39,7 +40,7 @@ function App() {
     <Router>
       <div className="app-container">
         <header className="app-header">
-          <h1>🎲 Board Game Statistic Tracker</h1>
+          <h1><Link to="/" style={{ textDecoration: "none", color: "inherit" }}>🎲 Board Game Statistic Tracker</Link></h1>
           <p className="app-user">Demo User Logged In</p>
         </header>
 
