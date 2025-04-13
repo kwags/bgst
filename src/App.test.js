@@ -8,10 +8,10 @@ import GameSessionForm from './GameSessionForm';
 test('renders blank inputs', () => {
     render(<GameSessionForm onAdd={() => {}} />);
 
-    expect(screen.getByPlaceholderText('Game Name')).toHaveValue('');
-    expect(screen.getByPlaceholderText('Number of Players')).toHaveValue(0);
-    expect(screen.getByPlaceholderText('Score')).toHaveValue(0);
-    expect(screen.getByPlaceholderText('Minutes Played')).toHaveValue(0);
+    expect(screen.getByPlaceholderText('Game Name')).toHaveValue("");
+    expect(screen.getByPlaceholderText('Number of Players')).toHaveDisplayValue("");
+    expect(screen.getByPlaceholderText('Score')).toHaveDisplayValue("");
+    expect(screen.getByPlaceholderText('Minutes Played')).toHaveDisplayValue("");
 
 });
 
