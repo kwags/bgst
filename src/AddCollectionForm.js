@@ -58,11 +58,11 @@ function AddCollectionForm({ onAdd, editingItem, onUpdate, onCancelEdit }) {
         </div>
 
         <div className={styles.inputGroup}>
-          <input type="number" placeholder="Number of Players" value={collectionPlayers} onChange={e => setCollectionPlayers(e.target.value)}/>
+          <input placeholder="Number of Players" value={collectionPlayers} onChange={e => setCollectionPlayers(e.target.value)}/>
         </div>
 
         <div className={styles.inputGroup}>
-          <input type="number" placeholder="Estimated Playtime" value={collectionTime} onChange={e => setCollectionTime(e.target.value)} />
+          <input placeholder="Estimated Playtime" value={collectionTime} onChange={e => setCollectionTime(e.target.value)} />
         </div>
 
         <div className={styles.inputGroup}>
