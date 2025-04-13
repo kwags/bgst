@@ -3,6 +3,7 @@
 //import './App.css';
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 function PlayHistory({ items, setItems, onEdit }) {
   const deleteGameSession = (id) => {
@@ -15,7 +16,9 @@ function PlayHistory({ items, setItems, onEdit }) {
       <ul>
         {items.map(item => (
         <div key={item.id} style={{ borderBottom: "1px solid #ccc", padding: "1rem 0" }}>
-            <strong>Game Name:</strong> {item.name}<br/>
+            <strong>Game Name: </strong><Link to={`/game/${item.id}`} style={{ textDecoration: 'underline', color: 'inherit' }}>
+              {item.name}
+            </Link><br/>
             <strong>Date:</strong> {item.date}<br/>
             <strong>Players:</strong> {item.numPlayers}<br/>
             <strong>Score:</strong> {item.score}<br/>
