@@ -68,7 +68,7 @@ function GameSessionForm({ onAdd, editingItem, onUpdate, onCancelEdit }) {
         </div>
 
         <div className={styles.inputGroup}>
-          <input placeholder type="date" value={gameSessionDate} onChange={e => setGameSessionDate(e.target.value)} />
+          <input type="date" value={gameSessionDate} onChange={e => setGameSessionDate(e.target.value)} />
         </div>
 
         <div className={styles.inputGroup}>
