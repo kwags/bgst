@@ -136,3 +136,17 @@ export const fetchCollection = async () => {
     }, 500); // Fake delay in ms to simulate network delay
   });
 };
+
+// Simulates fetching a single board game by its ID
+export const fetchBoardGameById = async (id) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const game = mockData.boardgames.find(game => String(game.id) === String(id));
+      if (game) {
+        resolve(game);
+      } else {
+        reject(new Error("Game not found"));
+      }
+    }, 300); // Sim network delay
+  });
+};
