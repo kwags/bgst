@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./styles/GameSessionForm.module.css";
 
-function GameSessionForm({ onAdd, editingItem, onUpdate, onCancelEdit }) {
+function GameSessionForm({ onAdd, editingItem, onUpdate, onCancelEdit, autofillGameName }) {
   const [gameSessionName, setGameSessionName] = useState("");
   const [gameSessionDate, setGameSessionDate] = useState("");
   const [gameSessionPlayers, setGameSessionPlayers] = useState("");  
@@ -21,7 +21,7 @@ function GameSessionForm({ onAdd, editingItem, onUpdate, onCancelEdit }) {
       setGameSessionComments(editingItem.comments || "");
     } else {
       // Clear form on cancel
-      setGameSessionName("");
+      setGameSessionName(autofillGameName || "");
       setGameSessionDate(new Date().toDateString());
       setGameSessionPlayers("");
       setGameSessionScore("");
@@ -29,8 +29,8 @@ function GameSessionForm({ onAdd, editingItem, onUpdate, onCancelEdit }) {
       setGameSessionTime("");
       setGameSessionComments("");
     }
-  }, [editingItem]);
-  
+  }, [editingItem, autofillGameName]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
