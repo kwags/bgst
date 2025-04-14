@@ -2,7 +2,7 @@ import './styles/App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import BoardGameDetails from './BoardGameDetails';
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { v4 as uuidv4 } from 'uuid';
 import BoardGameSearch from './BoardgameSearch.js';
 import GameSessionForm from './GameSessionForm';
@@ -19,7 +19,16 @@ function App() {
   const [playHistory, setPlayHistory] = useState([]);
   const [collection, setCollection] = useState([]);
   const [editingPlayHistoryItem, setEditingPlayHistoryItem] = useState(null);
-  const [editingCollectionItem, setEditingCollectionItem] = useState(null);
+  const [editingCollectionItem, setEditingCollectionItem] = useState(null); 
+  const [selectedGameForSession, setSelectedGameForSession] = useState(null);
+  const gameSessionFormRef = useRef(null);
+
+  const handleAddSession = (gameName) => {
+    setSelectedGameForSession(gameName);
+    if (gameSessionFormRef.current) {
+      gameSessionFormRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
 
   useEffect(() => {
     const getPlayHistory = async () => {
@@ -60,7 +69,9 @@ function App() {
                 <AddBoardGameForm />
               </section>
 
+              <div ref={gameSessionFormRef}>
               <section className="app-section">
+
                 <h2>Add a Game Session</h2>
                 <GameSessionForm
                   onAdd={(newItem) => {
@@ -72,8 +83,11 @@ function App() {
                     ));
                     setEditingPlayHistoryItem(null);
                   }}
-                  onCancelEdit={() => setEditingPlayHistoryItem(null)} />
+                  onCancelEdit={() => setEditingPlayHistoryItem(null)} 
+                  autofillGameName={selectedGameForSession || ""}/>
+
               </section>
+              </div>
 
               <section className="app-section">
                 <PlayHistory items={playHistory} setItems={setPlayHistory} onEdit={(item) => setEditingPlayHistoryItem(item)} />
@@ -100,7 +114,10 @@ function App() {
         </section>
 
         <section className="app-section">
-          <Collection items={collection} setItems={setCollection} onEdit={(item) => setEditingCollectionItem(item)} />
+          <Collection 
+            items={collection} setItems={setCollection} 
+            onEdit={(item) => { setEditingCollectionItem(item); setSelectedGameForSession(null);}} 
+            onAddSession={handleAddSession} />
         </section>
 
 

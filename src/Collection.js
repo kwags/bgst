@@ -5,7 +5,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-function Collection({ items, setItems, onEdit }) {
+function Collection({ items, setItems, onEdit, onAddSession  }) {
   const deleteGame = (id) => {
     setItems(items.filter(item => item.id !== id));
   };
@@ -23,6 +23,7 @@ function Collection({ items, setItems, onEdit }) {
             <strong>Playtime:</strong> {item.estimatedTime} mins<br />
             <strong>Purchase Date:</strong> {item.purchaseDate}<br />
             <strong>Purchase Price:</strong> {item.purchasePrice}<br />
+            <button onClick={() => onAddSession(item.name)}>Add Session</button>
             <button onClick={() => onEdit(item)}>Edit</button>
             <button onClick={() => deleteGame(item.id)}>Delete</button>
           </div>
