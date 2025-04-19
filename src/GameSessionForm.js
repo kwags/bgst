@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./styles/GameSessionForm.module.css";
 
-function GameSessionForm({ onAdd, editingItem, onUpdate, onCancelEdit }) {
+function GameSessionForm({ onAdd, editingItem, onUpdate, onCancelEdit, autofillGameName }) {
   const [gameSessionName, setGameSessionName] = useState("");
   const [gameSessionDate, setGameSessionDate] = useState("");
   const [gameSessionPlayers, setGameSessionPlayers] = useState("");  
@@ -9,6 +9,7 @@ function GameSessionForm({ onAdd, editingItem, onUpdate, onCancelEdit }) {
   const [gameSessionResult, setGameSessionResult] = useState("");  
   const [gameSessionTime, setGameSessionTime] = useState("");  
   const [gameSessionComments, setGameSessionComments] = useState("");  
+  const getTodayDateString = () => { const today = new Date(); return today.toISOString().split('T')[0]; };
 
   useEffect(() => {
     if (editingItem) {
@@ -21,16 +22,16 @@ function GameSessionForm({ onAdd, editingItem, onUpdate, onCancelEdit }) {
       setGameSessionComments(editingItem.comments || "");
     } else {
       // Clear form on cancel
-      setGameSessionName("");
-      setGameSessionDate(new Date().toDateString());
+      setGameSessionName(autofillGameName || "");
+      setGameSessionDate(getTodayDateString());
       setGameSessionPlayers("");
       setGameSessionScore("");
       setGameSessionResult("");
       setGameSessionTime("");
       setGameSessionComments("");
     }
-  }, [editingItem]);
-  
+  }, [editingItem, autofillGameName]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -52,7 +53,7 @@ function GameSessionForm({ onAdd, editingItem, onUpdate, onCancelEdit }) {
 
     // Clear form after add
     setGameSessionName("");
-    setGameSessionDate(new Date().toDateString());
+    setGameSessionDate(getTodayDateString());
     setGameSessionPlayers("");
     setGameSessionScore("");
     setGameSessionResult("");
