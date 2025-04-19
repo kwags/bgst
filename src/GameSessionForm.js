@@ -9,6 +9,7 @@ function GameSessionForm({ onAdd, editingItem, onUpdate, onCancelEdit, autofillG
   const [gameSessionResult, setGameSessionResult] = useState("");  
   const [gameSessionTime, setGameSessionTime] = useState("");  
   const [gameSessionComments, setGameSessionComments] = useState("");  
+  const getTodayDateString = () => { const today = new Date(); return today.toISOString().split('T')[0]; };
 
   useEffect(() => {
     if (editingItem) {
@@ -22,7 +23,7 @@ function GameSessionForm({ onAdd, editingItem, onUpdate, onCancelEdit, autofillG
     } else {
       // Clear form on cancel
       setGameSessionName(autofillGameName || "");
-      setGameSessionDate(new Date().toDateString());
+      setGameSessionDate(getTodayDateString());
       setGameSessionPlayers("");
       setGameSessionScore("");
       setGameSessionResult("");
@@ -52,7 +53,7 @@ function GameSessionForm({ onAdd, editingItem, onUpdate, onCancelEdit, autofillG
 
     // Clear form after add
     setGameSessionName("");
-    setGameSessionDate(new Date().toDateString());
+    setGameSessionDate(getTodayDateString());
     setGameSessionPlayers("");
     setGameSessionScore("");
     setGameSessionResult("");
