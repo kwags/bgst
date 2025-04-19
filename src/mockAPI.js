@@ -189,7 +189,7 @@ export const fetchUserStats = async (userId) => {
     }, 500); 
 });}
 
-
+/* DEPRECATED
 // Simulates fetching a single board game by its ID
 export const fetchBoardGameById = async (id) => {
   return new Promise((resolve, reject) => {
@@ -202,4 +202,4 @@ export const fetchBoardGameById = async (id) => {
       }
     }, 300); // Sim network delay
   });
-};
+};*/

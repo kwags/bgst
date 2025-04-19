@@ -16,7 +16,7 @@ function Collection({ items, setItems, onEdit, onAddSession  }) {
       <ul>
         {items.map(item => (
           <div key={item.id} style={{ borderBottom: "1px solid #ccc", padding: "1rem 0" }}>
-            <strong>Game Name: </strong><Link to={`/game/${item.id}`} style={{ textDecoration: 'underline', color: 'inherit' }}>
+            <strong>Game Name: </strong><Link to={`/game/${encodeURIComponent(item.name)}`} style={{ textDecoration: 'underline', color: 'inherit' }}>
               {item.name}
             </Link><br />
             <strong>Players:</strong> {item.players}<br />

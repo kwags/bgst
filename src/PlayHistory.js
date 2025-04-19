@@ -16,7 +16,7 @@ function PlayHistory({ items, setItems, onEdit }) {
       <ul>
         {items.map(item => (
         <div key={item.id} style={{ borderBottom: "1px solid #ccc", padding: "1rem 0" }}>
-            <strong>Game Name: </strong><Link to={`/game/${item.id}`} style={{ textDecoration: 'underline', color: 'inherit' }}>
+            <strong>Game Name: </strong><Link to={`/game/${encodeURIComponent(item.name)}`} style={{ textDecoration: 'underline', color: 'inherit' }}>
               {item.name}
             </Link><br/>
             <strong>Date:</strong> {item.date}<br/>

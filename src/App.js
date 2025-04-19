@@ -15,7 +15,7 @@ import AddCollectionForm from './AddCollectionForm.js';
 import UserStats from './UserStats.js';
 
 function App() {
-  const [userId, setUserId] = useState(1);
+  const [userId] = useState(1);
   const [playHistory, setPlayHistory] = useState([]);
   const [collection, setCollection] = useState([]);
   const [editingPlayHistoryItem, setEditingPlayHistoryItem] = useState(null);
@@ -125,7 +125,7 @@ function App() {
             </main>
           } />
 
-          <Route path="/game/:id" element={<BoardGameDetails />} />
+          <Route path="/game/:name" element={<BoardGameDetails />} />
         </Routes>
       </div>
     </Router>
