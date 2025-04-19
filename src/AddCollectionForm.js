@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import styles from "./styles/GameSessionForm.module.css";
 
-function AddCollectionForm({ onAdd, editingItem, onUpdate, onCancelEdit }) {
+function AddCollectionForm({ onAdd, editingItem, onUpdate, onCancelEdit,autofillGameName, autofillNumPlayers, autofillEstimatedTime }) {
   const [collectionGameName, setCollectionGameName] = useState("");
   const [collectionPlayers, setCollectionPlayers] = useState("");  
   const [collectionTime, setCollectionTime] = useState("");  
   const [collectionDate, setCollectionDate] = useState("");
   const [collectionPrice, setCollectionPrice] = useState("");   
+  const getTodayDateString = () => { const today = new Date(); return today.toISOString().split('T')[0]; };
 
   useEffect(() => {
     if (editingItem) {
@@ -17,13 +18,13 @@ function AddCollectionForm({ onAdd, editingItem, onUpdate, onCancelEdit }) {
       setCollectionPrice(editingItem.purchasePrice || "");
     } else {
     // clear form on cancel
-      setCollectionGameName("");
-      setCollectionPlayers("");
-      setCollectionTime("");
-      setCollectionDate(new Date().toDateString());
+      setCollectionGameName(autofillGameName || "");
+      setCollectionPlayers(autofillNumPlayers || "");
+      setCollectionTime(autofillEstimatedTime || "");
+      setCollectionDate(getTodayDateString());
       setCollectionPrice("");
     }
-  }, [editingItem]);
+  }, [editingItem, autofillGameName, autofillNumPlayers, autofillEstimatedTime]);
   
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -46,7 +47,7 @@ function AddCollectionForm({ onAdd, editingItem, onUpdate, onCancelEdit }) {
     setCollectionGameName("");
     setCollectionPlayers("");
     setCollectionTime("");
-    setCollectionDate(new Date().toDateString());
+    setCollectionDate(getTodayDateString());
     setCollectionPrice("");
   };
 
@@ -58,11 +59,11 @@ function AddCollectionForm({ onAdd, editingItem, onUpdate, onCancelEdit }) {
         </div>
 
         <div className={styles.inputGroup}>
-          <input type="number" placeholder="Number of Players" value={collectionPlayers} onChange={e => setCollectionPlayers(e.target.value)}/>
+          <input placeholder="Number of Players" value={collectionPlayers} onChange={e => setCollectionPlayers(e.target.value)}/>
         </div>
 
         <div className={styles.inputGroup}>
-          <input type="number" placeholder="Estimated Playtime" value={collectionTime} onChange={e => setCollectionTime(e.target.value)} />
+          <input placeholder="Estimated Playtime" value={collectionTime} onChange={e => setCollectionTime(e.target.value)} />
         </div>
 
         <div className={styles.inputGroup}>
