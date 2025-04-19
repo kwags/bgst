@@ -1,22 +1,37 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { fetchBoardGameById } from './mockAPI';
+import { fetchBoardGames } from './mockAPI';
 import GameSessionForm from './GameSessionForm';
 import AddCollectionForm from './AddCollectionForm';
 import styles from "./styles/SlidePanel.module.css";
 
 function BoardGameDetails() {
-  const { id } = useParams();
+  const { name } = useParams();
   const [game, setGame] = useState(null);
   const [error, setError] = useState(null);
   const [showSessionForm, setShowSessionForm] = useState(false);
   const [showCollectionForm, setShowCollectionForm] = useState(false);
   
   useEffect(() => {
-    fetchBoardGameById(id)
-      .then(data => setGame(data))
-      .catch(err => setError(err.message));
-  }, [id]);
+    const loadGame = async () => {
+      try {
+        const decodedName = decodeURIComponent(name);
+
+        const allGames = await fetchBoardGames(""); // Fetch all boardgames
+        const foundGame = allGames.find(g => g.name === decodedName); // ONLY check boardgames
+
+        if (foundGame) {
+          setGame(foundGame);
+        } else {
+          throw new Error('Game not found, consider adding game to the Board Game Database');
+        }
+      } catch (err) {
+        setError(err.message);
+      }
+    };
+
+    loadGame();
+  }, [name]);
 
   if (error) return <p>{error}</p>;
   if (!game) return <p>Loading game details...</p>;
@@ -26,7 +41,7 @@ function BoardGameDetails() {
       <h2>{game.name}</h2>
       <p><strong>Players:</strong> {game.players}</p>
       <p><strong>Estimated Playtime:</strong> {game.estimatedTime}</p>
-      {/* More details coming soon... */}
+      {/* ADDITIONAL DETAILS GO HERE */}
 
       {/* Add Session Button */}
       <div style={{marginTop: "1rem"}}>
@@ -46,7 +61,7 @@ function BoardGameDetails() {
           </div>
         </div>
 
-      {/* Add to Colleciton Button */}
+      {/* Add to Collection Button */}
       <div style={{marginTop: "1rem"}}>
         <button onClick={() => setShowCollectionForm(true)}>Add to Collection</button>
       </div>
