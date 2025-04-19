@@ -36,7 +36,7 @@ export const mockData = {
     ],
 
     playHistory: [
-        { id: 1, 
+        { id: 14, 
         name: "Mysterium",
         date: "2025-03-08",
         numPlayers: 4,
@@ -45,7 +45,8 @@ export const mockData = {
         time: 120,
         comments: "First time playing this game",
         },
-        { id: 2,
+        { id: 3,
+          playid: 2,
         name: "Carcassonne",
         date: "2025-03-13",
         numPlayers: 3,
@@ -54,7 +55,7 @@ export const mockData = {
         time: 180,
         comments: "This was really fun!",
         },
-        { id: 3,
+        { id: 1,
         name: "Catan",
         date: "2025-03-27",
         numPlayers: 3,
