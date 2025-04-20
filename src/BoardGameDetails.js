@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import AddBoardGameForm from './AddBoardGameForm';
 import { fetchBoardGames } from './mockAPI';
 import GameSessionForm from './GameSessionForm';
 import AddCollectionForm from './AddCollectionForm';
@@ -33,7 +34,13 @@ function BoardGameDetails() {
     loadGame();
   }, [name]);
 
-  if (error) return <p>{error}</p>;
+  if (error) return (
+    <div style={{ padding: "2rem" }}>
+      <p>{error}</p>
+      <AddBoardGameForm autofillGameName={decodeURIComponent(name)} />
+    </div>
+  );
+
   if (!game) return <p>Loading game details...</p>;
 
   return (
