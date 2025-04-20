@@ -6,8 +6,9 @@ import AddCollectionForm from './AddCollectionForm';
 import styles from './styles/BoardGameSearch.module.css';
 import slideStyles from './styles/SlidePanel.module.css';
 import AddBoardGameForm from './AddBoardGameForm';
+import BookmarkButtons from './BookmarkButtons';
 
-const BoardGameSearch = () => {
+const BoardGameSearch = ({ bookmarks, setBookmarks }) => {
 
     //State variables and their setter functions
     const [searchTerm, setSearchTerm] = useState('');
@@ -67,6 +68,7 @@ const BoardGameSearch = () => {
                                 <p className={styles.gameInfo}>Playtime: {game.estimatedTime}</p>
                                 <button onClick={() => handleAddSession(game)}>Add Session</button>
                                 <button onClick={() => handleAddToCollection(game)}>Add to Collection</button>
+                                <BookmarkButtons gameId={game.id} bookmarks={bookmarks} setBookmarks={setBookmarks} />
                             </li>
                         ))}
                     </ul>

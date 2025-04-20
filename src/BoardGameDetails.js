@@ -1,18 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import AddBoardGameForm from './AddBoardGameForm';
-import { fetchBoardGames } from './mockAPI';
+import { fetchBoardGames, fetchUserBookmarks, toggleWantToOwn, toggleWantToPlay } from './mockAPI';
+import { UserContext } from './App';
 import GameSessionForm from './GameSessionForm';
 import AddCollectionForm from './AddCollectionForm';
 import styles from "./styles/SlidePanel.module.css";
 
-function BoardGameDetails() {
+function BoardGameDetails({ bookmarks, setBookmarks }) {
   const { name } = useParams();
   const [game, setGame] = useState(null);
   const [error, setError] = useState(null);
   const [showSessionForm, setShowSessionForm] = useState(false);
   const [showCollectionForm, setShowCollectionForm] = useState(false);
-  
+
+  const userId = useContext(UserContext);
+
+  const existingBookmark = bookmarks.find(
+    (b) => b.userId === userId && b.gameId === game?.id
+  );
+
   useEffect(() => {
     const loadGame = async () => {
       try {
@@ -34,6 +41,24 @@ function BoardGameDetails() {
     loadGame();
   }, [name]);
 
+  const refreshBookmarks = async () => {
+    const updated = await fetchUserBookmarks(userId);
+    setBookmarks(updated);
+  };
+
+  const handleToggle = async (type) => {
+    try {
+      if (type === 'own') {
+        await toggleWantToOwn(userId, game.id);
+      } else if (type === 'play') {
+        await toggleWantToPlay(userId, game.id);
+      }
+      await refreshBookmarks();
+    } catch (error) {
+      console.error("Failed to toggle bookmark", error);
+    }
+  };
+
   if (error) return (
     <div style={{ padding: "2rem" }}>
       <p>{error}</p>
@@ -48,46 +73,55 @@ function BoardGameDetails() {
       <h2>{game.name}</h2>
       <p><strong>Players:</strong> {game.players}</p>
       <p><strong>Estimated Playtime:</strong> {game.estimatedTime}</p>
-      {/* ADDITIONAL DETAILS GO HERE */}
+
+      {/* Bookmark Buttons */}
+      <div style={{ marginTop: "1rem" }}>
+        <button onClick={() => handleToggle('own')}>
+          {existingBookmark?.wantToOwn ? "⭐ Want to Own" : "☆ Want to Own"}
+        </button>
+        <button onClick={() => handleToggle('play')} style={{ marginLeft: "1rem" }}>
+          {existingBookmark?.wantToPlay ? "🎮 Want to Play" : "❌ Want to Play"}
+        </button>
+      </div>
 
       {/* Add Session Button */}
-      <div style={{marginTop: "1rem"}}>
+      <div style={{ marginTop: "1rem" }}>
         <button onClick={() => setShowSessionForm(true)}>Add Session</button>
       </div>
 
       {/* Add Session Form */}
-      <div className={`${styles.backdrop} ${showSessionForm ? styles.show : ''}`}
-        onClick={() => setShowSessionForm(false)}/>
-        <div className={`${styles["slide-panel"]} ${showSessionForm ? styles.show : ''}`}>
-          <div className={styles["slide-panel-inner"]}>
-            <button className={styles["close-button"]} onClick={() => setShowSessionForm(false)}>×</button>            
-            <GameSessionForm
-              onAdd={() => setShowSessionForm(false)}
-              onCancelEdit={() => setShowSessionForm(false)}
-              autofillGameName={game.name}/>
-          </div>
+      <div className={`${styles.backdrop} ${showSessionForm ? styles.show : ''}`} onClick={() => setShowSessionForm(false)} />
+      <div className={`${styles["slide-panel"]} ${showSessionForm ? styles.show : ''}`}>
+        <div className={styles["slide-panel-inner"]}>
+          <button className={styles["close-button"]} onClick={() => setShowSessionForm(false)}>×</button>            
+          <GameSessionForm
+            onAdd={() => setShowSessionForm(false)}
+            onCancelEdit={() => setShowSessionForm(false)}
+            autofillGameName={game.name}
+          />
         </div>
+      </div>
 
       {/* Add to Collection Button */}
-      <div style={{marginTop: "1rem"}}>
+      <div style={{ marginTop: "1rem" }}>
         <button onClick={() => setShowCollectionForm(true)}>Add to Collection</button>
       </div>
 
       {/* Add to Collection Form */}
-      <div className={`${styles.backdrop} ${showCollectionForm ? styles.show : ''}`}
-        onClick={() => setShowCollectionForm(false)}/>
-        <div className={`${styles["slide-panel"]} ${showCollectionForm ? styles.show : ''}`}>
-          <div className={styles["slide-panel-inner"]}>
-            <button className={styles["close-button"]} onClick={() => setShowCollectionForm(false)}>×</button>            
-            <AddCollectionForm
-              onAdd={() => setShowCollectionForm(false)}
-              onCancelEdit={() => setShowCollectionForm(false)}
-              autofillGameName={game.name}
-              autofillNumPlayers={game.players}
-              autofillEstimatedTime={game.estimatedTime}/>
-          </div>
+      <div className={`${styles.backdrop} ${showCollectionForm ? styles.show : ''}`} onClick={() => setShowCollectionForm(false)} />
+      <div className={`${styles["slide-panel"]} ${showCollectionForm ? styles.show : ''}`}>
+        <div className={styles["slide-panel-inner"]}>
+          <button className={styles["close-button"]} onClick={() => setShowCollectionForm(false)}>×</button>            
+          <AddCollectionForm
+            onAdd={() => setShowCollectionForm(false)}
+            onCancelEdit={() => setShowCollectionForm(false)}
+            autofillGameName={game.name}
+            autofillNumPlayers={game.players}
+            autofillEstimatedTime={game.estimatedTime}
+          />
         </div>
-  </div>
+      </div>
+    </div>
   );
 }
 
