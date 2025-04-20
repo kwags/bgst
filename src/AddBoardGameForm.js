@@ -1,11 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { addBoardGame } from "./mockAPI";
 import styles from "./styles/AddBoardGameForm.module.css";
 
-function AddBoardGameForm() {
+function AddBoardGameForm( {autofillGameName, onSuccess}) {
   const [name, setName] = useState('');
   const [players, setPlayers] = useState('');
   const [estimatedTime, setEstimatedTime] = useState('');
+
+  useEffect(() => {
+    if (autofillGameName && name === '') {
+      setName(autofillGameName);
+    }
+  }, [autofillGameName, name]);
 
   const handleAdd = async (e) => {
     e.preventDefault();
@@ -20,6 +26,7 @@ function AddBoardGameForm() {
     setName('');
     setPlayers('');
     setEstimatedTime('');
+    if (onSuccess) onSuccess();
   };
 
   return (
