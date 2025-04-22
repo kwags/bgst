@@ -1,5 +1,5 @@
 
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { fetchBoardGames } from './mockAPI';
 import GameSessionForm from './GameSessionForm';
 import AddCollectionForm from './AddCollectionForm';
@@ -7,19 +7,18 @@ import styles from './styles/BoardGameSearch.module.css';
 import slideStyles from './styles/SlidePanel.module.css';
 import AddBoardGameForm from './AddBoardGameForm';
 import BookmarkButtons from './BookmarkButtons';
-import slideStyles from './styles/SlidePanel.module.css';
-import AddBoardGameForm from './AddBoardGameForm';
 
 const BoardGameSearch = ({ bookmarks, setBookmarks }) => {
 
     //State variables and their setter functions
+    const [selectedGame, setSelectedGame] = useState(null);
+    const [showSessionForm, setShowSessionForm] = useState(false);
+    const [showCollectionForm, setShowCollectionForm] = useState(false);
+    const [showAddGameForm, setShowAddGameForm] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [selectedGame, setSelectedGame] = useState(null);
-    const [showSessionForm, setShowSessionForm] = useState(false);
-    const [showCollectionForm, setShowCollectionForm] = useState(false);
-    const [showAddGameForm, setShowAddGameForm] = useState(false);
+
 
     const handleAddSession = (game) => {
         setSelectedGame(game);
@@ -30,20 +29,7 @@ const BoardGameSearch = ({ bookmarks, setBookmarks }) => {
         setSelectedGame(game);
         setShowCollectionForm(true);
     };
-    const [selectedGame, setSelectedGame] = useState(null);
-    const [showSessionForm, setShowSessionForm] = useState(false);
-    const [showCollectionForm, setShowCollectionForm] = useState(false);
-    const [showAddGameForm, setShowAddGameForm] = useState(false);
 
-    const handleAddSession = (game) => {
-        setSelectedGame(game);
-        setShowSessionForm(true);
-    };
-    
-    const handleAddToCollection = (game) => {
-        setSelectedGame(game);
-        setShowCollectionForm(true);
-    };
 
     //Called by an event (onChange) and calls a mock API in mockAPI.js, passing it the searchTerm
     const searchForGame = async (e) => {
@@ -112,13 +98,14 @@ const BoardGameSearch = ({ bookmarks, setBookmarks }) => {
                         ))}
                     </ul>
                 ) : searchTerm.trim() === '' ? (
-                  <p className={styles.message}>Enter a search term to find games</p>
+                    <p className={styles.message}>Enter a search term to find games</p>
                 ) : !showAddGameForm ? (
-                     <div className={styles.message}>
-                        <p>No games found for "{searchTerm}"</p>
-                        <button onClick={() => setShowAddGameForm(true)}>Add Game to Database</button>
-                    </div>
+                  <div className={styles.message}>
+                    <p>No games found for "{searchTerm}"</p>
+                    <button onClick={() => setShowAddGameForm(true)}>Add Game to Database</button>
+                  </div>
                 ) : null}
+            
 
                 {showAddGameForm && (
                     <div className={styles.addFormWrapper}>
@@ -160,12 +147,6 @@ const BoardGameSearch = ({ bookmarks, setBookmarks }) => {
                         autofillEstimatedTime={selectedGame.estimatedTime}/>)}
                     </div>
                 </div>
-                ) : !showAddGameForm ? (
-                     <div className={styles.message}>
-                        <p>No games found for "{searchTerm}"</p>
-                        <button onClick={() => setShowAddGameForm(true)}>Add Game to Database</button>
-                    </div>
-                ) : null}
 
                 {showAddGameForm && (
                     <div className={styles.addFormWrapper}>
