@@ -47,8 +47,18 @@ export const mockData = {
       { id: 5, userId: 2, gameId: 5, purchaseDate: '2025-04-02', purchasePrice: '31.99' },
       { id: 6, userId: 1, gameId: 6, purchaseDate: '2025-04-05', purchasePrice: '59.99' },
     ],
-};
 
+
+bookmarks: [
+  { id: 1, userId: 1, gameId: 1, wantToOwn: false, wantToPlay: true },
+  { id: 2, userId: 1, gameId: 2, wantToOwn: true, wantToPlay: false },
+  { id: 3, userId: 2, gameId: 3, wantToOwn: true, wantToPlay: true },
+  { id: 4, userId: 3, gameId: 5, wantToOwn: false, wantToPlay: true },
+  { id: 5, userId: 1, gameId: 6, wantToOwn: true, wantToPlay: true },
+  { id: 6, userId: 4, gameId: 9, wantToOwn: true, wantToPlay: false }
+],
+
+};
 
 //simulates being an API endpoint
 export const fetchBoardGames = async (searchTerm) => {
