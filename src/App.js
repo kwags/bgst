@@ -1,31 +1,31 @@
 import './styles/App.css';
 import styles from './styles/SlidePanel.module.css';
 import slideStyles from './styles/SlidePanel.module.css';
-
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, LInk } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import BoardGameDetails from './BoardGameDetails';
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, createContext } from "react";
 import { v4 as uuidv4 } from 'uuid';
 import BoardGameSearch from './BoardgameSearch.js';
 import GameSessionForm from './GameSessionForm';
 import PlayHistory from "./PlayHistory.js";
-import { fetchPlayHistory } from "./mockAPI";
+import { fetchPlayHistory, fetchCollection, fetchUserBookmarks } from "./mockAPI";
 import AddBoardGameForm from "./AddBoardGameForm.js";
 import Collection from "./Collection.js";
-import { fetchCollection } from "./mockAPI";
 import AddCollectionForm from './AddCollectionForm.js';
 import UserStats from './UserStats.js';
 import '@fortawesome/fontawesome-free/css/all.min.css';
+export const UserContext = createContext();
 
 function App() {
-  const [userId, setUserId] = useState(1);
+  const [userId] = useState(1);
   const [playHistory, setPlayHistory] = useState([]);
   const [collection, setCollection] = useState([]);
   const [editingPlayHistoryItem, setEditingPlayHistoryItem] = useState(null);
-  const [editingCollectionItem, setEditingCollectionItem] = useState(null); 
+  const [editingCollectionItem, setEditingCollectionItem] = useState(null);
   const [selectedGameForSession, setSelectedGameForSession] = useState(null);
   const gameSessionFormRef = useRef(null);
+  const [bookmarks, setBookmarks] = useState([]);
   const [showSessionForm, setShowSessionForm] = useState(false);
 
   const handleAddSession = (gameName) => {
@@ -51,8 +51,17 @@ function App() {
     getCollection();
   }, []);
 
+  useEffect(() => {
+    const getBookmarks = async () => {
+      const data = await fetchUserBookmarks(userId);
+      setBookmarks(data); // Shallow clone to trigger updates
+    };
+    getBookmarks();
+  }, [userId]);
+
   return (
     <Router>
+      <UserContext.Provider value={userId} >
       <div className="topBar">
         <div className="userSection">
           <i className="fas fa-user"></i>
@@ -69,7 +78,9 @@ function App() {
 
             <main className="app-main">
               <section className="app-section">
-                <BoardGameSearch />
+                <BoardGameSearch 
+                  bookmarks={bookmarks}
+                  setBookmarks={setBookmarks}/>
               </section>
               
               {/*  Moved Within BoardGameSearch
@@ -78,7 +89,8 @@ function App() {
                 <AddBoardGameForm />
               </section>
               */}
-
+              
+              <div ref={gameSessionFormRef}></div>
               {/* Add a Play Session Button and Slide Panel */}
               <section className="app-section">
 
@@ -108,7 +120,7 @@ function App() {
                 </div>
 
 
-                <PlayHistory items={playHistory} setItems={setPlayHistory} onEdit={(item) => {
+                <PlayHistory items={playHistory} setItems={setPlayHistory} bookmarks={bookmarks} setBookmarks={setBookmarks} userId={userId} onEdit={(item) => {
                     setEditingPlayHistoryItem(item);
                     setSelectedGameForSession(item.name); // Optional: if you want to autofill game name
                     setShowSessionForm(true);
@@ -148,7 +160,7 @@ function App() {
             </main>
           } />
 
-          <Route path="/game/:id" element={<BoardGameDetails />} />
+          <Route path="/game/:id" element={<BoardGameDetails bookmarks={bookmarks} setBookmarks={setBookmarks} />} />
         </Routes>
       </div>
       <footer>
@@ -156,6 +168,7 @@ function App() {
           <p> &copy; Board Game Statistic Tracker</p>
          </section>
       </footer>
+      </UserContext.Provider>
     </Router>
   );
 }

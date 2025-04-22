@@ -3,84 +3,85 @@
 import { v4 as uuidv4 } from 'uuid'; // for creating unique id's
 
 export const mockData = {
-    boardgames: [
-        { id: 1, name: "Catan", players: "2-4", estimatedTime: "60-120 min", image: '/img/catan.jpg' },
-        { id: 2, name: "Ticket to Ride", players: "2-5", estimatedTime: "30-60 min", image: '/img/ticket.jpeg' },
-        { id: 3, name: "Carcassonne", players: "2-5", estimatedTime: "30-45 min", image: '/img/carcassonne.jpg' },
-        { id: 4, name: "Pandemic", players: "2-4", estimatedTime: "45-60 min", image: '/img/pandemic.jpg' },
-        { id: 5, name: "Azul", players: "2-4", estimatedTime: "30-45 min", image: '/img/azul.jpg' },
-        { id: 6, name: "7 Wonders", players: "2-7", estimatedTime: "30 min", image: '/img/7wonders.jpg' },
-        { id: 7, name: "Dominion", players: "2-4", estimatedTime: "30 min", image: '/img/dominion.jpg' },
-        { id: 8, name: "Wingspan", players: "1-5", estimatedTime: "40-70 min", image: '/img/wingspan.jpg' },
-        { id: 9, name: "Scythe", players: "1-5", estimatedTime: "90-115 min", image: '/img/scythe.png' },
-        { id: 10, name: "Gloomhaven", players: "1-4", estimatedTime: "60-120 min", image: '/img/gloomhaven.jpg' },
-        { id: 11, name: "Splendor", players: "2-4", estimatedTime: "30 min", image: '/img/splendor.jpg' },
-        { id: 12, name: "Betrayal at House on the Hill", players: "3-6", estimatedTime: "60 min", image: '/img/betrayal.png' },
-        { id: 13, name: "Terraforming Mars", players: "1-5", estimatedTime: "120 min", image: '/img/terraMars.jpg' },
-        { id: 14, name: "Mysterium", players: "2-7", estimatedTime: "42-60 min", image: '/img/mysterium.png' },
-      ],
+  boardgames: [
+    { id: 1, name: "Catan", players: "2-4", estimatedTime: "60-120 min" },
+    { id: 2, name: "Ticket to Ride", players: "2-5", estimatedTime: "30-60 min" },
+    { id: 3, name: "Carcassonne", players: "2-5", estimatedTime: "30-45 min" },
+    { id: 4, name: "Pandemic", players: "2-4", estimatedTime: "45-60 min" },
+    { id: 5, name: "Azul", players: "2-4", estimatedTime: "30-45 min" },
+    { id: 6, name: "7 Wonders", players: "2-7", estimatedTime: "30 min" },
+    { id: 7, name: "Dominion", players: "2-4", estimatedTime: "30 min" },
+    { id: 8, name: "Wingspan", players: "1-5", estimatedTime: "40-70 min" },
+    { id: 9, name: "Scythe", players: "1-5", estimatedTime: "90-115 min" },
+    { id: 10, name: "Gloomhaven", players: "1-4", estimatedTime: "60-120 min" },
+    { id: 11, name: "Splendor", players: "2-4", estimatedTime: "30 min" },
+    { id: 12, name: "Betrayal at House on the Hill", players: "3-6", estimatedTime: "60 min" },
+    { id: 13, name: "Terraforming Mars", players: "1-5", estimatedTime: "120 min" },
+    { id: 14, name: "Mysterium", players: "2-7", estimatedTime: "42-60 min" },
+  ],
 
-    users: [
-        { id: 1, username: "user1", password: "password1" },
-        { id: 2, username: "user2", password: "password2" },
-        { id: 3, username: "user3", password: "password3" },
-        { id: 4, username: "user4", password: "password4" },
-        { id: 5, username: "user5", password: "password5" },
-      ],
-    
-      gameSessions: [
-        { id: 1, userId: 1, gameId: 1, date: "2025-03-01", numPlayers: 4, score: 10, result: "Win", time: 120, comments: "" },
-        { id: 2, userId: 1, gameId: 2, date: "2025-03-02", numPlayers: 3, score: 5, result: "Loss", time: 60, comments: "" },
-        { id: 3, userId: 1, gameId: 3, date: "2025-03-03", numPlayers: 2, score: 8, result: "Win", time: 90, comments: "" },
-        { id: 4, userId: 2, gameId: 4, date: "2025-03-04", numPlayers: 4, score: 12, result: "Loss", time: 45, comments: "" },
-        { id: 5, userId: 2, gameId: 5, date: "2025-03-05", numPlayers: 3, score: 15, result: "Win", time: 30, comments: "" },
-        { id: 6, userId: 1, gameId: 14, date: "2025-03-08", numPlayers: 4, score: 4, result: "Win", time: 120, comments: "First time playing this game" },
-        { id: 7, userId: 1, gameId: 3, date: "2025-03-13", numPlayers: 3, score: 105, result: "Loss", time: 180, comments: "This was really fun!" },
-        { id: 8, userId: 1, gameId: 1, date: "2025-03-27", numPlayers: 3, score: 10, result: "Win", time: 180, comments: "Always a fun game" },
-    ],
+  users: [
+    { id: 1, username: "user1", password: "password1" },
+    { id: 2, username: "user2", password: "password2" },
+    { id: 3, username: "user3", password: "password3" },
+    { id: 4, username: "user4", password: "password4" },
+    { id: 5, username: "user5", password: "password5" },
+  ],
 
-    collection: [
-      { id: 1, userId: 1, gameId: 1, purchaseDate: '2025-03-01', purchasePrice: '25.99' },
-      { id: 2, userId: 1, gameId: 2, purchaseDate: '2025-03-15', purchasePrice: '29.99' },
-      { id: 3, userId: 1, gameId: 3, purchaseDate: '2025-03-20', purchasePrice: '40.99' },
-      { id: 4, userId: 2, gameId: 4, purchaseDate: '2025-04-01', purchasePrice: '19.99' },
-      { id: 5, userId: 2, gameId: 5, purchaseDate: '2025-04-02', purchasePrice: '31.99' },
-      { id: 6, userId: 1, gameId: 6, purchaseDate: '2025-04-05', purchasePrice: '59.99' },
-    ],
+  gameSessions: [
+    { id: 1, userId: 1, gameId: 1, date: "2025-03-01", numPlayers: 4, score: 10, result: "Win", time: 120, comments: "" },
+    { id: 2, userId: 1, gameId: 2, date: "2025-03-02", numPlayers: 3, score: 5, result: "Loss", time: 60, comments: "" },
+    { id: 3, userId: 1, gameId: 3, date: "2025-03-03", numPlayers: 2, score: 8, result: "Win", time: 90, comments: "" },
+    { id: 4, userId: 2, gameId: 4, date: "2025-03-04", numPlayers: 4, score: 12, result: "Loss", time: 45, comments: "" },
+    { id: 5, userId: 2, gameId: 5, date: "2025-03-05", numPlayers: 3, score: 15, result: "Win", time: 30, comments: "" },
+    { id: 6, userId: 1, gameId: 14, date: "2025-03-08", numPlayers: 4, score: 4, result: "Win", time: 120, comments: "First time playing this game" },
+    { id: 7, userId: 1, gameId: 3, date: "2025-03-13", numPlayers: 3, score: 105, result: "Loss", time: 180, comments: "This was really fun!" },
+    { id: 8, userId: 1, gameId: 1, date: "2025-03-27", numPlayers: 3, score: 10, result: "Win", time: 180, comments: "Always a fun game" },
+  ],
 
+  collection: [
+    { id: 1, userId: 1, gameId: 1, purchaseDate: '2025-03-01', purchasePrice: '25.99' },
+    { id: 2, userId: 1, gameId: 2, purchaseDate: '2025-03-15', purchasePrice: '29.99' },
+    { id: 3, userId: 1, gameId: 3, purchaseDate: '2025-03-20', purchasePrice: '40.99' },
+    { id: 4, userId: 2, gameId: 4, purchaseDate: '2025-04-01', purchasePrice: '19.99' },
+    { id: 5, userId: 2, gameId: 5, purchaseDate: '2025-04-02', purchasePrice: '31.99' },
+    { id: 6, userId: 1, gameId: 6, purchaseDate: '2025-04-05', purchasePrice: '59.99' },
+  ],
 
-bookmarks: [
-  { id: 1, userId: 1, gameId: 1, wantToOwn: false, wantToPlay: true },
-  { id: 2, userId: 1, gameId: 2, wantToOwn: true, wantToPlay: false },
-  { id: 3, userId: 2, gameId: 3, wantToOwn: true, wantToPlay: true },
-  { id: 4, userId: 3, gameId: 5, wantToOwn: false, wantToPlay: true },
-  { id: 5, userId: 1, gameId: 6, wantToOwn: true, wantToPlay: true },
-  { id: 6, userId: 4, gameId: 9, wantToOwn: true, wantToPlay: false }
-],
+  bookmarks: [
+    { id: 1, userId: 1, gameId: 1, wantToOwn: false, wantToPlay: true },
+    { id: 2, userId: 1, gameId: 2, wantToOwn: true, wantToPlay: false },
+    { id: 3, userId: 2, gameId: 3, wantToOwn: true, wantToPlay: true },
+    { id: 4, userId: 3, gameId: 5, wantToOwn: false, wantToPlay: true },
+    { id: 5, userId: 1, gameId: 6, wantToOwn: true, wantToPlay: true },
+    { id: 6, userId: 4, gameId: 9, wantToOwn: true, wantToPlay: false }
+  ],
 
+  
 };
+
 
 //simulates being an API endpoint
 export const fetchBoardGames = async (searchTerm) => {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            const filteredGames = mockData.boardgames.filter(game =>
-                game.name.toLowerCase().includes(searchTerm.toLowerCase())
-            );
-            resolve(filteredGames);
-        }, 500) // Fake delay in ms to simulate network delay
-    })
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const filteredGames = mockData.boardgames.filter(game =>
+        game.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      resolve(filteredGames);
+    }, 500) // Fake delay in ms to simulate network delay
+  })
 };
 
 // Simulate adding a new board game to the database
 export const addBoardGame = async (newGame) => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const newGameWithId = { id: uuidv4(), ...newGame }; // Use uuid for ID
-        mockData.boardgames.push(newGameWithId);            // Mutate the mock data
-        resolve(newGameWithId);                             // Return the new game
-      }, 300); // Simulated API delay
-    });
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const newGameWithId = { id: uuidv4(), ...newGame }; // Use uuid for ID
+      mockData.boardgames.push(newGameWithId);            // Mutate the mock data
+      resolve(newGameWithId);                             // Return the new game
+    }, 300); // Simulated API delay
+  });
 };
 
 // Simulate fetching play history (all sessions)
@@ -309,10 +310,59 @@ export const fetchUserStats = async (userId) => {
 
 
       resolve(stats);
-    }, 500); 
-});}
+    }, 500);
+  });
+}
 
+// Toggle Want to Own
+export const toggleWantToOwn = async (userId, gameId) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const bookmark = mockData.bookmarks.find(
+        (b) => b.userId === userId && b.gameId === gameId
+      );
+      if (bookmark) {
+        bookmark.wantToOwn = !bookmark.wantToOwn;
+        resolve({ ...bookmark });
+      } else {
+        const newBookmark = { id: uuidv4(), userId, gameId, wantToOwn: true, wantToPlay: false };
+        mockData.bookmarks.push(newBookmark);
+        resolve(newBookmark);
+      }
+    }, 300);
+  });
+};
 
+// Toggle Want to Play
+export const toggleWantToPlay = async (userId, gameId) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const bookmark = mockData.bookmarks.find(
+        (b) => b.userId === userId && b.gameId === gameId
+      );
+      if (bookmark) {
+        bookmark.wantToPlay = !bookmark.wantToPlay;
+        resolve({ ...bookmark });
+      } else {
+        const newBookmark = { id: uuidv4(), userId, gameId, wantToOwn: false, wantToPlay: true };
+        mockData.bookmarks.push(newBookmark);
+        resolve(newBookmark);
+      }
+    }, 300);
+  });
+};
+
+// Fetch bookmarks for a user
+export const fetchUserBookmarks = async (userId) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const userBookmarks = mockData.bookmarks.filter(b => b.userId === userId);
+      resolve(userBookmarks);
+    }, 300);
+  });
+};
+
+/* DEPRECATED
 // Simulates fetching a single board game by its ID
 export const fetchBoardGameById = async (id) => {
   return new Promise((resolve, reject) => {
@@ -325,4 +375,4 @@ export const fetchBoardGameById = async (id) => {
       }
     }, 300); // Sim network delay
   });
-};
+};*/
