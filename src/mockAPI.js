@@ -57,81 +57,7 @@ export const mockData = {
     { id: 6, userId: 4, gameId: 9, wantToOwn: true, wantToPlay: false }
   ],
 
-  // Should be able to be removed, combined with gameSessions
-  // playHistory: [
-  //     { id: 1, 
-  //     name: "Mysterium",
-  //     date: "2025-03-08",
-  //     numPlayers: 4,
-  //     score: 4,
-  //     result: "Win",
-  //     time: 120,
-  //     comments: "First time playing this game",
-  //     },
-  //     { id: 2,
-  //     name: "Carcassonne",
-  //     date: "2025-03-13",
-  //     numPlayers: 3,
-  //     score: 105,
-  //     result: "Loss",
-  //     time: 180,
-  //     comments: "This was really fun!",
-  //     },
-  //     { id: 3,
-  //     name: "Catan",
-  //     date: "2025-03-27",
-  //     numPlayers: 3,
-  //     score: 10,
-  //     result: "Win",
-  //     time: 180,
-  //     comments: "Always a fun game",
-  //     }
-  // ],
-
-  // collection: [
-  //   { id: 1, 
-  //     name: "Catan", 
-  //     players: "2-4", 
-  //     estimatedTime: "60-120", 
-  //     purchaseDate: "2025-03-01",
-  //     purchasePrice: "25.99", 
-  //     },
-
-  //     { id: 2, 
-  //     name: "Ticket to Ride", 
-  //     players: "2-5", 
-  //     estimatedTime: "30-60",
-  //     purchaseDate: "2025-03-15",
-  //     purchasePrice: "29.99", 
-  //     },
-  //     { id: 3,
-  //     name: "Carcassonne", 
-  //     players: "2-5", 
-  //     estimatedTime: "30-45", 
-  //     purchaseDate: "2025-03-20",
-  //     purchasePrice: "40.99"
-  //     },
-  //     { id: 4, 
-  //     name: "Pandemic", 
-  //     players: "2-4", 
-  //     estimatedTime: "45-60",
-  //     purchaseDate: "2025-04-01",
-  //     purchasePrice: "19.99"
-  //     },
-  //     { id: 5, 
-  //     name: "Azul", 
-  //     players: "2-4", 
-  //     estimatedTime: "30-45",
-  //     purchaseDate: "2025-04-02",
-  //     purchasePrice: "31.99"
-  //     },
-  //     { id: 6, 
-  //     name: "7 Wonders", 
-  //     players: "2-7", 
-  //     estimatedTime: "30",
-  //     purchaseDate: "2025-04-05",
-  //     purchasePrice: "59.99" },
-  //   ]
+  
 };
 
 
@@ -161,43 +87,42 @@ export const addBoardGame = async (newGame) => {
 // Simulate fetching play history (all sessions)
 export const fetchPlayHistory = async () => {
   return new Promise((resolve) => {
-    setTimeout(() => {
-      const history = mockData.gameSessions.map(session => ({
-        id: session.id,
-        gameId: session.gameId,
-        username: mockData.users.find(user => user.id === session.userId)?.username || "Unknown",
-        name: mockData.boardgames.find(game => game.id === session.gameId)?.name || "Unknown",
-        date: session.date,
-        numPlayers: session.numPlayers,
-        score: session.score,
-        result: session.result,
-        time: session.time,
-        comments: session.comments,
-      }));
-      resolve(history);
-    }, 500);
+      setTimeout(() => {
+          const history = mockData.gameSessions.map(session => ({
+              id: session.id,
+              username: mockData.users.find(user => user.id === session.userId)?.username || "Unknown",
+              name: mockData.boardgames.find(game => game.id === session.gameId)?.name || "Unknown",
+              date: session.date,
+              numPlayers: session.numPlayers,
+              score: session.score,
+              result: session.result,
+              time: session.time,
+              comments: session.comments,
+          }));
+          resolve(history);
+      }, 500);
   });
 };
 
 // Simulate fetching user-specific play history
 export const fetchUserPlayHistory = async (userId) => {
   return new Promise((resolve) => {
-    setTimeout(() => {
-      const history = mockData.gameSessions
-        .filter(session => session.userId === userId)
-        .map(session => ({
-          id: session.id,
-          username: mockData.users.find(user => user.id === session.userId)?.username || "Unknown",
-          name: mockData.boardgames.find(game => game.id === session.gameId)?.name || "Unknown",
-          date: session.date,
-          numPlayers: session.numPlayers,
-          score: session.score,
-          result: session.result,
-          time: session.time,
-          comments: session.comments,
-        }));
-      resolve(history);
-    }, 500);
+      setTimeout(() => {
+          const history = mockData.gameSessions
+              .filter(session => session.userId === userId)
+              .map(session => ({
+                  id: session.id,
+                  username: mockData.users.find(user => user.id === session.userId)?.username || "Unknown",
+                  name: mockData.boardgames.find(game => game.id === session.gameId)?.name || "Unknown",
+                  date: session.date,
+                  numPlayers: session.numPlayers,
+                  score: session.score,
+                  result: session.result,
+                  time: session.time,
+                  comments: session.comments,
+              }));
+          resolve(history);
+      }, 500);
   });
 };
 
@@ -221,7 +146,7 @@ export const saveGameSession = async (gameSession) => {
         return;
       }
       const newSession = {
-        id: gameSession.id || uuidv4(),
+        id: gameSession.id || uuidv4(), 
         userId: gameSession.userId,
         gameId: game.id,
         date: gameSession.date || new Date().toISOString().split('T')[0],
@@ -269,35 +194,35 @@ export const deleteGameSession = async (id) => {
 // Simulate saving a collection item. pass in a collectionItem object with required fields: userId, name (of game), purchaseDate, purchasePrice
 export const saveCollectionItem = async (collectionItem) => {
   return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (!collectionItem.userId) {
-        reject(new Error('User ID is required'));
-        return;
-      }
-      if (!collectionItem.name) {
-        reject(new Error('Game name is required'));
-        return;
-      }
-      const game = mockData.boardgames.find(g => g.name.toLowerCase() === collectionItem.name.toLowerCase());
-      if (!game) {
-        reject(new Error(`Game "${collectionItem.name}" not found`));
-        return;
-      }
-      const user = mockData.users.find(u => u.id === collectionItem.userId);
-      if (!user) {
-        reject(new Error(`User ID "${collectionItem.userId}" not found`));
-        return;
-      }
-      const newItem = {
-        id: uuidv4(),
-        userId: collectionItem.userId,
-        gameId: game.Id,
-        purchaseDate: collectionItem.purchaseDate || new Date().toISOString().split('T')[0], // Default to today
-        purchasePrice: parseFloat(collectionItem.purchasePrice) || 0.00,
-      };
-      mockData.collection.push(newItem);
-      resolve(newItem);
-    }, 300);
+      setTimeout(() => {
+          if (!collectionItem.userId) {
+            reject(new Error('User ID is required'));
+            return;
+          }
+          if (!collectionItem.name) {
+            reject(new Error('Game name is required'));
+            return;
+          }
+          const game = mockData.boardgames.find(g => g.name.toLowerCase() === collectionItem.name.toLowerCase());
+          if (!game) {
+            reject(new Error(`Game "${collectionItem.name}" not found`));
+            return;
+          }
+          const user = mockData.users.find(u => u.id === collectionItem.userId);
+          if (!user) {
+            reject(new Error(`User ID "${collectionItem.userId}" not found`));
+            return;
+          }
+          const newItem = {
+              id: uuidv4(),
+              userId: collectionItem.userId,
+              gameId: game.Id,
+              purchaseDate: collectionItem.purchaseDate || new Date().toISOString().split('T')[0], // Default to today
+              purchasePrice: parseFloat(collectionItem.purchasePrice) || 0.00, 
+          };
+          mockData.collection.push(newItem);
+          resolve(newItem);
+      }, 300);
   });
 };
 
@@ -378,8 +303,8 @@ export const fetchUserStats = async (userId) => {
       }, null);
 
       stats.mostPlayedGame = mostPlayedGameId
-        ? mockData.boardgames.find(game => game.id === parseInt(mostPlayedGameId))?.name || 'None'
-        : 'None';
+      ? mockData.boardgames.find(game => game.id === parseInt(mostPlayedGameId))?.name || 'None'
+      : 'None';
 
       stats.totalDifferentGamesPlayed = Object.keys(stats.gameFrequency).length;
 

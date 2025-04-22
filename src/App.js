@@ -1,5 +1,8 @@
 import './styles/App.css';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import styles from './styles/SlidePanel.module.css';
+import slideStyles from './styles/SlidePanel.module.css';
+import { BrowserRouter as Router, Routes, Route, LInk } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import BoardGameDetails from './BoardGameDetails';
 import React, { useState, useEffect, useRef, createContext } from "react";
 import { v4 as uuidv4 } from 'uuid';
@@ -11,7 +14,7 @@ import AddBoardGameForm from "./AddBoardGameForm.js";
 import Collection from "./Collection.js";
 import AddCollectionForm from './AddCollectionForm.js';
 import UserStats from './UserStats.js';
-
+import '@fortawesome/fontawesome-free/css/all.min.css';
 export const UserContext = createContext();
 
 function App() {
@@ -23,6 +26,7 @@ function App() {
   const [selectedGameForSession, setSelectedGameForSession] = useState(null);
   const gameSessionFormRef = useRef(null);
   const [bookmarks, setBookmarks] = useState([]);
+  const [showSessionForm, setShowSessionForm] = useState(false);
 
   const handleAddSession = (gameName) => {
     setSelectedGameForSession(gameName);
@@ -58,102 +62,114 @@ function App() {
   return (
     <Router>
       <UserContext.Provider value={userId} >
-        <div className="app-container">
-          <header className="app-header">
-            <h1><Link to="/" style={{ textDecoration: "none", color: "inherit" }}>🎲 Board Game Statistic Tracker</Link></h1>
-            <p className="app-user">Demo User Logged In</p>
-          </header>
+      <div className="topBar">
+        <div className="userSection">
+          <i className="fas fa-user"></i>
+          <span className="username">DEMO_USER</span>
+        </div>
+      </div>
+      <div className="app-container">
+        <header className="app-header">
+          <h1><Link to="/" style={{ textDecoration: "none", color: "inherit" }}>🎲 Board Game Statistic Tracker</Link></h1>
+        </header>
 
-          <Routes>
-            <Route path="/" element={
+        <Routes>
+          <Route path="/" element={
 
-              <main className="app-main">
-                <section className="app-section">
-                  <h2>Search for Board Games</h2>
-                  <BoardGameSearch
-                    bookmarks={bookmarks}
-                    setBookmarks={setBookmarks}
-                  />
-                </section>
+            <main className="app-main">
+              <section className="app-section">
+                <BoardGameSearch 
+                  bookmarks={bookmarks}
+                  setBookmarks={setBookmarks}/>
+              </section>
+              
+              {/*  Moved Within BoardGameSearch
+              <section className="app-section">
+                <h2>Add a Board Game to the Database</h2>
+                <AddBoardGameForm />
+              </section>
+              */}
+              
+              <div ref={gameSessionFormRef}></div>
+              {/* Add a Play Session Button and Slide Panel */}
+              <section className="app-section">
 
-                <section className="app-section">
-                  <h2>Add a Board Game to the Database</h2>
-                  <AddBoardGameForm />
-                </section>
-
-                <div ref={gameSessionFormRef}>
-                  <section className="app-section">
-
-                    <h2>Add a Game Session</h2>
+                <button className="add-session-button" onClick={() => setShowSessionForm(true)}><i className="fas fa-plus-square"></i>Add Play Session </button>
+                <div className={`${slideStyles.backdrop} ${showSessionForm ? slideStyles.show : ''}`} 
+                          onClick={() => setShowSessionForm(false)} />
+                  <div className={`${slideStyles["slide-panel"]} ${showSessionForm ? slideStyles.show : ''}`}>
+                  <div className={styles['slide-panel-inner']}>
+                    <button className={slideStyles["close-button"]} onClick={() => setShowSessionForm(false)}>×</button>
                     <GameSessionForm
                       onAdd={(newItem) => {
                         setPlayHistory([...playHistory, { ...newItem, id: uuidv4() }]);
                       }}
                       editingItem={editingPlayHistoryItem}
                       onUpdate={(updatedItem) => {
-                        setPlayHistory(playHistory.map(item => item.id === updatedItem.id ? updatedItem : item
-                        ));
+                        setPlayHistory(
+                          playHistory.map((item) =>
+                            item.id === updatedItem.id ? updatedItem : item
+                          )
+                        );
                         setEditingPlayHistoryItem(null);
                       }}
                       onCancelEdit={() => setEditingPlayHistoryItem(null)}
-                      autofillGameName={selectedGameForSession || ""} />
-
-                  </section>
+                      autofillGameName={selectedGameForSession || ""}
+                    />
+                  </div>
                 </div>
 
-                <section className="app-section">
-                  <PlayHistory
-                    items={playHistory}
-                    setItems={setPlayHistory}
-                    onEdit={(item) => setEditingPlayHistoryItem(item)}
-                    bookmarks={bookmarks}
-                    setBookmarks={setBookmarks}
-                    userId={userId}
-                  />
-                </section>
 
-                <section className='app-section'>
-                  <h2>User Stats</h2>
-                  <UserStats userId={userId} />
-                </section>
+                <PlayHistory items={playHistory} setItems={setPlayHistory} bookmarks={bookmarks} setBookmarks={setBookmarks} userId={userId} onEdit={(item) => {
+                    setEditingPlayHistoryItem(item);
+                    setSelectedGameForSession(item.name); // Optional: if you want to autofill game name
+                    setShowSessionForm(true);
+                }} />
+              </section>
 
-                <section className="app-section">
-                  <h2>Add a Game to Collection</h2>
-                  <AddCollectionForm
-                    onAdd={(newItem) => {
-                      setCollection([...collection, { ...newItem, id: uuidv4() }]);
-                    }}
-                    editingItem={editingCollectionItem}
-                    onUpdate={(updatedItem) => {
-                      setCollection(collection.map(item => item.id === updatedItem.id ? updatedItem : item
-                      ));
-                      setEditingCollectionItem(null);
-                    }}
-                    onCancelEdit={() => setEditingCollectionItem(null)} />
-                </section>
+              <section className='app-section'>
+                <h2>User Stats</h2>
+                 <UserStats userId={userId} />
+              </section>
 
-                <section className="app-section">
-                  <Collection
-                    items={collection}
-                    setItems={setCollection}
-                    onEdit={(item) => { setEditingCollectionItem(item); setSelectedGameForSession(null); }}
-                    onAddSession={handleAddSession}
-                    bookmarks={bookmarks}
-                    setBookmarks={setBookmarks}
-                    userId={userId}
-                  />
-                </section>
+        <section className="app-section">
+          <h2>Add a Game to Collection</h2>
+          <AddCollectionForm
+            onAdd={(newItem) => {
+              setCollection([...collection, { ...newItem, id: uuidv4() }]);
+            }}
+            editingItem={editingCollectionItem}
+            onUpdate={(updatedItem) => {
+              setCollection(collection.map(item => item.id === updatedItem.id ? updatedItem : item
+              ));
+              setEditingCollectionItem(null);
+            }}
+            onCancelEdit={() => setEditingCollectionItem(null)} />
+        </section>
+
+        <section className="app-section">
+          <Collection 
+            items={collection} setItems={setCollection} 
+            onEdit={(item) => { setEditingCollectionItem(item); setSelectedGameForSession(null);}} 
+            onAddSession={handleAddSession} />
+        </section>
 
 
 
-              </main>
-            } />
 
-            <Route path="/game/:name" element={<BoardGameDetails bookmarks={bookmarks} setBookmarks={setBookmarks} />} />
-          </Routes>
-        </div>
+            </main>
+          } />
+
+          <Route path="/game/:id" element={<BoardGameDetails bookmarks={bookmarks} setBookmarks={setBookmarks} />} />
+        </Routes>
+      </div>
+      <footer>
+        <section className='app-footer'>
+          <p> &copy; Board Game Statistic Tracker</p>
+         </section>
+      </footer>
       </UserContext.Provider>
-    </Router >
+    </Router>
   );
 }
 
