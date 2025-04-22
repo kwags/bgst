@@ -51,10 +51,22 @@ const BoardGameSearch = () => {
         }
     }
 
+    const handleClearSearch = () => {
+        setSearchTerm('');
+        setSearchResults([]);
+        setShowAddGameForm(false);
+    };
+
     return (
         // The classNames allow for specific css that wont affect other components
         <div className={styles.container}>
-            <input type='text' placeholder='Search boardgames...' value={searchTerm} onChange={searchForGame} />
+            <div className={styles.searchWrapper}>
+                <input type='text' className={styles.searchInput} placeholder='Search boardgames...' value={searchTerm} onChange={searchForGame} />
+                <button className={styles.searchButton}
+                    onClick={searchResults.length > 0 || searchTerm.trim() !== '' ? handleClearSearch : null}>
+                    <i className={`fas ${searchResults.length > 0 || searchTerm.trim() !== '' ? 'fa-times' : 'fa-search'}`}></i>
+                </button>
+            </div>
             <div className={styles.results}>
                 {loading ? (
                     <p className={styles.message}>Loading...</p>
@@ -62,11 +74,22 @@ const BoardGameSearch = () => {
                     <ul className={styles.list}>
                         {searchResults.map(game => (
                             <li key={game.id} className={styles.listItem}>
-                                <h3 className={styles.gameName}>{game.name}</h3>
-                                <p className={styles.gameInfo}>Players: {game.players}</p>
-                                <p className={styles.gameInfo}>Playtime: {game.estimatedTime}</p>
-                                <button onClick={() => handleAddSession(game)}>Add Session</button>
-                                <button onClick={() => handleAddToCollection(game)}>Add to Collection</button>
+                                <div className={styles.cardContent}>
+                                    {game.image && (
+                                        <div className={styles.imageMask}>
+                                            <img src={game.image} alt={game.name} className={styles.gameImage} />
+                                        </div>
+                                    )}
+                                    <div className={styles.gameDetails}>
+                                        <h3 className={styles.gameName}>{game.name}</h3>
+                                        <p className={styles.gameInfo}>Players: {game.players}</p>
+                                        <p className={styles.gameInfo}>Playtime: {game.estimatedTime}</p>
+                                        <div className={styles.buttonGroup}>
+                                            <button onClick={() => handleAddSession(game)}>Add Session</button>
+                                            <button onClick={() => handleAddToCollection(game)}>Add to Collection</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </li>
                         ))}
                     </ul>
