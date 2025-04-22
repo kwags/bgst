@@ -148,46 +148,7 @@ const BoardGameSearch = ({ bookmarks, setBookmarks }) => {
                     </div>
                 </div>
 
-                {showAddGameForm && (
-                    <div className={styles.addFormWrapper}>
-                        <AddBoardGameForm autofillGameName={searchTerm} onSuccess={async () => { 
-                            setShowAddGameForm(false);
-                            setLoading(true);
-                            const updatedResults = await fetchBoardGames(searchTerm);
-                            setSearchResults(updatedResults);
-                            setLoading(false);}}/>
-                    </div>
-                )}
-
-                {/* Add Session Slide Panel */}
-                <div className={`${slideStyles.backdrop} ${showSessionForm ? slideStyles.show : ''}`} 
-                        onClick={() => setShowSessionForm(false)} />
-                <div className={`${slideStyles["slide-panel"]} ${showSessionForm ? slideStyles.show : ''}`}>
-                    <div className={slideStyles["slide-panel-inner"]}>
-                        <button className={slideStyles["close-button"]} onClick={() => setShowSessionForm(false)}>×</button>
-                        {selectedGame && (
-                        <GameSessionForm
-                            onAdd={() => setShowSessionForm(false)}
-                            onCancelEdit={() => setShowSessionForm(false)}
-                            autofillGameName={selectedGame.name}/>)}
-                    </div>
-                </div>
-
-                {/* Add to Collection Slide Panel */}
-                <div className={`${slideStyles.backdrop} ${showCollectionForm ? slideStyles.show : ''}`} 
-                    onClick={() => setShowCollectionForm(false)} />
-                <div className={`${slideStyles["slide-panel"]} ${showCollectionForm ? slideStyles.show : ''}`}>
-                    <div className={slideStyles["slide-panel-inner"]}>
-                        <button className={slideStyles["close-button"]} onClick={() => setShowCollectionForm(false)}>×</button>
-                        {selectedGame && (
-                        <AddCollectionForm
-                        onAdd={() => setShowCollectionForm(false)}
-                        onCancelEdit={() => setShowCollectionForm(false)}
-                        autofillGameName={selectedGame.name}
-                        autofillNumPlayers={selectedGame.players}
-                        autofillEstimatedTime={selectedGame.estimatedTime}/>)}
-                    </div>
-                </div>
+               
             </div>
         </div>
     );
