@@ -34,3 +34,9 @@
     background-color: #4f46e5;
   }
   
+  .heading {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    text-align: left;
+    color: #333; 
+  }

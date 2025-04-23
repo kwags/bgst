@@ -1,6 +1,4 @@
 import './styles/App.css';
-import styles from './styles/SlidePanel.module.css';
-import slideStyles from './styles/SlidePanel.module.css';
 import { BrowserRouter as Router, Routes, Route, LInk } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import BoardGameDetails from './BoardGameDetails';
@@ -15,12 +13,14 @@ import Collection from "./Collection.js";
 import AddCollectionForm from './AddCollectionForm.js';
 import UserStats from './UserStats.js';
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import SlidePanel from './SlidePanel';
 export const UserContext = createContext();
 
 function App() {
   const [userId] = useState(1);
   const [playHistory, setPlayHistory] = useState([]);
   const [collection, setCollection] = useState([]);
+  const [showCollectionForm, setShowCollectionForm] = useState(false);
   const [editingPlayHistoryItem, setEditingPlayHistoryItem] = useState(null);
   const [editingCollectionItem, setEditingCollectionItem] = useState(null);
   const [selectedGameForSession, setSelectedGameForSession] = useState(null);
@@ -33,6 +33,16 @@ function App() {
     if (gameSessionFormRef.current) {
       gameSessionFormRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
     }
+  };
+
+  const handleAddCollection = (newItem) => {
+    setCollection([...collection, { ...newItem, id: uuidv4() }]);
+    setShowCollectionForm(false); // Close the form after adding the item
+  };
+
+  const handleCancelEdit = () => {
+    setEditingCollectionItem(null);
+    setShowCollectionForm(false); // Close the form if editing is canceled
   };
 
   useEffect(() => {
@@ -94,35 +104,39 @@ function App() {
               {/* Add a Play Session Button and Slide Panel */}
               <section className="app-section">
 
-                <button className="add-session-button" onClick={() => setShowSessionForm(true)}><i className="fas fa-plus-square"></i>Add Play Session </button>
-                <div className={`${slideStyles.backdrop} ${showSessionForm ? slideStyles.show : ''}`} 
-                          onClick={() => setShowSessionForm(false)} />
-                  <div className={`${slideStyles["slide-panel"]} ${showSessionForm ? slideStyles.show : ''}`}>
-                  <div className={styles['slide-panel-inner']}>
-                    <button className={slideStyles["close-button"]} onClick={() => setShowSessionForm(false)}>×</button>
-                    <GameSessionForm
-                      onAdd={(newItem) => {
-                        setPlayHistory([...playHistory, { ...newItem, id: uuidv4() }]);
-                      }}
-                      editingItem={editingPlayHistoryItem}
-                      onUpdate={(updatedItem) => {
-                        setPlayHistory(
-                          playHistory.map((item) =>
-                            item.id === updatedItem.id ? updatedItem : item
-                          )
-                        );
-                        setEditingPlayHistoryItem(null);
-                      }}
-                      onCancelEdit={() => setEditingPlayHistoryItem(null)}
-                      autofillGameName={selectedGameForSession || ""}
-                    />
-                  </div>
-                </div>
+                <button className="add-session-button" onClick={() => setShowSessionForm(true)}><i className="fas fa-plus-square"></i>Add Play Session</button>
+                <SlidePanel show={showSessionForm} 
+                  onClose={() => { setShowSessionForm(false); setEditingPlayHistoryItem(null); setSelectedGameForSession(""); }}
+                  heading={editingPlayHistoryItem ? "Edit Play Session" : "Add Play Session"}>
+
+                  <GameSessionForm
+                    onAdd={(newItem) => {
+                      setPlayHistory([...playHistory, { ...newItem, id: uuidv4() }]);
+                      setShowSessionForm(false);
+                    }}
+                    editingItem={editingPlayHistoryItem}
+                    onUpdate={(updatedItem) => {
+                      setPlayHistory(
+                        playHistory.map((item) =>
+                          item.id === updatedItem.id ? updatedItem : item
+                        )
+                      );
+                      setEditingPlayHistoryItem(null);
+                      setShowSessionForm(false);
+                    }}
+                    onCancelEdit={() => {
+                      setEditingPlayHistoryItem(null);
+                      setSelectedGameForSession("");
+                      setShowSessionForm(false);
+                    }}
+                    autofillGameName={selectedGameForSession || ""}/>
+
+                </SlidePanel>
 
 
                 <PlayHistory items={playHistory} setItems={setPlayHistory} bookmarks={bookmarks} setBookmarks={setBookmarks} userId={userId} onEdit={(item) => {
                     setEditingPlayHistoryItem(item);
-                    setSelectedGameForSession(item.name); // Optional: if you want to autofill game name
+                    setSelectedGameForSession(item.name);
                     setShowSessionForm(true);
                 }} />
               </section>
@@ -132,30 +146,41 @@ function App() {
                  <UserStats userId={userId} />
               </section>
 
-        <section className="app-section">
-          <h2>Add a Game to Collection</h2>
-          <AddCollectionForm
-            onAdd={(newItem) => {
-              setCollection([...collection, { ...newItem, id: uuidv4() }]);
-            }}
-            editingItem={editingCollectionItem}
-            onUpdate={(updatedItem) => {
-              setCollection(collection.map(item => item.id === updatedItem.id ? updatedItem : item
-              ));
-              setEditingCollectionItem(null);
-            }}
-            onCancelEdit={() => setEditingCollectionItem(null)} />
-        </section>
-
-        <section className="app-section">
-          <Collection 
-            items={collection} setItems={setCollection} 
-            onEdit={(item) => { setEditingCollectionItem(item); setSelectedGameForSession(null);}} 
-            onAddSession={handleAddSession} />
-        </section>
-
-
-
+              <section className="app-section">
+                <button className="add-session-button" onClick={() => setShowCollectionForm(true)}><i className="fas fa-plus-square"></i>Add to Collection</button>
+                
+                <SlidePanel
+                  show={showCollectionForm}
+                  onClose={() => {
+                    setShowCollectionForm(false);
+                    setEditingCollectionItem(null);
+                  }}
+                  heading={editingCollectionItem ? "Edit Collection Item" : "Add to Collection"}>
+                  <AddCollectionForm
+                    onAdd={handleAddCollection}
+                    editingItem={editingCollectionItem}
+                    onUpdate={(updatedItem) => {
+                      setCollection(
+                        collection.map((item) =>
+                          item.id === updatedItem.id ? updatedItem : item
+                        )
+                      );
+                      setEditingCollectionItem(null);
+                      setShowCollectionForm(false); 
+                    }}
+                    onCancelEdit={() => {
+                      setEditingCollectionItem(null);
+                      setShowCollectionForm(false);
+                    }} 
+                  />
+                </SlidePanel>
+                <Collection 
+                  items={collection} setItems={setCollection} 
+                  onEdit={(item) => {
+                    setEditingCollectionItem(item);
+                    setSelectedGameForSession(item.name); 
+                    setShowCollectionForm(true);}}/>
+              </section>
 
             </main>
           } />
