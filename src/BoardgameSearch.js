@@ -4,9 +4,9 @@ import { fetchBoardGames } from './mockAPI';
 import GameSessionForm from './GameSessionForm';
 import AddCollectionForm from './AddCollectionForm';
 import styles from './styles/BoardGameSearch.module.css';
-import slideStyles from './styles/SlidePanel.module.css';
 import AddBoardGameForm from './AddBoardGameForm';
 import BookmarkButtons from './BookmarkButtons';
+import SlidePanel from './SlidePanel';
 
 const BoardGameSearch = ({ bookmarks, setBookmarks }) => {
 
@@ -23,6 +23,7 @@ const BoardGameSearch = ({ bookmarks, setBookmarks }) => {
     const handleAddSession = (game) => {
         setSelectedGame(game);
         setShowSessionForm(true);
+        
     };
     
     const handleAddToCollection = (game) => {
@@ -109,44 +110,45 @@ const BoardGameSearch = ({ bookmarks, setBookmarks }) => {
 
                 {showAddGameForm && (
                     <div className={styles.addFormWrapper}>
+
                         <AddBoardGameForm autofillGameName={searchTerm} onSuccess={async () => { 
                             setShowAddGameForm(false);
                             setLoading(true);
                             const updatedResults = await fetchBoardGames(searchTerm);
                             setSearchResults(updatedResults);
                             setLoading(false);}}/>
+
                     </div>
                 )}
 
+
                 {/* Add Session Slide Panel */}
-                <div className={`${slideStyles.backdrop} ${showSessionForm ? slideStyles.show : ''}`} 
-                        onClick={() => setShowSessionForm(false)} />
-                <div className={`${slideStyles["slide-panel"]} ${showSessionForm ? slideStyles.show : ''}`}>
-                    <div className={slideStyles["slide-panel-inner"]}>
-                        <button className={slideStyles["close-button"]} onClick={() => setShowSessionForm(false)}>×</button>
-                        {selectedGame && (
+                <SlidePanel
+                    show={showSessionForm}
+                    onClose={() => setShowSessionForm(false)}
+                    heading="Add Game Session">
+                    {selectedGame && (
                         <GameSessionForm
                             onAdd={() => setShowSessionForm(false)}
                             onCancelEdit={() => setShowSessionForm(false)}
-                            autofillGameName={selectedGame.name}/>)}
-                    </div>
-                </div>
-
+                            autofillGameName={selectedGame.name}/>
+                    )}
+                </SlidePanel>
+                
                 {/* Add to Collection Slide Panel */}
-                <div className={`${slideStyles.backdrop} ${showCollectionForm ? slideStyles.show : ''}`} 
-                    onClick={() => setShowCollectionForm(false)} />
-                <div className={`${slideStyles["slide-panel"]} ${showCollectionForm ? slideStyles.show : ''}`}>
-                    <div className={slideStyles["slide-panel-inner"]}>
-                        <button className={slideStyles["close-button"]} onClick={() => setShowCollectionForm(false)}>×</button>
-                        {selectedGame && (
+                <SlidePanel
+                    show={showCollectionForm}
+                    onClose={() => setShowCollectionForm(false)}
+                    heading="Add to Collection">
+                    {selectedGame && (
                         <AddCollectionForm
-                        onAdd={() => setShowCollectionForm(false)}
-                        onCancelEdit={() => setShowCollectionForm(false)}
-                        autofillGameName={selectedGame.name}
-                        autofillNumPlayers={selectedGame.players}
-                        autofillEstimatedTime={selectedGame.estimatedTime}/>)}
-                    </div>
-                </div>
+                            onAdd={() => setShowCollectionForm(false)}
+                            onCancelEdit={() => setShowCollectionForm(false)}
+                            autofillGameName={selectedGame.name}
+                            autofillNumPlayers={selectedGame.players}
+                            autofillEstimatedTime={selectedGame.estimatedTime}/>
+                    )}
+                </SlidePanel>
 
                
             </div>

@@ -24,7 +24,7 @@ function Collection({ items, setItems, onEdit, onAddSession, bookmarks, setBookm
             <strong>Purchase Date:</strong> {item.purchaseDate}<br />
             <strong>Purchase Price:</strong> {item.purchasePrice}<br />
             
-            <button onClick={() => onAddSession(item.name)}>Add Session</button>
+             {/* <button onClick={() => onAddSession(item.name)}>Add Session</button> */}
             <button onClick={() => onEdit(item)}>Edit</button>
 
             <BookmarkButtons 
