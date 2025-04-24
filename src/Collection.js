@@ -11,7 +11,7 @@ function Collection({ items, setItems, onEdit, onAddSession, bookmarks, setBookm
 
   return (
     <div>
-      <h3>Game Collection</h3>
+      <h2>Game Collection</h2>
       <ul>
         {items.map(item => (
           <div key={item.id} style={{ borderBottom: "1px solid #ccc", padding: "1rem 0" }}>

@@ -1,0 +1,35 @@
+.main-nav {
+    display: flex;
+    justify-content: center;
+    gap: 10rem;
+    padding: 0.5rem 0;
+    margin-bottom: 0; 
+  }
+
+.nav-link {
+    color: #27187F;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: bold;
+    position: relative;
+    padding-bottom: 5px;
+    transition: color;
+}
+
+.nav-link:hover {
+    color: #FF815D;
+}
+
+.nav-link.active {
+    color: #FF815D;
+}
+
+.nav-link.active::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    width: 130%;
+    height: 4px;
+    background-color: #FF815D;
+}
