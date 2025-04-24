@@ -1,6 +1,5 @@
 import './styles/App.css';
-import { BrowserRouter as Router, Routes, Route, LInk } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import BoardGameDetails from './BoardGameDetails';
 import React, { useState, useEffect, useRef, createContext } from "react";
 import { v4 as uuidv4 } from 'uuid';
@@ -13,6 +12,7 @@ import Collection from "./Collection.js";
 import UserStats from './UserStats.js';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import SlidePanel from './SlidePanel';
+import Navbar from './Navbar.js';
 export const UserContext = createContext();
 
 function App() {
@@ -44,14 +44,6 @@ function App() {
     getCollection();
   }, []);
 
-  useEffect(() => {
-    const getBookmarks = async () => {
-      const data = await fetchUserBookmarks(userId);
-      setBookmarks(data); // Shallow clone to trigger updates
-    };
-    getBookmarks();
-  }, [userId]);
-
   return (
     <Router>
       <UserContext.Provider value={userId} >
@@ -66,22 +58,23 @@ function App() {
           <h1><Link to="/" style={{ textDecoration: "none", color: "inherit" }}>🎲 Board Game Statistic Tracker</Link></h1>
         </header>
 
+        <main className="app-main">
+            <BoardGameSearch 
+              bookmarks={bookmarks}
+              setBookmarks={setBookmarks}
+              playHistory={playHistory} 
+              setPlayHistory={setPlayHistory} 
+              collection={collection} 
+              setCollection={setCollection} />
+        </main>
+
+        <Navbar />
+
         <Routes>
           <Route path="/" element={
 
             <main className="app-main">
-              <section className="app-section">
-                <BoardGameSearch 
-                  bookmarks={bookmarks}
-                  setBookmarks={setBookmarks}/>
-              </section>
-              
-              {/*  Moved Within BoardGameSearch
-              <section className="app-section">
-                <h2>Add a Board Game to the Database</h2>
-                <AddBoardGameForm />
-              </section>
-              */}
+
               
               <div ref={gameSessionFormRef}></div>
               {/* Add a Play Session Button and Slide Panel */}
@@ -111,13 +104,12 @@ function App() {
                     setShowSessionForm(true);
                 }} />
               </section>
+            </main>
+          } />
 
-              <section className='app-section'>
-                <h2>User Stats</h2>
-                 <UserStats userId={userId} />
-              </section>
-
-              <section className="app-section">
+          <Route path="/collection" element={
+              <main className="app-main">
+                <section className="app-section">
                 <button className="add-session-button" onClick={() => setShowCollectionForm(true)}><i className="fas fa-plus-square"></i>Add to Collection</button>
                 
                 <SlidePanel
@@ -145,12 +137,27 @@ function App() {
                     setSelectedGameForSession(item.name); 
                     setShowCollectionForm(true);}}/>
               </section>
+              </main>
+            } />
 
+          <Route path="/stats" element={
+            <main className="app-main">
+              <section className="app-section">
+                <UserStats userId={userId} />
+              </section>
+            </main>
+          } />
+
+          <Route path="/bookmarks" element={
+            <main className="app-main">
+              <h2>Bookmarked Games</h2>
+              {/* Need to Add Bookmark List */}
             </main>
           } />
 
           <Route path="/game/:id" element={<BoardGameDetails bookmarks={bookmarks} setBookmarks={setBookmarks} />} />
         </Routes>
+
       </div>
       <footer>
         <section className='app-footer'>
