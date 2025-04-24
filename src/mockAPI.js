@@ -234,28 +234,28 @@ export const saveCollectionItem = async (collectionItem) => {
 
 
 // Simulate fetching all collection items
-export const fetchCollection = async () => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      const collection = mockData.collection.map(item => {
-        const game = mockData.boardgames.find(g => g.id === item.gameId) || {
-          name: 'Unknown',
-          players: 'Unknown',
-          estimatedTime: 'Unknown',
-        };
-        return {
-          id: item.id,
-          name: game.name,
-          players: game.players,
-          estimatedTime: game.estimatedTime,
-          purchaseDate: item.purchaseDate,
-          purchasePrice: item.purchasePrice,
-        };
-      });
-      resolve(collection);
-    }, 500);
+export async function fetchCollection() {
+  const collection = mockData.collection.map(session => {
+    const game = mockData.boardgames.find(game => game.id === session.gameId);
+    const user = mockData.users.find(user => user.id === session.userId);
+
+    return {
+      id: session.id,
+      userId: session.userId,
+      username: user ? user.username : "Unknown",
+      gameId: game ? game.id : null,
+      name: game ? game.name : "Unknown",
+      image: game ? game.image : null,
+      players: game.players,
+      estimatedTime: game.estimatedTime,
+      purchaseDate: session.purchaseDate,
+      purchasePrice: session.purchasePrice,
+    };
   });
-};
+  return collection;
+}
+
+
 
 // Simulate fetching user-specific collection items
 export const fetchUserCollection = async (userId) => {
