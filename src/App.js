@@ -5,12 +5,11 @@ import BoardGameDetails from './BoardGameDetails';
 import React, { useState, useEffect, useRef, createContext } from "react";
 import { v4 as uuidv4 } from 'uuid';
 import BoardGameSearch from './BoardgameSearch.js';
-import GameSessionForm from './GameSessionForm';
 import PlayHistory from "./PlayHistory.js";
 import { fetchPlayHistory, fetchCollection, fetchUserBookmarks } from "./mockAPI";
-import AddBoardGameForm from "./AddBoardGameForm.js";
+import GameSessionManager from "./GameSessionManager.js";
+import CollectionManager from "./AddCollectionManager.js";
 import Collection from "./Collection.js";
-import AddCollectionForm from './AddCollectionForm.js';
 import UserStats from './UserStats.js';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import SlidePanel from './SlidePanel';
@@ -28,22 +27,6 @@ function App() {
   const [bookmarks, setBookmarks] = useState([]);
   const [showSessionForm, setShowSessionForm] = useState(false);
 
-  const handleAddSession = (gameName) => {
-    setSelectedGameForSession(gameName);
-    if (gameSessionFormRef.current) {
-      gameSessionFormRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  };
-
-  const handleAddCollection = (newItem) => {
-    setCollection([...collection, { ...newItem, id: uuidv4() }]);
-    setShowCollectionForm(false); // Close the form after adding the item
-  };
-
-  const handleCancelEdit = () => {
-    setEditingCollectionItem(null);
-    setShowCollectionForm(false); // Close the form if editing is canceled
-  };
 
   useEffect(() => {
     const getPlayHistory = async () => {
@@ -109,27 +92,15 @@ function App() {
                   onClose={() => { setShowSessionForm(false); setEditingPlayHistoryItem(null); setSelectedGameForSession(""); }}
                   heading={editingPlayHistoryItem ? "Edit Play Session" : "Add Play Session"}>
 
-                  <GameSessionForm
-                    onAdd={(newItem) => {
-                      setPlayHistory([...playHistory, { ...newItem, id: uuidv4() }]);
-                      setShowSessionForm(false);
-                    }}
-                    editingItem={editingPlayHistoryItem}
-                    onUpdate={(updatedItem) => {
-                      setPlayHistory(
-                        playHistory.map((item) =>
-                          item.id === updatedItem.id ? updatedItem : item
-                        )
-                      );
-                      setEditingPlayHistoryItem(null);
-                      setShowSessionForm(false);
-                    }}
-                    onCancelEdit={() => {
-                      setEditingPlayHistoryItem(null);
-                      setSelectedGameForSession("");
-                      setShowSessionForm(false);
-                    }}
-                    autofillGameName={selectedGameForSession || ""}/>
+                  <GameSessionManager
+                    playHistory={playHistory}
+                    setPlayHistory={setPlayHistory}
+                    editingPlayHistoryItem={editingPlayHistoryItem}
+                    setEditingPlayHistoryItem={setEditingPlayHistoryItem}
+                    selectedGameForSession={selectedGameForSession}
+                    setSelectedGameForSession={setSelectedGameForSession}
+                    setShowSessionForm={setShowSessionForm}
+                  />
 
                 </SlidePanel>
 
@@ -156,24 +127,17 @@ function App() {
                     setEditingCollectionItem(null);
                   }}
                   heading={editingCollectionItem ? "Edit Collection Item" : "Add to Collection"}>
-                  <AddCollectionForm
-                    onAdd={handleAddCollection}
-                    editingItem={editingCollectionItem}
-                    onUpdate={(updatedItem) => {
-                      setCollection(
-                        collection.map((item) =>
-                          item.id === updatedItem.id ? updatedItem : item
-                        )
-                      );
-                      setEditingCollectionItem(null);
-                      setShowCollectionForm(false); 
-                    }}
-                    onCancelEdit={() => {
-                      setEditingCollectionItem(null);
-                      setShowCollectionForm(false);
-                    }} 
+
+                  <CollectionManager
+                    collection={collection}
+                    setCollection={setCollection}
+                    editingCollectionItem={editingCollectionItem}
+                    setEditingCollectionItem={setEditingCollectionItem}
+                    setShowCollectionForm={setShowCollectionForm}
                   />
+                  
                 </SlidePanel>
+
                 <Collection 
                   items={collection} setItems={setCollection} 
                   onEdit={(item) => {
