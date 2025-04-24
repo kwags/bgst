@@ -79,9 +79,9 @@ function App() {
               <div ref={gameSessionFormRef}></div>
               {/* Add a Play Session Button and Slide Panel */}
               <section className="app-section">
-                <div className="play-history-header">
-                  <h3 className="play-history-title">Play History</h3>
-                  <button className="add-session-button" onClick={() => setShowSessionForm(true)}><i className="fas fa-plus-square"></i>Add Play Session</button>
+                <div className="section-header">
+                  <h3 className="section-title">Play History</h3>
+                  <button className="add-button" onClick={() => setShowSessionForm(true)}><i className="fas fa-plus-square"></i>Add Play Session</button>
                 </div>
                 <SlidePanel show={showSessionForm} 
                   onClose={() => { setShowSessionForm(false); setEditingPlayHistoryItem(null); setSelectedGameForSession(""); }}
@@ -99,7 +99,6 @@ function App() {
 
                 </SlidePanel>
 
-
                 <PlayHistory items={playHistory} setItems={setPlayHistory} bookmarks={bookmarks} setBookmarks={setBookmarks} userId={userId} onEdit={(item) => {
                     setEditingPlayHistoryItem(item);
                     setSelectedGameForSession(item.name);
@@ -112,8 +111,10 @@ function App() {
           <Route path="/collection" element={
               <main className="app-main">
                 <section className="app-section">
-                <button className="add-session-button" onClick={() => setShowCollectionForm(true)}><i className="fas fa-plus-square"></i>Add to Collection</button>
-                
+                <div className="section-header">
+                  <h3 className="section-title">Collection</h3>
+                  <button className="add-button" onClick={() => setShowCollectionForm(true)}><i className="fas fa-plus-square"></i>Add to Collection</button>
+                </div>
                 <SlidePanel
                   show={showCollectionForm}
                   onClose={() => {

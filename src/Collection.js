@@ -3,38 +3,55 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import BookmarkButtons from './BookmarkButtons';
+import { useNavigate } from 'react-router-dom';
+import styles from './styles/PlayHistory.module.css';
+
 
 function Collection({ items, setItems, onEdit, onAddSession, bookmarks, setBookmarks, userId }) {
   const deleteGame = (id) => {
     setItems(items.filter(item => item.id !== id));
   };
 
+  const navigate = useNavigate();
+
   return (
-    <div>
-      <h2>Game Collection</h2>
-      <ul>
+    <div className={styles.container}>
+      <ul className={`${styles.list} ${styles.leftAlignedList}`}>
         {items.map(item => (
-          <div key={item.id} style={{ borderBottom: "1px solid #ccc", padding: "1rem 0" }}>
-            <strong>Game Name: </strong>
-            <Link to={`/game/${encodeURIComponent(item.name)}`} style={{ textDecoration: 'underline', color: 'inherit' }}>
-              {item.name}
-            </Link><br />
-            <strong>Players:</strong> {item.players}<br />
-            <strong>Playtime:</strong> {item.estimatedTime} mins<br />
-            <strong>Purchase Date:</strong> {item.purchaseDate}<br />
-            <strong>Purchase Price:</strong> {item.purchasePrice}<br />
-            
-             {/* <button onClick={() => onAddSession(item.name)}>Add Session</button> */}
-            <button onClick={() => onEdit(item)}>Edit</button>
-
-            <BookmarkButtons 
-              gameId={item.gameId}
-              bookmarks={bookmarks}
-              setBookmarks={setBookmarks}
-            />
-
-            <button onClick={() => deleteGame(item.id)}>Delete</button>
-          </div>
+          <li key={item.id} className={`${styles.listItem} ${styles.leftCard}`}>
+            <div className={styles.cardContent}>
+            {item.image && (
+                <div className={styles.imageMask}>
+                  <img src={item.image} alt={item.name} className={styles.gameImage} />
+                </div>
+              )}
+              <div className={`${styles.gameDetails} ${styles.leftDetails}`}>
+              <h3 className={styles.gameName}>
+                  <Link
+                    to={`/game/${encodeURIComponent(item.name)}`}
+                    style={{ textDecoration: 'none', color: '#0082BC' }}
+                  >
+                    {item.name}
+                  </Link>
+                </h3>
+                <p className={styles.gameInfo}><strong>Players:</strong> {item.players}</p>
+                <p className={styles.gameInfo}><strong>Playtime:</strong> {item.estimatedTime} mins</p>
+                <p className={styles.gameInfo}><strong>Purchase Date:</strong> {item.purchaseDate}</p>
+                <p className={styles.gameInfo}><strong>Purchase Price:</strong> {item.purchasePrice}</p>
+                <div className={styles.buttonGroup}>
+                   {/* <button onClick={() => onAddSession(item.name)}>Add Session</button> */}
+                  <button onClick={() => onEdit(item)}>Edit Game</button>
+                  <button onClick={() => deleteGame(item.id)}>Delete Game</button>
+                  <button onClick={() => navigate(`/stats/${item.gameId}`)}>Game Stats</button>             
+                  <BookmarkButtons 
+                    gameId={item.gameId}
+                    bookmarks={bookmarks}
+                    setBookmarks={setBookmarks}
+                  />
+                </div>
+              </div>
+            </div>
+          </li>
         ))}
       </ul>
     </div>

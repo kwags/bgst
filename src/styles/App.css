@@ -61,8 +61,7 @@
   color: #374151;
 }
 
-
-.add-session-button {
+.add-button {
   background-color: transparent;
   color: #FF815D;
   font-size: 1rem;
@@ -71,7 +70,7 @@
   padding-top: 1.5rem;
 }
 
-.add-session-button i {
+.add-button i {
   font-size: 1rem;
   padding-right: .5rem;
 }
@@ -83,13 +82,13 @@
   text-align: center;
 }
 
-.play-history-header {
+.section-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.play-history-title {
+.section-title {
   display: flex;
   justify-content: space-between;
   align-items: center;
