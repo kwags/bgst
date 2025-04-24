@@ -1,0 +1,69 @@
+
+.container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .list {
+    list-style: none;
+  }
+  
+  .listItem {
+    padding: 2rem;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .listItem:last-child {
+    border-bottom: none;
+  }
+  
+  .gameName {
+    margin: 0 0 0.25rem 0;
+    font-size: 1rem;
+  }
+  
+  .gameInfo {
+    font-size: 1rem;
+    color: #666;
+  }
+
+  .cardContent {
+    display: flex;
+    align-items: flex-start;
+    gap: 50px;
+   }
+  
+  .imageMask {
+    width: 230px;
+    height: 200px;
+    overflow: hidden;
+    border-radius: 8px;
+    flex-shrink: 0;
+  }
+  
+  .gameImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .gameDetails {
+    flex: 1;
+  }
+  
+  .gameName {
+    font-size: 1.25rem;
+    color: #0082BC;
+  }
+  
+  .gameInfo {
+    margin: 2px 0;
+  }
+  
+  .buttonGroup {
+    display: flex;
+    flex-direction: row;
+    gap: 20px; 
+    margin-top: 1rem;
+  }
