@@ -68,8 +68,7 @@
   font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
-  margin-left: auto;
-  display: flex;
+  padding-top: 1.5rem;
 }
 
 .add-session-button i {
@@ -83,3 +82,17 @@
   padding: 1rem;
   text-align: center;
 }
+
+.play-history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.play-history-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 2rem;
+}
+

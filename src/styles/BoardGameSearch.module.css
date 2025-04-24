@@ -83,7 +83,7 @@
   
   .imageMask {
     width: 230px;
-    height: 180px;
+    height: 200px;
     overflow: hidden;
     border-radius: 8px;
     flex-shrink: 0;
@@ -116,3 +116,5 @@
     gap: 10px; 
     margin-top: 2rem;
   }
+
+  

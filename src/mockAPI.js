@@ -86,24 +86,29 @@ export const addBoardGame = async (newGame) => {
 };
 
 // Simulate fetching play history (all sessions)
-export const fetchPlayHistory = async () => {
-  return new Promise((resolve) => {
-      setTimeout(() => {
-          const history = mockData.gameSessions.map(session => ({
-              id: session.id,
-              username: mockData.users.find(user => user.id === session.userId)?.username || "Unknown",
-              name: mockData.boardgames.find(game => game.id === session.gameId)?.name || "Unknown",
-              date: session.date,
-              numPlayers: session.numPlayers,
-              score: session.score,
-              result: session.result,
-              time: session.time,
-              comments: session.comments,
-          }));
-          resolve(history);
-      }, 500);
+export async function fetchPlayHistory() {
+  const history = mockData.gameSessions.map(session => {
+    const game = mockData.boardgames.find(game => game.id === session.gameId);
+    const user = mockData.users.find(user => user.id === session.userId);
+
+    return {
+      id: session.id,
+      userId: session.userId,
+      username: user ? user.username : "Unknown",
+      gameId: game ? game.id : null,
+      name: game ? game.name : "Unknown",
+      image: game ? game.image : null,
+      date: session.date,
+      numPlayers: session.numPlayers,
+      score: session.score,
+      result: session.result,
+      time: session.time,
+      comments: session.comments,
+    };
   });
-};
+  return history;
+}
+
 
 // Simulate fetching user-specific play history
 export const fetchUserPlayHistory = async (userId) => {

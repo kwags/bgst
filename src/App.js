@@ -75,12 +75,14 @@ function App() {
 
             <main className="app-main">
 
-              
+
               <div ref={gameSessionFormRef}></div>
               {/* Add a Play Session Button and Slide Panel */}
               <section className="app-section">
-
-                <button className="add-session-button" onClick={() => setShowSessionForm(true)}><i className="fas fa-plus-square"></i>Add Play Session</button>
+                <div className="play-history-header">
+                  <h3 className="play-history-title">Play History</h3>
+                  <button className="add-session-button" onClick={() => setShowSessionForm(true)}><i className="fas fa-plus-square"></i>Add Play Session</button>
+                </div>
                 <SlidePanel show={showSessionForm} 
                   onClose={() => { setShowSessionForm(false); setEditingPlayHistoryItem(null); setSelectedGameForSession(""); }}
                   heading={editingPlayHistoryItem ? "Edit Play Session" : "Add Play Session"}>
