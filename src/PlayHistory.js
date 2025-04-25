@@ -40,8 +40,9 @@ function PlayHistory({ items, setItems, onEdit, bookmarks, setBookmarks }) {
                 <div className={styles.buttonGroup}>
                   <button className="edit-button" onClick={() => onEdit(item)}><i className="far fa-edit"></i>Edit Session</button>
                   <button className="edit-button" onClick={() => deleteGameSession(item.id)}><i className="far fa-trash-can"></i>Delete Session</button>
-                  <button className="edit-button" onClick={() => navigate(`/stats/${item.gameId}`)}><i className="fas fa-chart-simple"></i>Game Stats</button>             
-                  <BookmarkButtons 
+                  <button className="edit-button" onClick={() => navigate(`/stats/${item.gameId}`, {state: { gameName: item.name, playHistory: items, item: item }})}>
+                    <i className="fas fa-chart-simple"></i>Game Stats</button>
+                    <BookmarkButtons 
                     gameId={item.gameId}
                     bookmarks={bookmarks}
                     setBookmarks={setBookmarks}

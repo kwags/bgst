@@ -68,9 +68,25 @@
   font-weight: bold;
   cursor: pointer;
   padding-top: 1.5rem;
+  text-decoration: none;
 }
 
 .add-button i {
+  font-size: 1rem;
+  padding-right: .5rem;
+}
+
+.stats-button {
+  background-color: transparent;
+  color: #FF815D;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  padding-right: 1.5rem;
+  text-decoration: none;
+}
+
+.stats-button i {
   font-size: 1rem;
   padding-right: .5rem;
 }
