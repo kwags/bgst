@@ -14,6 +14,7 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import SlidePanel from './SlidePanel';
 import Navbar from './Navbar.js';
 import Bookmarks from "./Bookmarks.js";
+import GameStats from "./GameStats.js";
 
 export const UserContext = createContext();
 
@@ -28,7 +29,6 @@ function App() {
   const gameSessionFormRef = useRef(null);
   const [bookmarks, setBookmarks] = useState([]);
   const [showSessionForm, setShowSessionForm] = useState(false);
-
 
   useEffect(() => {
     const getPlayHistory = async () => {
@@ -45,6 +45,7 @@ function App() {
     };
     getCollection();
   }, []);
+  
 
   return (
     <Router>
@@ -164,6 +165,20 @@ function App() {
               </main>
           } />
           
+          <Route path="/stats/:id" element={
+            <main className="app-main">
+              <section className="app-section">               
+                <div className="section-header">
+                  <h3 className="section-title">Game Stats</h3>
+                    <Link to={'/stats/'} className="stats-button">
+                      <i className="fas fa-chart-simple"></i>Overall Stats
+                    </Link>              
+                </div>
+                <GameStats /> 
+              </section>
+            </main>
+          } />
+
           <Route path="/game/:id" element={<BoardGameDetails bookmarks={bookmarks} setBookmarks={setBookmarks} />} />
         </Routes>
 
