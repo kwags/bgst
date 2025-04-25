@@ -362,8 +362,22 @@ export const toggleWantToPlay = async (userId, gameId) => {
 export const fetchUserBookmarks = async (userId) => {
   return new Promise((resolve) => {
     setTimeout(() => {
-      const userBookmarks = mockData.bookmarks.filter(b => b.userId === userId);
-      resolve(userBookmarks);
+      const bookmarksWithGameInfo = mockData.bookmarks
+        .filter(bookmark => bookmark.userId === userId)
+        .map(bookmark => {
+          const game = mockData.boardgames.find(game => game.id === bookmark.gameId);
+          return {
+            id: bookmark.id,
+            userId: bookmark.userId,
+            gameId: bookmark.gameId,
+            wantToOwn: bookmark.wantToOwn,
+            wantToPlay: bookmark.wantToPlay,
+            name: game?.name || "Unknown",
+            estimatedTime: game?.estimatedTime || "N/A",
+            image: game?.image || null
+          };
+        });
+      resolve(bookmarksWithGameInfo);
     }, 300);
   });
 };

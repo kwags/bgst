@@ -13,6 +13,8 @@ import UserStats from './UserStats.js';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import SlidePanel from './SlidePanel';
 import Navbar from './Navbar.js';
+import Bookmarks from "./Bookmarks.js";
+
 export const UserContext = createContext();
 
 function App() {
@@ -152,12 +154,16 @@ function App() {
           } />
 
           <Route path="/bookmarks" element={
-            <main className="app-main">
-              <h2>Bookmarked Games</h2>
-              {/* Need to Add Bookmark List */}
-            </main>
+              <main className="app-main">
+                <section className="app-section">               
+                  <div className="section-header">
+                    <h3 className="section-title">Bookmarks</h3>
+                  </div>
+                  <Bookmarks bookmarked={bookmarks} />
+                </section>
+              </main>
           } />
-
+          
           <Route path="/game/:id" element={<BoardGameDetails bookmarks={bookmarks} setBookmarks={setBookmarks} />} />
         </Routes>
 
