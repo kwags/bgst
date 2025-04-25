@@ -40,9 +40,9 @@ function Collection({ items, setItems, onEdit, onAddSession, bookmarks, setBookm
                 <p className={styles.gameInfo}><strong>Purchase Price:</strong> {item.purchasePrice}</p>
                 <div className={styles.buttonGroup}>
                    {/* <button onClick={() => onAddSession(item.name)}>Add Session</button> */}
-                  <button onClick={() => onEdit(item)}>Edit Game</button>
-                  <button onClick={() => deleteGame(item.id)}>Delete Game</button>
-                  <button onClick={() => navigate(`/stats/${item.gameId}`)}>Game Stats</button>             
+                  <button className="edit-button" onClick={() => onEdit(item)}><i className="far fa-edit"></i>Edit Game</button>
+                  <button className="edit-button" onClick={() => deleteGame(item.id)}><i className="far fa-trash-can"></i>Delete Game</button>
+                  <button className="edit-button" onClick={() => navigate(`/stats/${item.gameId}`)}><i className="fas fa-chart-simple"></i>Game Stats</button>             
                   <BookmarkButtons 
                     gameId={item.gameId}
                     bookmarks={bookmarks}
