@@ -2,7 +2,6 @@ import './styles/App.css';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import BoardGameDetails from './BoardGameDetails';
 import React, { useState, useEffect, useRef, createContext } from "react";
-import { v4 as uuidv4 } from 'uuid';
 import BoardGameSearch from './BoardgameSearch.js';
 import PlayHistory from "./PlayHistory.js";
 import { fetchPlayHistory, fetchCollection, fetchUserBookmarks } from "./mockAPI";
@@ -46,6 +45,13 @@ function App() {
     getCollection();
   }, []);
   
+  useEffect(() => {
+    const getBookmarks = async () => {
+      const data = await fetchUserBookmarks(userId);
+      setBookmarks(data);
+    };
+    getBookmarks();
+  }, [userId]);
 
   return (
     <Router>
@@ -102,7 +108,13 @@ function App() {
 
                 </SlidePanel>
 
-                <PlayHistory items={playHistory} setItems={setPlayHistory} bookmarks={bookmarks} setBookmarks={setBookmarks} userId={userId} onEdit={(item) => {
+                <PlayHistory 
+                  items={playHistory}
+                  setItems={setPlayHistory}
+                  bookmarks={bookmarks}
+                  setBookmarks={setBookmarks}
+                  userId={userId}
+                  onEdit={(item) => {
                     setEditingPlayHistoryItem(item);
                     setSelectedGameForSession(item.name);
                     setShowSessionForm(true);
@@ -137,7 +149,10 @@ function App() {
                 </SlidePanel>
 
                 <Collection 
-                  items={collection} setItems={setCollection} 
+                  items={collection}
+                  setItems={setCollection} 
+                  bookmarks={bookmarks}
+                  setBookmarks={setBookmarks}
                   onEdit={(item) => {
                     setEditingCollectionItem(item);
                     setSelectedGameForSession(item.name); 
@@ -160,7 +175,7 @@ function App() {
                   <div className="section-header">
                     <h3 className="section-title">Bookmarks</h3>
                   </div>
-                  <Bookmarks bookmarked={bookmarks} />
+                  <Bookmarks bookmarks={bookmarks} setBookmarks={setBookmarks} />
                 </section>
               </main>
           } />
