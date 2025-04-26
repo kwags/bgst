@@ -1,13 +1,11 @@
 //Collection is a list of the User's Games
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import BookmarkButtons from './BookmarkButtons';
-import { useNavigate } from 'react-router-dom';
 import styles from './styles/PlayHistory.module.css';
 
-
-function Collection({ items, setItems, onEdit, onAddSession, bookmarks, setBookmarks, userId }) {
+function Collection({ items = [], setItems, onEdit, onAddSession, bookmarks = [], setBookmarks, userId }) {
   const deleteGame = (id) => {
     setItems(items.filter(item => item.id !== id));
   };
@@ -20,15 +18,16 @@ function Collection({ items, setItems, onEdit, onAddSession, bookmarks, setBookm
         {items.map(item => (
           <li key={item.id} className={`${styles.listItem} ${styles.leftCard}`}>
             <div className={styles.cardContent}>
-            {item.image && (
+              {item.image && (
                 <div className={styles.imageMask}>
                   <img src={item.image} alt={item.name} className={styles.gameImage} />
                 </div>
               )}
               <div className={`${styles.gameDetails} ${styles.leftDetails}`}>
-              <h3 className={styles.gameName}>
+                <h3 className={styles.gameName}>
                   <Link
                     to={`/game/${encodeURIComponent(item.name)}`}
+                    state={{ collection: items, playHistory: [] }}
                     style={{ textDecoration: 'none', color: '#0082BC' }}
                   >
                     {item.name}
@@ -39,11 +38,11 @@ function Collection({ items, setItems, onEdit, onAddSession, bookmarks, setBookm
                 <p className={styles.gameInfo}><strong>Purchase Date:</strong> {item.purchaseDate}</p>
                 <p className={styles.gameInfo}><strong>Purchase Price:</strong> {item.purchasePrice}</p>
                 <div className={styles.buttonGroup}>
-                   {/* <button onClick={() => onAddSession(item.name)}>Add Session</button> */}
+                  {/* <button onClick={() => onAddSession(item.name)}>Add Session</button> */}
                   <button className="edit-button" onClick={() => onEdit(item)}><i className="far fa-edit"></i>Edit Game</button>
                   <button className="edit-button" onClick={() => deleteGame(item.id)}><i className="far fa-trash-can"></i>Delete Game</button>
-                  <button className="edit-button" onClick={() => navigate(`/stats/${item.gameId}`)}><i className="fas fa-chart-simple"></i>Game Stats</button>             
-                  <BookmarkButtons 
+                  <button className="edit-button" onClick={() => navigate(`/stats/${item.gameId}`)}><i className="fas fa-chart-simple"></i>Game Stats</button>
+                  <BookmarkButtons
                     gameId={item.gameId}
                     bookmarks={bookmarks}
                     setBookmarks={setBookmarks}
