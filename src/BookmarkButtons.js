@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { toggleWantToOwn, toggleWantToPlay, fetchUserBookmarks } from "./mockAPI";
 import { UserContext } from "./App";   
+import styles from './styles/PlayHistory.module.css';
 
 function BookmarkButtons({ gameId, bookmarks = [], setBookmarks }) {
   const userId = useContext(UserContext);
@@ -33,11 +34,11 @@ function BookmarkButtons({ gameId, bookmarks = [], setBookmarks }) {
   };
 
   return (
-    <div style={{ marginTop: "0.5rem" }}>
-      <button onClick={handleToggleWantToOwn}>
+    <div>
+       <button className={styles.bookmarkButton} onClick={handleToggleWantToOwn}>
         {existingBookmark?.wantToOwn ? "⭐️ Want to Own" : "☆ Want to Own"}
       </button>
-      <button onClick={handleToggleWantToPlay}>
+      <button className={styles.bookmarkButton} onClick={handleToggleWantToPlay}>
         {existingBookmark?.wantToPlay ? "🎮 Want to Play" : "❌ Want to Play"}
       </button>
     </div>
