@@ -1,21 +1,22 @@
 // Play History is a List of Game Sessions
+
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import BookmarkButtons from './BookmarkButtons';
 import styles from './styles/PlayHistory.module.css';
-import { useNavigate } from 'react-router-dom';
 
 function PlayHistory({ items, setItems, onEdit, bookmarks, setBookmarks }) {
   const deleteGameSession = (id) => {
     setItems(items.filter(item => item.id !== id));
   };
+  
   const navigate = useNavigate();
 
   return (
     <div className={styles.container}>
       <ul className={`${styles.list} ${styles.leftAlignedList}`}>
         {items.map(item => (
-          <li key={item.id} className={`${styles.listItem} ${styles.leftCard}`}>
+          <li key={`${item.id}-${bookmarks.length}`} className={`${styles.listItem} ${styles.leftCard}`}>
             <div className={styles.cardContent}>
               {item.image && (
                 <div className={styles.imageMask}>
@@ -26,6 +27,7 @@ function PlayHistory({ items, setItems, onEdit, bookmarks, setBookmarks }) {
                 <h3 className={styles.gameName}>
                   <Link
                     to={`/game/${encodeURIComponent(item.name)}`}
+                    state={{ playHistory: items, collection: [] }}
                     style={{ textDecoration: 'none', color: '#0082BC' }}
                   >
                     {item.name}
@@ -40,9 +42,9 @@ function PlayHistory({ items, setItems, onEdit, bookmarks, setBookmarks }) {
                 <div className={styles.buttonGroup}>
                   <button className="edit-button" onClick={() => onEdit(item)}><i className="far fa-edit"></i>Edit Session</button>
                   <button className="edit-button" onClick={() => deleteGameSession(item.id)}><i className="far fa-trash-can"></i>Delete Session</button>
-                  <button className="edit-button" onClick={() => navigate(`/stats/${item.gameId}`, {state: { gameName: item.name, playHistory: items, item: item }})}>
+                  <button className="edit-button" onClick={() => navigate(`/stats/${item.gameId}`, { state: { gameName: item.name, playHistory: items, item: item } })}>
                     <i className="fas fa-chart-simple"></i>Game Stats</button>
-                    <BookmarkButtons 
+                  <BookmarkButtons
                     gameId={item.gameId}
                     bookmarks={bookmarks}
                     setBookmarks={setBookmarks}
