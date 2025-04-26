@@ -373,6 +373,7 @@ export const fetchUserBookmarks = async (userId) => {
             wantToOwn: bookmark.wantToOwn,
             wantToPlay: bookmark.wantToPlay,
             name: game?.name || "Unknown",
+            players: game?.players || "Unknown",
             estimatedTime: game?.estimatedTime || "N/A",
             image: game?.image || null
           };
