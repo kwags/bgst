@@ -1,32 +1,60 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import AddBoardGameForm from './AddBoardGameForm';
-import { fetchBoardGames, fetchUserBookmarks, toggleWantToOwn, toggleWantToPlay } from './mockAPI';
+import { fetchPlayHistory, fetchCollection, fetchBoardGames, fetchUserBookmarks, toggleWantToOwn, toggleWantToPlay } from './mockAPI';
 import { UserContext } from './App';
 import GameSessionForm from './GameSessionForm';
 import AddCollectionForm from './AddCollectionForm';
 import styles from "./styles/SlidePanel.module.css";
 
 function BoardGameDetails({ bookmarks, setBookmarks }) {
-  const { name } = useParams();
+  const { id } = useParams();
   const [game, setGame] = useState(null);
   const [error, setError] = useState(null);
   const [showSessionForm, setShowSessionForm] = useState(false);
   const [showCollectionForm, setShowCollectionForm] = useState(false);
 
   const userId = useContext(UserContext);
+  const location = useLocation();
+
+  const [playHistory, setPlayHistory] = useState([]);
+  const [collection, setCollection] = useState([]);
 
   const existingBookmark = bookmarks.find(
     (b) => b.userId === userId && b.gameId === game?.id
   );
 
   useEffect(() => {
+    if (location.state?.playHistory) {
+      setPlayHistory(location.state.playHistory);
+    } else {
+      fetchPlayHistory().then(setPlayHistory);
+    }
+  }, [location.state?.playHistory]);
+  
+  useEffect(() => {
+    if (location.state?.collection) {
+      setCollection(location.state.collection);
+    } else {
+      fetchCollection().then(setCollection);
+    }
+  }, [location.state?.collection]);
+
+  useEffect(() => {
     const loadGame = async () => {
       try {
-        const decodedName = decodeURIComponent(name);
+        const decodedName = decodeURIComponent(id);
 
         const allGames = await fetchBoardGames(""); // Fetch all boardgames
-        const foundGame = allGames.find(g => g.name === decodedName); // ONLY check boardgames
+        let foundGame = allGames.find(g => g.name.toLowerCase() === decodedName.toLowerCase()); // ONLY check boardgames
+
+        if (!foundGame && playHistory.length > 0) {
+          foundGame = playHistory.find(g => g.name === decodedName);
+        }
+
+        if (!foundGame && collection.length > 0) {
+          foundGame = collection.find(g => g.name === decodedName);
+        }
 
         if (foundGame) {
           setGame(foundGame);
@@ -39,7 +67,7 @@ function BoardGameDetails({ bookmarks, setBookmarks }) {
     };
 
     loadGame();
-  }, [name]);
+  }, [id, playHistory, collection]);
 
   const refreshBookmarks = async () => {
     const updated = await fetchUserBookmarks(userId);
@@ -62,7 +90,7 @@ function BoardGameDetails({ bookmarks, setBookmarks }) {
   if (error) return (
     <div style={{ padding: "2rem" }}>
       <p>{error}</p>
-      <AddBoardGameForm autofillGameName={decodeURIComponent(name)} />
+      <AddBoardGameForm autofillGameName={decodeURIComponent(id)} />
     </div>
   );
 

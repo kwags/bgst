@@ -27,6 +27,7 @@ function PlayHistory({ items, setItems, onEdit, bookmarks, setBookmarks }) {
                 <h3 className={styles.gameName}>
                   <Link
                     to={`/game/${encodeURIComponent(item.name)}`}
+                    state={{ playHistory: items, collection: [] }}
                     style={{ textDecoration: 'none', color: '#0082BC' }}
                   >
                     {item.name}

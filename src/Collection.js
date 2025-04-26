@@ -27,6 +27,7 @@ function Collection({ items = [], setItems, onEdit, onAddSession, bookmarks = []
                 <h3 className={styles.gameName}>
                   <Link
                     to={`/game/${encodeURIComponent(item.name)}`}
+                    state={{ collection: items, playHistory: [] }}
                     style={{ textDecoration: 'none', color: '#0082BC' }}
                   >
                     {item.name}
