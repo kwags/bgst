@@ -14,6 +14,8 @@ import SlidePanel from './SlidePanel';
 import Navbar from './Navbar.js';
 import Bookmarks from "./Bookmarks.js";
 import GameStats from "./GameStats.js";
+import FriendPage from './FriendPage.js';
+import FriendsList from './FriendsList.js';
 
 export const UserContext = createContext();
 
@@ -195,6 +197,9 @@ function App() {
           } />
 
           <Route path="/game/:id" element={<BoardGameDetails bookmarks={bookmarks} setBookmarks={setBookmarks} />} />
+          <Route path="/friends" element={<FriendsList userId={userId} />} />
+          <Route path='/user/:userId' element={<FriendPage />} />
+
         </Routes>
 
       </div>
