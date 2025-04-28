@@ -203,6 +203,8 @@ function App() {
               collection={collection}
               setCollection={setCollection}
             />} />
+            <Route path="/friends" element={<FriendsList userId={userId} />} />
+            <Route path='/user/:userId' element={<FriendPage />} />
           </Routes>
 
         </div>
