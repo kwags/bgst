@@ -1,4 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react';
+import { act } from 'react';
 import App from './App';
 import GameSessionForm from './GameSessionForm';
 
@@ -64,4 +65,8 @@ test('calls onAdd with correct data onSubmit', () => {
   );
 });
 
-
+test('renders app without crashing', async () => {
+  await act(async () => {
+    render(<App />);
+  });
+});
