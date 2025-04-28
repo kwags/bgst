@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import GameSessionForm from "./GameSessionForm";
-import { v4 as uuidv4 } from 'uuid';
-import { fetchBoardGames } from "./mockAPI";
+import { enrichWithBoardGameData } from "./mockAPI";
 
 const GameSessionManager = ({
   playHistory,
@@ -17,18 +16,7 @@ const GameSessionManager = ({
   const handleAdd = async (newItem) => {
     setLoading(true);
     try {
-      const results = await fetchBoardGames(newItem.name);
-      const game = results.length > 0 ? results[0] : null;
-
-      const enrichedItem = {
-        ...newItem,
-        id: uuidv4(),
-        gameId: game ? game.id : uuidv4(),
-        image: game ? game.image : null,
-        players: game ? game.players : (newItem.numPlayers || "Unknown"),
-        estimatedTime: game ? game.estimatedTime : "N/A",
-      };
-
+      const enrichedItem = await enrichWithBoardGameData(newItem.name, newItem);
       setPlayHistory([...playHistory, enrichedItem]);
       setShowSessionForm(false);
     } catch (error) {

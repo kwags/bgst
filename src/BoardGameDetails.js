@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import AddBoardGameForm from './AddBoardGameForm';
-import { fetchPlayHistory, fetchCollection, fetchBoardGames, fetchUserBookmarks, toggleWantToOwn, toggleWantToPlay } from './mockAPI';
+import { fetchBoardGames, fetchUserBookmarks, toggleWantToOwn, toggleWantToPlay, enrichWithBoardGameData } from './mockAPI';
 import { UserContext } from './App';
 import GameSessionForm from './GameSessionForm';
 import AddCollectionForm from './AddCollectionForm';
 import styles from "./styles/SlidePanel.module.css";
 
-function BoardGameDetails({ bookmarks, setBookmarks }) {
+function BoardGameDetails({ bookmarks, setBookmarks, playHistory, setPlayHistory, collection, setCollection }) {
   const { id } = useParams();
   const [game, setGame] = useState(null);
   const [error, setError] = useState(null);
@@ -15,30 +15,10 @@ function BoardGameDetails({ bookmarks, setBookmarks }) {
   const [showCollectionForm, setShowCollectionForm] = useState(false);
 
   const userId = useContext(UserContext);
-  const location = useLocation();
-
-  const [playHistory, setPlayHistory] = useState([]);
-  const [collection, setCollection] = useState([]);
 
   const existingBookmark = bookmarks.find(
     (b) => b.userId === userId && b.gameId === game?.id
   );
-
-  useEffect(() => {
-    if (location.state?.playHistory) {
-      setPlayHistory(location.state.playHistory);
-    } else {
-      fetchPlayHistory().then(setPlayHistory);
-    }
-  }, [location.state?.playHistory]);
-  
-  useEffect(() => {
-    if (location.state?.collection) {
-      setCollection(location.state.collection);
-    } else {
-      fetchCollection().then(setCollection);
-    }
-  }, [location.state?.collection]);
 
   useEffect(() => {
     const loadGame = async () => {
@@ -123,7 +103,10 @@ function BoardGameDetails({ bookmarks, setBookmarks }) {
         <div className={styles["slide-panel-inner"]}>
           <button className={styles["close-button"]} onClick={() => setShowSessionForm(false)}>×</button>            
           <GameSessionForm
-            onAdd={() => setShowSessionForm(false)}
+            onAdd={async (sessionData) => {
+              const enrichedSession = await enrichWithBoardGameData(sessionData.name, sessionData);
+              setPlayHistory(prev => [...prev, enrichedSession]);
+            }}
             onCancelEdit={() => setShowSessionForm(false)}
             autofillGameName={game.name}
           />
@@ -141,7 +124,10 @@ function BoardGameDetails({ bookmarks, setBookmarks }) {
         <div className={styles["slide-panel-inner"]}>
           <button className={styles["close-button"]} onClick={() => setShowCollectionForm(false)}>×</button>            
           <AddCollectionForm
-            onAdd={() => setShowCollectionForm(false)}
+            onAdd={async (collectionData) => {
+              const enrichedCollection = await enrichWithBoardGameData(collectionData.name, collectionData);
+              setCollection(prev => [...prev, enrichedCollection]);
+            }}
             onCancelEdit={() => setShowCollectionForm(false)}
             autofillGameName={game.name}
             autofillNumPlayers={game.players}
