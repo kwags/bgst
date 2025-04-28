@@ -1,0 +1,75 @@
+.container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the content horizontally */
+    padding: 1rem;
+}
+  
+.box {
+width: 95%; /* Almost the full width of the screen */
+
+background-color: #fff; /* White background for the box */
+border: 1px solid #ddd; /* Light border around the box */
+border-radius: 8px; /* Rounded corners */
+box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+padding: 1.5rem;
+}
+
+.header {
+font-size: 1.25rem; /* Slightly smaller font size */
+margin-bottom: 1rem;
+color: #333;
+text-align: left; /* Align the title to the left */
+padding-left: 1rem; /* Add padding to keep it away from the edge */
+}
+
+.list {
+list-style: none;
+margin: 0;
+padding: 0;
+}
+
+.listItem {
+padding: 1.5rem;
+border-bottom: 1px solid #eee;
+display: flex;
+align-items: center;
+gap: 20px;
+}
+
+.listItem:last-child {
+border-bottom: none;
+}
+
+.friendName {
+font-size: 1.5rem; /* Make the usernames bigger */
+font-weight: bold; /* Make the usernames bold */
+color: #0082BC;
+margin: 0;
+text-decoration: none;
+}
+
+.friendName:hover {
+text-decoration: underline;
+}
+
+.friendInfo {
+font-size: 1rem;
+color: #666;
+}
+
+.avatar {
+width: 50px;
+height: 50px;
+border-radius: 50%;
+object-fit: cover;
+flex-shrink: 0;
+}
+
+.emptyMessage {
+font-size: 1rem;
+color: #999;
+text-align: center;
+margin-top: 2rem;
+}

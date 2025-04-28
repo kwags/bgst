@@ -1,0 +1,15 @@
+.header {
+  font-size: 2rem; /* Larger font size for emphasis */
+  font-weight: bold; /* Make the title bold */
+  color: #333; /* Darker color for better readability */
+  text-align: center; /* Center the header text */
+  margin-bottom: 1.5rem; /* Add spacing below the header */
+  padding: 0 1rem; /* Add padding to prevent it from touching the edges */
+}
+
+.friendPageContainer {
+  padding: 1rem;
+  background-color: #f9f9f9; /* Light background for the page */
+  border-radius: 8px; /* Rounded corners for the container */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
