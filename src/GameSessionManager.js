@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import GameSessionForm from "./GameSessionForm";
-import { v4 as uuidv4 } from 'uuid';
+import { enrichWithBoardGameData } from "./mockAPI";
 
 const GameSessionManager = ({
   playHistory,
@@ -11,30 +11,43 @@ const GameSessionManager = ({
   setSelectedGameForSession,
   setShowSessionForm,
 }) => {
+  const [loading, setLoading] = useState(false);
 
-  
+  const handleAdd = async (newItem) => {
+    setLoading(true);
+    try {
+      const enrichedItem = await enrichWithBoardGameData(newItem.name, newItem);
+      setPlayHistory([...playHistory, enrichedItem]);
+      setShowSessionForm(false);
+    } catch (error) {
+      console.error('Error enriching game session:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleUpdate = (updatedItem) => {
+    setPlayHistory(
+      playHistory.map((item) =>
+        item.id === updatedItem.id ? updatedItem : item
+      )
+    );
+    setEditingPlayHistoryItem(null);
+    setShowSessionForm(false);
+  };
+
   return (
     <GameSessionForm
       editingItem={editingPlayHistoryItem}
       autofillGameName={selectedGameForSession || ""}
-      onAdd={(newItem) => {
-        setPlayHistory([...playHistory, { ...newItem, id: uuidv4() }]);
-        setShowSessionForm(false);
-      }}
-      onUpdate={(updatedItem) => {
-        setPlayHistory(
-          playHistory.map((item) =>
-            item.id === updatedItem.id ? updatedItem : item
-          )
-        );
-        setEditingPlayHistoryItem(null);
-        setShowSessionForm(false);
-      }}
+      onAdd={handleAdd}
+      onUpdate={handleUpdate}
       onCancelEdit={() => {
         setEditingPlayHistoryItem(null);
         setSelectedGameForSession("");
         setShowSessionForm(false);
       }}
+      loading={loading}
     />
   );
 };

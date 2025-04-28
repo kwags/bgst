@@ -23,14 +23,13 @@ function Bookmarks({ bookmarks = [], setBookmarks }) {
                 <h3 className={styles.gameName}>
                   <Link
                     to={`/game/${encodeURIComponent(bookmark.name)}`}
-                    state={{}}
                     style={{ textDecoration: 'none', color: '#0082BC' }}
                   >
                     {bookmark.name}
                   </Link>
                 </h3>
                 <p className={styles.gameInfo}><strong>Players:</strong> {bookmark.players || "N/A"}</p>
-                <p className={styles.gameInfo}><strong>Playtime:</strong> {bookmark.estimatedTime || "N/A"} mins</p>
+                <p className={styles.gameInfo}><strong>Playtime:</strong> {bookmark.estimatedTime || "N/A"}</p>
                 <div className={styles.buttonGroup}>
                   <BookmarkButtons
                     gameId={bookmark.gameId}

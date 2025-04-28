@@ -185,22 +185,22 @@ export const fetchUserByName = async (username) => {
 // Simulate fetching user-specific play history
 export const fetchUserPlayHistory = async (userId) => {
   return new Promise((resolve) => {
-      setTimeout(() => {
-          const history = mockData.gameSessions
-              .filter(session => session.userId === userId)
-              .map(session => ({
-                  id: session.id,
-                  username: mockData.users.find(user => user.id === session.userId)?.username || "Unknown",
-                  name: mockData.boardgames.find(game => game.id === session.gameId)?.name || "Unknown",
-                  date: session.date,
-                  numPlayers: session.numPlayers,
-                  score: session.score,
-                  result: session.result,
-                  time: session.time,
-                  comments: session.comments,
-              }));
-          resolve(history);
-      }, 500);
+    setTimeout(() => {
+      const history = mockData.gameSessions
+        .filter(session => session.userId === userId)
+        .map(session => ({
+          id: session.id,
+          username: mockData.users.find(user => user.id === session.userId)?.username || "Unknown",
+          name: mockData.boardgames.find(game => game.id === session.gameId)?.name || "Unknown",
+          date: session.date,
+          numPlayers: session.numPlayers,
+          score: session.score,
+          result: session.result,
+          time: session.time,
+          comments: session.comments,
+        }));
+      resolve(history);
+    }, 500);
   });
 };
 
@@ -224,7 +224,7 @@ export const saveGameSession = async (gameSession) => {
         return;
       }
       const newSession = {
-        id: gameSession.id || uuidv4(), 
+        id: gameSession.id || uuidv4(),
         userId: gameSession.userId,
         gameId: game.id,
         date: gameSession.date || new Date().toISOString().split('T')[0],
@@ -272,35 +272,35 @@ export const deleteGameSession = async (id) => {
 // Simulate saving a collection item. pass in a collectionItem object with required fields: userId, name (of game), purchaseDate, purchasePrice
 export const saveCollectionItem = async (collectionItem) => {
   return new Promise((resolve, reject) => {
-      setTimeout(() => {
-          if (!collectionItem.userId) {
-            reject(new Error('User ID is required'));
-            return;
-          }
-          if (!collectionItem.name) {
-            reject(new Error('Game name is required'));
-            return;
-          }
-          const game = mockData.boardgames.find(g => g.name.toLowerCase() === collectionItem.name.toLowerCase());
-          if (!game) {
-            reject(new Error(`Game "${collectionItem.name}" not found`));
-            return;
-          }
-          const user = mockData.users.find(u => u.id === collectionItem.userId);
-          if (!user) {
-            reject(new Error(`User ID "${collectionItem.userId}" not found`));
-            return;
-          }
-          const newItem = {
-              id: uuidv4(),
-              userId: collectionItem.userId,
-              gameId: game.Id,
-              purchaseDate: collectionItem.purchaseDate || new Date().toISOString().split('T')[0], // Default to today
-              purchasePrice: parseFloat(collectionItem.purchasePrice) || 0.00, 
-          };
-          mockData.collection.push(newItem);
-          resolve(newItem);
-      }, 300);
+    setTimeout(() => {
+      if (!collectionItem.userId) {
+        reject(new Error('User ID is required'));
+        return;
+      }
+      if (!collectionItem.name) {
+        reject(new Error('Game name is required'));
+        return;
+      }
+      const game = mockData.boardgames.find(g => g.name.toLowerCase() === collectionItem.name.toLowerCase());
+      if (!game) {
+        reject(new Error(`Game "${collectionItem.name}" not found`));
+        return;
+      }
+      const user = mockData.users.find(u => u.id === collectionItem.userId);
+      if (!user) {
+        reject(new Error(`User ID "${collectionItem.userId}" not found`));
+        return;
+      }
+      const newItem = {
+        id: uuidv4(),
+        userId: collectionItem.userId,
+        gameId: game.Id,
+        purchaseDate: collectionItem.purchaseDate || new Date().toISOString().split('T')[0], // Default to today
+        purchasePrice: parseFloat(collectionItem.purchasePrice) || 0.00,
+      };
+      mockData.collection.push(newItem);
+      resolve(newItem);
+    }, 300);
   });
 };
 
@@ -445,6 +445,7 @@ export const fetchUserBookmarks = async (userId) => {
             wantToOwn: bookmark.wantToOwn,
             wantToPlay: bookmark.wantToPlay,
             name: game?.name || "Unknown",
+            players: game?.players || "Unknown",
             estimatedTime: game?.estimatedTime || "N/A",
             image: game?.image || null
           };
@@ -454,17 +455,30 @@ export const fetchUserBookmarks = async (userId) => {
   });
 };
 
-/* DEPRECATED
-// Simulates fetching a single board game by its ID
-export const fetchBoardGameById = async (id) => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      const game = mockData.boardgames.find(game => String(game.id) === String(id));
-      if (game) {
-        resolve(game);
-      } else {
-        reject(new Error("Game not found"));
-      }
-    }, 300); // Sim network delay
-  });
-};*/
+export async function enrichWithBoardGameData(name, formValues) {
+  const results = await fetchBoardGames(name);
+  const game = results.length > 0 ? results[0] : null;
+
+  const safeGet = (formValue, gameValue, fallback) => {
+    if (formValue !== undefined && formValue !== '') return formValue;
+    if (gameValue !== undefined && gameValue !== '') return gameValue;
+    return fallback;
+  };
+
+  return {
+    id: formValues.id || crypto.randomUUID(),
+    gameId: game ? game.id : crypto.randomUUID(),
+    name: safeGet(formValues.name, game?.name, "Unknown"),
+    image: game?.image || null,
+    players: safeGet(formValues.players, game?.players || "Unknown"),
+    numPlayers: safeGet(formValues.numPlayers, game?.players, ""),
+    estimatedTime: safeGet(formValues.estimatedTime, game?.estimatedTime, "N/A"),
+    purchaseDate: safeGet(formValues.purchaseDate, null, new Date().toISOString().split('T')[0]),
+    purchasePrice: safeGet(formValues.purchasePrice, null, 0),
+    date: safeGet(formValues.date, null, new Date().toISOString().split('T')[0]),
+    score: safeGet(formValues.score, null, 0),
+    result: safeGet(formValues.result, null, ''),
+    time: safeGet(formValues.time, null, 0),
+    comments: safeGet(formValues.comments, null, ''),
+  };
+}

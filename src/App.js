@@ -46,7 +46,7 @@ function App() {
     };
     getCollection();
   }, []);
-  
+
   useEffect(() => {
     const getBookmarks = async () => {
       const data = await fetchUserBookmarks(userId);
@@ -58,156 +58,163 @@ function App() {
   return (
     <Router>
       <UserContext.Provider value={userId} >
-      <div className="topBar">
-        <div className="userSection">
-          <i className="fas fa-user"></i>
-          <span className="username">DEMO_USER</span>
+        <div className="topBar">
+          <div className="userSection">
+            <i className="fas fa-user"></i>
+            <span className="username">DEMO_USER</span>
+          </div>
         </div>
-      </div>
-      <div className="app-container">
-        <header className="app-header">
-          <h1><Link to="/" style={{ textDecoration: "none", color: "inherit" }}>🎲 Board Game Statistic Tracker</Link></h1>
-        </header>
+        <div className="app-container">
+          <header className="app-header">
+            <h1><Link to="/" style={{ textDecoration: "none", color: "inherit" }}>🎲 Board Game Statistic Tracker</Link></h1>
+          </header>
 
-        <main className="app-main">
-            <BoardGameSearch 
+          <main className="app-main">
+            <BoardGameSearch
               bookmarks={bookmarks}
               setBookmarks={setBookmarks}
-              playHistory={playHistory} 
-              setPlayHistory={setPlayHistory} 
-              collection={collection} 
+              playHistory={playHistory}
+              setPlayHistory={setPlayHistory}
+              collection={collection}
               setCollection={setCollection} />
-        </main>
+          </main>
 
-        <Navbar />
+          <Navbar />
 
-        <Routes>
-          <Route path="/" element={
+          <Routes>
+            <Route path="/" element={
 
-            <main className="app-main">
-
-
-              <div ref={gameSessionFormRef}></div>
-              {/* Add a Play Session Button and Slide Panel */}
-              <section className="app-section">
-                <div className="section-header">
-                  <h3 className="section-title">Play History</h3>
-                  <button className="add-button" onClick={() => setShowSessionForm(true)}><i className="fas fa-plus-square"></i>Add Play Session</button>
-                </div>
-                <SlidePanel show={showSessionForm} 
-                  onClose={() => { setShowSessionForm(false); setEditingPlayHistoryItem(null); setSelectedGameForSession(""); }}
-                  heading={editingPlayHistoryItem ? "Edit Play Session" : "Add Play Session"}>
-
-                  <GameSessionManager
-                    playHistory={playHistory}
-                    setPlayHistory={setPlayHistory}
-                    editingPlayHistoryItem={editingPlayHistoryItem}
-                    setEditingPlayHistoryItem={setEditingPlayHistoryItem}
-                    selectedGameForSession={selectedGameForSession}
-                    setSelectedGameForSession={setSelectedGameForSession}
-                    setShowSessionForm={setShowSessionForm}
-                  />
-
-                </SlidePanel>
-
-                <PlayHistory 
-                  items={playHistory}
-                  setItems={setPlayHistory}
-                  bookmarks={bookmarks}
-                  setBookmarks={setBookmarks}
-                  userId={userId}
-                  onEdit={(item) => {
-                    setEditingPlayHistoryItem(item);
-                    setSelectedGameForSession(item.name);
-                    setShowSessionForm(true);
-                }} />
-              </section>
-            </main>
-          } />
-
-          <Route path="/collection" element={
               <main className="app-main">
+
+
+                <div ref={gameSessionFormRef}></div>
+                {/* Add a Play Session Button and Slide Panel */}
                 <section className="app-section">
-                <div className="section-header">
-                  <h3 className="section-title">Collection</h3>
-                  <button className="add-button" onClick={() => setShowCollectionForm(true)}><i className="fas fa-plus-square"></i>Add to Collection</button>
-                </div>
-                <SlidePanel
-                  show={showCollectionForm}
-                  onClose={() => {
-                    setShowCollectionForm(false);
-                    setEditingCollectionItem(null);
-                  }}
-                  heading={editingCollectionItem ? "Edit Collection Item" : "Add to Collection"}>
+                  <div className="section-header">
+                    <h3 className="section-title">Play History</h3>
+                    <button className="add-button" onClick={() => setShowSessionForm(true)}><i className="fas fa-plus-square"></i>Add Play Session</button>
+                  </div>
+                  <SlidePanel show={showSessionForm}
+                    onClose={() => { setShowSessionForm(false); setEditingPlayHistoryItem(null); setSelectedGameForSession(""); }}
+                    heading={editingPlayHistoryItem ? "Edit Play Session" : "Add Play Session"}>
 
-                  <CollectionManager
-                    collection={collection}
-                    setCollection={setCollection}
-                    editingCollectionItem={editingCollectionItem}
-                    setEditingCollectionItem={setEditingCollectionItem}
-                    setShowCollectionForm={setShowCollectionForm}
-                  />
-                  
-                </SlidePanel>
+                    <GameSessionManager
+                      playHistory={playHistory}
+                      setPlayHistory={setPlayHistory}
+                      editingPlayHistoryItem={editingPlayHistoryItem}
+                      setEditingPlayHistoryItem={setEditingPlayHistoryItem}
+                      selectedGameForSession={selectedGameForSession}
+                      setSelectedGameForSession={setSelectedGameForSession}
+                      setShowSessionForm={setShowSessionForm}
+                    />
 
-                <Collection 
-                  items={collection}
-                  setItems={setCollection} 
-                  bookmarks={bookmarks}
-                  setBookmarks={setBookmarks}
-                  onEdit={(item) => {
-                    setEditingCollectionItem(item);
-                    setSelectedGameForSession(item.name); 
-                    setShowCollectionForm(true);}}/>
-              </section>
+                  </SlidePanel>
+
+                  <PlayHistory
+                    items={playHistory}
+                    setItems={setPlayHistory}
+                    bookmarks={bookmarks}
+                    setBookmarks={setBookmarks}
+                    userId={userId}
+                    onEdit={(item) => {
+                      setEditingPlayHistoryItem(item);
+                      setSelectedGameForSession(item.name);
+                      setShowSessionForm(true);
+                    }} />
+                </section>
               </main>
             } />
 
-          <Route path="/stats" element={
-            <main className="app-main">
-              <section className="app-section">
-                <UserStats userId={userId} />
-              </section>
-            </main>
-          } />
-
-          <Route path="/bookmarks" element={
+            <Route path="/collection" element={
               <main className="app-main">
-                <section className="app-section">               
+                <section className="app-section">
+                  <div className="section-header">
+                    <h3 className="section-title">Collection</h3>
+                    <button className="add-button" onClick={() => setShowCollectionForm(true)}><i className="fas fa-plus-square"></i>Add to Collection</button>
+                  </div>
+                  <SlidePanel
+                    show={showCollectionForm}
+                    onClose={() => {
+                      setShowCollectionForm(false);
+                      setEditingCollectionItem(null);
+                    }}
+                    heading={editingCollectionItem ? "Edit Collection Item" : "Add to Collection"}>
+
+                    <CollectionManager
+                      collection={collection}
+                      setCollection={setCollection}
+                      editingCollectionItem={editingCollectionItem}
+                      setEditingCollectionItem={setEditingCollectionItem}
+                      setShowCollectionForm={setShowCollectionForm}
+                    />
+
+                  </SlidePanel>
+
+                  <Collection
+                    items={collection}
+                    setItems={setCollection}
+                    bookmarks={bookmarks}
+                    setBookmarks={setBookmarks}
+                    onEdit={(item) => {
+                      setEditingCollectionItem(item);
+                      setSelectedGameForSession(item.name);
+                      setShowCollectionForm(true);
+                    }} />
+                </section>
+              </main>
+            } />
+
+            <Route path="/stats" element={
+              <main className="app-main">
+                <section className="app-section">
+                  <UserStats userId={userId} />
+                </section>
+              </main>
+            } />
+
+            <Route path="/bookmarks" element={
+              <main className="app-main">
+                <section className="app-section">
                   <div className="section-header">
                     <h3 className="section-title">Bookmarks</h3>
                   </div>
                   <Bookmarks bookmarks={bookmarks} setBookmarks={setBookmarks} />
                 </section>
               </main>
-          } />
-          
-          <Route path="/stats/:id" element={
-            <main className="app-main">
-              <section className="app-section">               
-                <div className="section-header">
-                  <h3 className="section-title">Game Stats</h3>
+            } />
+
+            <Route path="/stats/:id" element={
+              <main className="app-main">
+                <section className="app-section">
+                  <div className="section-header">
+                    <h3 className="section-title">Game Stats</h3>
                     <Link to={'/stats/'} className="stats-button">
                       <i className="fas fa-chart-simple"></i>Overall Stats
-                    </Link>              
-                </div>
-                <GameStats /> 
-              </section>
-            </main>
-          } />
+                    </Link>
+                  </div>
+                  <GameStats />
+                </section>
+              </main>
+            } />
 
-          <Route path="/game/:id" element={<BoardGameDetails bookmarks={bookmarks} setBookmarks={setBookmarks} />} />
-          <Route path="/friends" element={<FriendsList userId={userId} />} />
-          <Route path='/user/:userId' element={<FriendPage />} />
+            <Route path="/game/:id" element={<BoardGameDetails
+              bookmarks={bookmarks}
+              setBookmarks={setBookmarks}
+              playHistory={playHistory}
+              setPlayHistory={setPlayHistory}
+              collection={collection}
+              setCollection={setCollection}
+            />} />
+            <Route path="/friends" element={<FriendsList userId={userId} />} />
+            <Route path='/user/:userId' element={<FriendPage />} />
+          </Routes>
 
-        </Routes>
-
-      </div>
-      <footer>
-        <section className='app-footer'>
-          <p> &copy; Board Game Statistic Tracker</p>
-         </section>
-      </footer>
+        </div>
+        <footer>
+          <section className='app-footer'>
+            <p> &copy; Board Game Statistic Tracker</p>
+          </section>
+        </footer>
       </UserContext.Provider>
     </Router>
   );
