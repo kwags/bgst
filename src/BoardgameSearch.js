@@ -7,8 +7,9 @@ import styles from './styles/BoardGameSearch.module.css';
 import AddBoardGameForm from './AddBoardGameForm';
 import BookmarkButtons from './BookmarkButtons';
 import SlidePanel from './SlidePanel';
+import { enrichWithBoardGameData } from './mockAPI';
 
-const BoardGameSearch = ({ bookmarks, setBookmarks }) => {
+const BoardGameSearch = ({ bookmarks, setBookmarks, setPlayHistory, setCollection }) => {
 
     //State variables and their setter functions
     const [selectedGame, setSelectedGame] = useState(null);
@@ -89,8 +90,12 @@ const BoardGameSearch = ({ bookmarks, setBookmarks }) => {
                                         <p className={styles.gameInfo}>Players: {game.players}</p>
                                         <p className={styles.gameInfo}>Playtime: {game.estimatedTime}</p>
                                         <div className={styles.buttonGroup}>
-                                            <button onClick={() => handleAddSession(game)}>Add Session</button>
-                                            <button onClick={() => handleAddToCollection(game)}>Add to Collection</button>
+                                        <button className="edit-button" onClick={() => handleAddSession(game)}>
+                                            <i className="fas fa-plus-square"></i> Add Session
+                                        </button>
+                                        <button className="edit-button" onClick={() => handleAddToCollection(game)}>
+                                            <i className="fas fa-plus-square"></i> Add to Collection
+                                        </button>
                                             <BookmarkButtons gameId={game.id} bookmarks={bookmarks} setBookmarks={setBookmarks} />
                                         </div>
                                     </div>
@@ -122,35 +127,39 @@ const BoardGameSearch = ({ bookmarks, setBookmarks }) => {
                 )}
 
 
-                {/* Add Session Slide Panel */}
+                {/* SlidePanel for Add Session */}
                 <SlidePanel
                     show={showSessionForm}
                     onClose={() => setShowSessionForm(false)}
                     heading="Add Game Session">
-                    {selectedGame && (
-                        <GameSessionForm
-                            onAdd={() => setShowSessionForm(false)}
-                            onCancelEdit={() => setShowSessionForm(false)}
-                            autofillGameName={selectedGame.name}/>
-                    )}
+                    <GameSessionForm
+                        onAdd={async (sessionData) => {
+                            const enrichedSession = await enrichWithBoardGameData(sessionData.name, sessionData);
+                            setPlayHistory(prev => [...prev, enrichedSession]);
+                            setShowSessionForm(false);
+                        }}
+                        onCancelEdit={() => setShowSessionForm(false)}
+                        autofillGameName={selectedGame?.name}/>
                 </SlidePanel>
-                
-                {/* Add to Collection Slide Panel */}
+
+                {/* SlidePanel for Add to Collection */}
                 <SlidePanel
                     show={showCollectionForm}
                     onClose={() => setShowCollectionForm(false)}
-                    heading="Add to Collection">
-                    {selectedGame && (
-                        <AddCollectionForm
-                            onAdd={() => setShowCollectionForm(false)}
-                            onCancelEdit={() => setShowCollectionForm(false)}
-                            autofillGameName={selectedGame.name}
-                            autofillNumPlayers={selectedGame.players}
-                            autofillEstimatedTime={selectedGame.estimatedTime}/>
-                    )}
+                    heading="Add to Collection"
+                    >
+                    <AddCollectionForm
+                        onAdd={async (collectionData) => {
+                            const enrichedCollection = await enrichWithBoardGameData(collectionData.name, collectionData);
+                            setCollection((prev) => [...prev, enrichedCollection]);
+                            setShowCollectionForm(false);
+                        }}
+                        onCancelEdit={() => setShowCollectionForm(false)}
+                        autofillGameName={selectedGame?.name}
+                        autofillNumPlayers={selectedGame?.players}
+                        autofillEstimatedTime={selectedGame?.estimatedTime}
+                    />
                 </SlidePanel>
-
-               
             </div>
         </div>
     );
