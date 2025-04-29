@@ -197,15 +197,25 @@ function App() {
               </main>
             } />
 
-            <Route path="/game/:id" element={<BoardGameDetails
-              bookmarks={bookmarks}
-              setBookmarks={setBookmarks}
-              playHistory={playHistory}
-              setPlayHistory={setPlayHistory}
-              collection={collection}
-              setCollection={setCollection}
-            />} />
+            <Route path="/game/:id" element={
+              <main className="app-main">
+                <section className="app-section">
+                  <div className="section-header">
+                    <h3 className="section-title">Game Details</h3>
+                  </div>
+                  <BoardGameDetails
+                  bookmarks={bookmarks}
+                  setBookmarks={setBookmarks}
+                  playHistory={playHistory}
+                  setPlayHistory={setPlayHistory}
+                  collection={collection}
+                  setCollection={setCollection}/>
+                </section>
+              </main>
+            } />
+
             <Route path="/friends" element={<FriendsList userId={userId} />} />
+            
             <Route path='/user/:userId' element={<FriendPage />} />
           </Routes>
 
