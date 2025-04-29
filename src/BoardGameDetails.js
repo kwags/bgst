@@ -5,7 +5,9 @@ import { fetchBoardGames, fetchUserBookmarks, toggleWantToOwn, toggleWantToPlay,
 import { UserContext } from './App';
 import GameSessionForm from './GameSessionForm';
 import AddCollectionForm from './AddCollectionForm';
-import styles from "./styles/SlidePanel.module.css";
+import styles from './styles/PlayHistory.module.css';
+import SlidePanel from './SlidePanel';
+
 
 function BoardGameDetails({ bookmarks, setBookmarks, playHistory, setPlayHistory, collection, setCollection }) {
   const { id } = useParams();
@@ -77,64 +79,80 @@ function BoardGameDetails({ bookmarks, setBookmarks, playHistory, setPlayHistory
   if (!game) return <p>Loading game details...</p>;
 
   return (
-    <div style={{ padding: "2rem" }}>
-      <h2>{game.name}</h2>
-      <p><strong>Players:</strong> {game.players}</p>
-      <p><strong>Estimated Playtime:</strong> {game.estimatedTime}</p>
+    <div className={styles.container}>
+      <ul className={`${styles.list} ${styles.leftAlignedList}`}>
+        <li className={`${styles.listItem} ${styles.leftCard}`}>
+          <div className={styles.cardContent}>
+            {game.image && (
+              <div className={styles.imageMask}>
+                <img src={game.image} alt={game.name} className={styles.gameImage} />
+              </div>
+            )}
+              <div className={`${styles.gameDetails} ${styles.leftDetails}`}>
+                <h3 className={styles.gameName}>{game.name}</h3>
+                <p className={styles.gameInfo}><strong>Players:</strong> {game.players}</p>
+                <p className={styles.gameInfo}><strong>Estimated Playtime:</strong> {game.estimatedTime}</p>
+              <div className={styles.buttonGroup}>
 
-      {/* Bookmark Buttons */}
-      <div style={{ marginTop: "1rem" }}>
-        <button onClick={() => handleToggle('own')}>
-          {existingBookmark?.wantToOwn ? "⭐ Want to Own" : "☆ Want to Own"}
-        </button>
-        <button onClick={() => handleToggle('play')} style={{ marginLeft: "1rem" }}>
-          {existingBookmark?.wantToPlay ? "🎮 Want to Play" : "❌ Want to Play"}
-        </button>
-      </div>
+                {/* Add Session Button */}
+                <button className="edit-button" onClick={() => setShowSessionForm(true)}>                       
+                  <i className="fas fa-plus-square"></i>Add Session
+                </button>
 
-      {/* Add Session Button */}
-      <div style={{ marginTop: "1rem" }}>
-        <button onClick={() => setShowSessionForm(true)}>Add Session</button>
-      </div>
+                {/* Add to Collection Button */}
+                  <button className="edit-button" onClick={() => setShowCollectionForm(true)}>
+                    <i className="fas fa-plus-square"></i>Add to Collection
+                  </button>
 
-      {/* Add Session Form */}
-      <div className={`${styles.backdrop} ${showSessionForm ? styles.show : ''}`} onClick={() => setShowSessionForm(false)} />
-      <div className={`${styles["slide-panel"]} ${showSessionForm ? styles.show : ''}`}>
-        <div className={styles["slide-panel-inner"]}>
-          <button className={styles["close-button"]} onClick={() => setShowSessionForm(false)}>×</button>            
-          <GameSessionForm
-            onAdd={async (sessionData) => {
-              const enrichedSession = await enrichWithBoardGameData(sessionData.name, sessionData);
-              setPlayHistory(prev => [...prev, enrichedSession]);
-            }}
-            onCancelEdit={() => setShowSessionForm(false)}
-            autofillGameName={game.name}
-          />
-        </div>
-      </div>
+                {/* Bookmark Buttons */}
+                  <button className={styles.bookmarkButton2} onClick={() => handleToggle('own')}>
+                    {existingBookmark?.wantToOwn ? "⭐ Want to Own" : "☆ Want to Own"}
+                  </button>
+                  <button className={styles.bookmarkButton2} onClick={() => handleToggle('play')} >
+                    {existingBookmark?.wantToPlay ? "🎮 Want to Play" : "❌ Want to Play"}
+                  </button>
+              </div>
+            </div>
 
-      {/* Add to Collection Button */}
-      <div style={{ marginTop: "1rem" }}>
-        <button onClick={() => setShowCollectionForm(true)}>Add to Collection</button>
-      </div>
+            {/* Add Session Form Panel */}
+              <SlidePanel
+                show={showSessionForm}
+                onClose={() => setShowSessionForm(false)}
+                heading="Add Game Session"
+              >
+                <GameSessionForm
+                  onAdd={async (sessionData) => {
+                    const enrichedSession = await enrichWithBoardGameData(sessionData.name, sessionData);
+                    setPlayHistory((prev) => [...prev, enrichedSession]);
+                    setShowSessionForm(false);
+                  }}
+                  onCancelEdit={() => setShowSessionForm(false)}
+                  autofillGameName={game.name}
+                />
+              </SlidePanel>
 
-      {/* Add to Collection Form */}
-      <div className={`${styles.backdrop} ${showCollectionForm ? styles.show : ''}`} onClick={() => setShowCollectionForm(false)} />
-      <div className={`${styles["slide-panel"]} ${showCollectionForm ? styles.show : ''}`}>
-        <div className={styles["slide-panel-inner"]}>
-          <button className={styles["close-button"]} onClick={() => setShowCollectionForm(false)}>×</button>            
-          <AddCollectionForm
-            onAdd={async (collectionData) => {
-              const enrichedCollection = await enrichWithBoardGameData(collectionData.name, collectionData);
-              setCollection(prev => [...prev, enrichedCollection]);
-            }}
-            onCancelEdit={() => setShowCollectionForm(false)}
-            autofillGameName={game.name}
-            autofillNumPlayers={game.players}
-            autofillEstimatedTime={game.estimatedTime}
-          />
-        </div>
-      </div>
+
+            {/* Add Collection Form Panel */}
+            <SlidePanel
+              show={showCollectionForm}
+              onClose={() => setShowCollectionForm(false)}
+              heading="Add to Collection"
+            >
+              <AddCollectionForm
+                onAdd={async (collectionData) => {
+                  const enrichedCollection = await enrichWithBoardGameData(collectionData.name, collectionData);
+                  setCollection((prev) => [...prev, enrichedCollection]);
+                  setShowCollectionForm(false);
+                }}
+                onCancelEdit={() => setShowCollectionForm(false)}
+                autofillGameName={game.name}
+                autofillNumPlayers={game.players}
+                autofillEstimatedTime={game.estimatedTime}
+              />
+            </SlidePanel>
+          </div>
+        </li>
+      </ul>
     </div>
   );
 }
