@@ -153,6 +153,7 @@ function App() {
                   <Collection
                     items={collection}
                     setItems={setCollection}
+                    playHistory={playHistory}
                     bookmarks={bookmarks}
                     setBookmarks={setBookmarks}
                     onEdit={(item) => {

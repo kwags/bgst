@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import BookmarkButtons from './BookmarkButtons';
 import styles from './styles/PlayHistory.module.css';
 
-function Collection({ items = [], setItems, onEdit, onAddSession, bookmarks = [], setBookmarks, userId, readOnly }) {
+function Collection({ items, setItems, onEdit, bookmarks, playHistory, setBookmarks, readOnly }) {
   const deleteGame = (id) => {
     setItems(items.filter(item => item.id !== id));
   };
@@ -16,7 +16,7 @@ function Collection({ items = [], setItems, onEdit, onAddSession, bookmarks = []
     <div className={styles.container}>
       <ul className={`${styles.list} ${styles.leftAlignedList}`}>
         {items.map(item => (
-          <li key={item.id} className={`${styles.listItem} ${styles.leftCard}`}>
+          <li key={`${item.id}-${bookmarks.length}`} className={`${styles.listItem} ${styles.leftCard}`}>
             <div className={styles.cardContent}>
               {item.image && (
                 <div className={styles.imageMask}>
@@ -46,7 +46,10 @@ function Collection({ items = [], setItems, onEdit, onAddSession, bookmarks = []
                       <button className="edit-button" onClick={() => deleteGame(item.id)}>
                         <i className="far fa-trash-can"></i>Delete Game
                       </button>
-                      <button className="edit-button" onClick={() => navigate(`/stats/${item.gameId}`)}>
+                      <button className="edit-button" onClick={() => navigate(`/stats/${item.gameId}`, { 
+                        state: { gameName: item.name,
+                          playHistory: playHistory.filter((entry) => entry.gameId === item.gameId),
+                          item: item } })}>
                     <i className="fas fa-chart-simple"></i>Game Stats
                     </button>
                     <BookmarkButtons
