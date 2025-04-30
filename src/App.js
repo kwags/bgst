@@ -179,7 +179,13 @@ function App() {
                   <div className="section-header">
                     <h3 className="section-title">Bookmarks</h3>
                   </div>
-                  <Bookmarks bookmarks={bookmarks} setBookmarks={setBookmarks} />
+                  <Bookmarks bookmarks={bookmarks} 
+                    setBookmarks={setBookmarks} 
+                    playHistory={playHistory}
+                    setPlayHistory={setPlayHistory}
+                    collection={collection}
+                    setCollection={setCollection}
+                  />
                 </section>
               </main>
             } />
