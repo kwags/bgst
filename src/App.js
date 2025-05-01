@@ -86,7 +86,6 @@ function App() {
 
               <main className="app-main">
 
-
                 <div ref={gameSessionFormRef}></div>
                 {/* Add a Play Session Button and Slide Panel */}
                 <section className="app-section">
@@ -168,7 +167,12 @@ function App() {
             <Route path="/stats" element={
               <main className="app-main">
                 <section className="app-section">
-                  <UserStats userId={userId} />
+                <div className="section-header">
+                  <h3 className="section-title">User Stats</h3>
+                </div>
+                  <UserStats userId={userId}
+                    playHistory={playHistory}
+                  />
                 </section>
               </main>
             } />
