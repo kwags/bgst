@@ -1,26 +1,88 @@
-import React, { useEffect, useState } from "react";
-import { fetchUserStats } from "./mockAPI";
+import React, { useState } from "react";
+import ResultDonutChart, { GamesPerMonthChart, ScoreOverTimeChart }  from './StatsCharts';
+import styles from './styles/SharedStyles.module.css';
 
-const UserStats = ({ userId }) => {
-    const [stats, setStats] = useState(null); 
+const UserStats = ({ playHistory, boardgames }) => {
+    const [activeTab, setActiveTab] = useState("results");
 
-    useEffect(() => {
-        fetchUserStats(userId).then(setStats);
-    }, [userId]);
-
-    if (!stats) {
+    if (!playHistory || playHistory.length === 0) {
         return <p>Loading stats...</p>;
     }
 
+    const totalGames = playHistory.length;
+
+    const resultCounts = {
+        win: 0,
+        loss: 0,
+        draw: 0,
+        dnf: 0,
+        na: 0
+    };
+
+    let totalScore = 0;
+    const gameFrequency = {};
+
+    playHistory.forEach(session => {
+        const gameName = session.name || "Unknown";
+        gameFrequency[gameName] = (gameFrequency[gameName] || 0) + 1;
+
+        const result = (session.result || "").toLowerCase();
+        if (resultCounts.hasOwnProperty(result)) {
+            resultCounts[result]++;
+        } else {
+            resultCounts.na++;
+        }
+    
+        if (typeof session.score === "number") {
+            totalScore += session.score;
+        }
+    
+    });
+
+    const averageScore = totalGames > 0 ? totalScore / totalGames : 0;
+  
+    const mostPlayedGameName = Object.keys(gameFrequency).reduce((mostPlayed, name) =>
+        gameFrequency[name] > (gameFrequency[mostPlayed] || 0) ? name : mostPlayed,
+        Object.keys(gameFrequency)[0]
+    );
+
+    const mostPlayedGame = mostPlayedGameName || "Unknown";
+      
+    const totalDifferentGamesPlayed = Object.keys(gameFrequency).length;      
+      
     return (
-        <div>
-            <h2>User Stats</h2>
-            <p>Total Games Played: {stats.totalGames}</p>
-            <p>Total Wins: {stats.totalWins}</p>
-            <p>Total Losses: {stats.totalLosses}</p>
-            <p>Average Score: {stats.averageScore.toFixed(2)}</p>
-            <p>Most Played Game: {stats.mostPlayedGame}</p>
-            <p>Total Different Games Played: {stats.totalDifferentGamesPlayed}</p>
+        <div className={styles.container}>
+            <ul className={`${styles.list} ${styles.leftAlignedList}`}>
+                <li className={`${styles.listItem} ${styles.leftCard}`}>
+                    <div className={styles.cardContent}>
+                        <div className={`${styles.gameDetails} ${styles.leftDetails}`}>
+                            <p>Total Games Played: {totalGames}</p>
+                            <p>Total Wins: {resultCounts.win}</p>
+                            <p>Total Losses: {resultCounts.loss}</p>
+                            <p>Average Score: {averageScore.toFixed(2)}</p>
+                            <p>Most Played Game: {mostPlayedGame}</p>
+                            <p>Total Different Games Played: {totalDifferentGamesPlayed}</p>
+                        </div>
+                        <div className={styles.rightSection}>
+                        <div className={styles.tabWrapper}>
+                                <button onClick={() => 
+                                    setActiveTab("results")} className={`${styles.tabButton} ${activeTab === "results" ? styles.activeTab : ""}`}>Results
+                                </button>
+                                <button onClick={() =>
+                                    setActiveTab("monthly")} className={`${styles.tabButton} ${activeTab === "monthly" ? styles.activeTab : ""}`}>Plays in 2025</button>
+                                <button onClick={() => 
+                                    setActiveTab("scores")} className={`${styles.tabButton} ${activeTab === "scores" ? styles.activeTab : ""}`}>Score Over Time</button>
+                            </div>
+
+                            <div className={styles.centeredChart}>
+                            {activeTab === "results" && <ResultDonutChart sessions={playHistory} />}
+                            {activeTab === "monthly" && <GamesPerMonthChart sessions={playHistory} />}
+                            {activeTab === "scores" && <ScoreOverTimeChart sessions={playHistory} />}
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
         </div>
     );
 };

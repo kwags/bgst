@@ -3,7 +3,7 @@ import BookmarkButtons from "./BookmarkButtons";
 import GameSessionForm from './GameSessionForm'; 
 import AddCollectionForm from './AddCollectionForm';
 import SlidePanel from './SlidePanel';
-import styles from './styles/PlayHistory.module.css';
+import styles from './styles/SharedStyles.module.css';
 import { Link, useNavigate } from 'react-router-dom';
 
 

@@ -3,7 +3,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import BookmarkButtons from './BookmarkButtons';
-import styles from './styles/PlayHistory.module.css';
+import styles from './styles/SharedStyles.module.css';
 
 function PlayHistory({ items, setItems, onEdit, bookmarks, setBookmarks, readOnly }) {
   const deleteGameSession = (id) => {

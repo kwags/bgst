@@ -5,7 +5,7 @@ import { fetchBoardGames, fetchUserBookmarks, toggleWantToOwn, toggleWantToPlay,
 import { UserContext } from './App';
 import GameSessionForm from './GameSessionForm';
 import AddCollectionForm from './AddCollectionForm';
-import styles from './styles/PlayHistory.module.css';
+import styles from './styles/SharedStyles.module.css';
 import SlidePanel from './SlidePanel';
 
 
