@@ -1,0 +1,52 @@
+.sortContainer {
+    margin: 0 0 0 2rem;
+}
+  
+  .sortButton {
+    background: none;
+    border: none;
+    color: #C2CCD6;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-right: 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0;
+    position: relative;
+  }
+  
+  .sortButton:hover {
+    color: #4AC5B7;
+  }
+  
+  .active {
+    color: #4AC5B7;
+    font-weight: bold;
+  }
+  
+  .iconWrapper {
+    position: relative;
+    width: 1em;
+    height: 1em;
+    display: inline-block;
+  }
+  
+  .iconWrapper i {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: opacity 0.2s ease;
+  }
+  
+  .visible {
+    opacity: 1;
+  }
+  
+  .hidden {
+    opacity: 0;
+  }
+
+  .inactiveIcon {
+    opacity: 0.3;
+  }
