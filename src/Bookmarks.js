@@ -1,26 +1,45 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import BookmarkButtons from "./BookmarkButtons";
 import GameSessionForm from './GameSessionForm'; 
 import AddCollectionForm from './AddCollectionForm';
 import SlidePanel from './SlidePanel';
 import styles from './styles/SharedStyles.module.css';
 import { Link, useNavigate } from 'react-router-dom';
-
+import Sorting from './Sorting';
 
 function Bookmarks({ items, setItems, onEdit, bookmarks = [], playHistory, setBookmarks, setPlayHistory, setCollection }) {
   const [showSessionForm, setShowSessionForm] = useState(false);
   const [showCollectionForm, setShowCollectionForm] = useState(false);
   const [selectedGame, setSelectedGame] = useState(null);
   const navigate = useNavigate();
+  const [sortConfig, setSortConfig] = useState({ sortBy: 'name', direction: 'asc' });
+  const [sortedBookmarks, setSortedBookmarks] = useState([]);
+
+  useEffect(() => {
+    const { sortBy, direction } = sortConfig;
   
+    const sorted = [...bookmarks].sort((a, b) => {
+      let comparison = 0;
+  
+      if (sortBy === 'name') {
+        comparison = a.name.localeCompare(b.name);
+      }
+  
+      return direction === 'asc' ? comparison : -comparison;
+    });
+  
+    setSortedBookmarks(sorted);
+  }, [bookmarks, sortConfig]);
+
   if (!Array.isArray(bookmarks)) {
     return <p>Loading bookmarks...</p>;
   }
 
   return (
     <div className={styles.container}>
+      <Sorting onSortChange={setSortConfig} dateField={null} />
       <ul className={`${styles.list} ${styles.leftAlignedList}`}>
-        {bookmarks.map(bookmark => (
+        {sortedBookmarks.map(bookmark => (
           <li key={bookmark.id} className={`${styles.listItem} ${styles.leftCard}`}>
             <div className={styles.cardContent}>
               {bookmark.image && (

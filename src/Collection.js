@@ -1,21 +1,45 @@
 //Collection is a list of the User's Games
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import BookmarkButtons from './BookmarkButtons';
 import styles from './styles/SharedStyles.module.css';
+import Sorting from './Sorting';
 
 function Collection({ items, setItems, onEdit, bookmarks, playHistory, setBookmarks, readOnly }) {
   const deleteGame = (id) => {
     setItems(items.filter(item => item.id !== id));
   };
 
-  const navigate = useNavigate();
+  const [sortConfig, setSortConfig] = useState({ sortBy: 'purchaseDate', direction: 'desc' });
+  const [sortedItems, setSortedItems] = useState([]);
+
+
+  useEffect(() => {
+    const { sortBy, direction } = sortConfig;
+    
+    const sorted = [...items].sort((a, b) => {
+      let comparison = 0;
+  
+      if (sortBy === 'purchaseDate') {
+        comparison = new Date(a.purchaseDate) - new Date(b.purchaseDate);
+      } else if (sortBy === 'name') {
+        comparison = a.name.localeCompare(b.name);
+      }
+  
+      return direction === 'asc' ? comparison : -comparison;
+    });
+  
+    setSortedItems(sorted);
+  }, [items, sortConfig]);
+
+    const navigate = useNavigate();
 
   return (
     <div className={styles.container}>
+        <Sorting onSortChange={setSortConfig} dateField="purchaseDate" />
       <ul className={`${styles.list} ${styles.leftAlignedList}`}>
-        {items.map(item => (
+      {sortedItems.map(item => (
           <li key={`${item.id}-${bookmarks.length}`} className={`${styles.listItem} ${styles.leftCard}`}>
             <div className={styles.cardContent}>
               {item.image && (
