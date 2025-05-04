@@ -93,9 +93,6 @@ export const mockData = {
     { id: 6, userId: 4, gameId: 9, wantToOwn: true, wantToPlay: false }
   ],
 
-<<<<<<< HEAD
-
-=======
   friends: [
     { userId: 1, friends: [2, 3] },
     { userId: 2, friends: [1, 4] },
@@ -105,7 +102,6 @@ export const mockData = {
   ],
 
   
->>>>>>> 0c7fc397aa61d41a1bbe68a6b6c858814c4f043c
 };
 
 
@@ -552,9 +548,5 @@ export async function enrichWithBoardGameData(name, formValues) {
     time: safeGet(formValues.time, null, 0),
     comments: safeGet(formValues.comments, null, ''),
   };
-<<<<<<< HEAD
-}
-=======
 }
 
->>>>>>> 0c7fc397aa61d41a1bbe68a6b6c858814c4f043c

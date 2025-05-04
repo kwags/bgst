@@ -8,10 +8,6 @@ import AddCollectionForm from './AddCollectionForm';
 import styles from './styles/SharedStyles.module.css';
 import SlidePanel from './SlidePanel';
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 0c7fc397aa61d41a1bbe68a6b6c858814c4f043c
 function BoardGameDetails({ bookmarks, setBookmarks, playHistory, setPlayHistory, collection, setCollection }) {
   const { id } = useParams();
   const [game, setGame] = useState(null);
@@ -107,23 +103,6 @@ function BoardGameDetails({ bookmarks, setBookmarks, playHistory, setPlayHistory
                     <i className="fas fa-plus-square"></i>Add to Collection
                   </button>
 
-<<<<<<< HEAD
-      {/* Add Session Form */}
-      <div className={`${styles.backdrop} ${showSessionForm ? styles.show : ''}`} onClick={() => setShowSessionForm(false)} />
-      <div className={`${styles["slide-panel"]} ${showSessionForm ? styles.show : ''}`}>
-        <div className={styles["slide-panel-inner"]}>
-          <button className={styles["close-button"]} onClick={() => setShowSessionForm(false)}>×</button>            
-          <GameSessionForm
-            onAdd={async (sessionData) => {
-              const enrichedSession = await enrichWithBoardGameData(sessionData.name, sessionData);
-              setPlayHistory(prev => [...prev, enrichedSession]);
-            }}
-            onCancelEdit={() => setShowSessionForm(false)}
-            autofillGameName={game.name}
-          />
-        </div>
-      </div>
-=======
                 {/* Bookmark Buttons */}
                   <button className={styles.bookmarkButton2} onClick={() => handleToggle('own')}>
                     {existingBookmark?.wantToOwn ? "⭐ Want to Own" : "☆ Want to Own"}
@@ -133,7 +112,6 @@ function BoardGameDetails({ bookmarks, setBookmarks, playHistory, setPlayHistory
                   </button>
               </div>
             </div>
->>>>>>> 0c7fc397aa61d41a1bbe68a6b6c858814c4f043c
 
             {/* Add Session Form Panel */}
               <SlidePanel
@@ -152,25 +130,6 @@ function BoardGameDetails({ bookmarks, setBookmarks, playHistory, setPlayHistory
                 />
               </SlidePanel>
 
-<<<<<<< HEAD
-      {/* Add to Collection Form */}
-      <div className={`${styles.backdrop} ${showCollectionForm ? styles.show : ''}`} onClick={() => setShowCollectionForm(false)} />
-      <div className={`${styles["slide-panel"]} ${showCollectionForm ? styles.show : ''}`}>
-        <div className={styles["slide-panel-inner"]}>
-          <button className={styles["close-button"]} onClick={() => setShowCollectionForm(false)}>×</button>            
-          <AddCollectionForm
-            onAdd={async (collectionData) => {
-              const enrichedCollection = await enrichWithBoardGameData(collectionData.name, collectionData);
-              setCollection(prev => [...prev, enrichedCollection]);
-            }}
-            onCancelEdit={() => setShowCollectionForm(false)}
-            autofillGameName={game.name}
-            autofillNumPlayers={game.players}
-            autofillEstimatedTime={game.estimatedTime}
-          />
-        </div>
-      </div>
-=======
 
             {/* Add Collection Form Panel */}
             <SlidePanel
@@ -193,7 +152,6 @@ function BoardGameDetails({ bookmarks, setBookmarks, playHistory, setPlayHistory
           </div>
         </li>
       </ul>
->>>>>>> 0c7fc397aa61d41a1bbe68a6b6c858814c4f043c
     </div>
   );
 }

@@ -70,11 +70,7 @@ function App() {
             <h1><Link to="/" style={{ textDecoration: "none", color: "inherit" }}>🎲 Board Game Statistic Tracker</Link></h1>
           </header>
 
-<<<<<<< HEAD
-          <main className="app-main">
-=======
           {/* <main className="app-main">
->>>>>>> 0c7fc397aa61d41a1bbe68a6b6c858814c4f043c
             <BoardGameSearch
               bookmarks={bookmarks}
               setBookmarks={setBookmarks}
@@ -82,11 +78,7 @@ function App() {
               setPlayHistory={setPlayHistory}
               collection={collection}
               setCollection={setCollection} />
-<<<<<<< HEAD
-          </main>
-=======
           </main> */}
->>>>>>> 0c7fc397aa61d41a1bbe68a6b6c858814c4f043c
 
           <Navbar />
 
@@ -95,10 +87,6 @@ function App() {
 
               <main className="app-main">
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 0c7fc397aa61d41a1bbe68a6b6c858814c4f043c
                 <div ref={gameSessionFormRef}></div>
                 {/* Add a Play Session Button and Slide Panel */}
                 <section className="app-section">
@@ -165,10 +153,7 @@ function App() {
                   <Collection
                     items={collection}
                     setItems={setCollection}
-<<<<<<< HEAD
-=======
                     playHistory={playHistory}
->>>>>>> 0c7fc397aa61d41a1bbe68a6b6c858814c4f043c
                     bookmarks={bookmarks}
                     setBookmarks={setBookmarks}
                     onEdit={(item) => {
@@ -183,16 +168,12 @@ function App() {
             <Route path="/stats" element={
               <main className="app-main">
                 <section className="app-section">
-<<<<<<< HEAD
-                  <UserStats userId={userId} />
-=======
                 <div className="section-header">
                   <h3 className="section-title">User Stats</h3>
                 </div>
                   <UserStats userId={userId}
                     playHistory={playHistory}
                   />
->>>>>>> 0c7fc397aa61d41a1bbe68a6b6c858814c4f043c
                 </section>
               </main>
             } />
@@ -228,20 +209,6 @@ function App() {
               </main>
             } />
 
-<<<<<<< HEAD
-            <Route path="/game/:id" element={<BoardGameDetails
-              bookmarks={bookmarks}
-              setBookmarks={setBookmarks}
-              playHistory={playHistory}
-              setPlayHistory={setPlayHistory}
-              collection={collection}
-              setCollection={setCollection}
-            />} />
-            <Route path="/friends" element={<FriendsList userId={userId} />} />
-            <Route path='/user/:userId' element={<FriendPage />} />
-          </Routes>
-
-=======
             <Route path="/game/:id" element={
               <main className="app-main">
                 <section className="app-section">
@@ -279,7 +246,6 @@ function App() {
             />
           </Routes>
 
->>>>>>> 0c7fc397aa61d41a1bbe68a6b6c858814c4f043c
         </div>
         <footer>
           <section className='app-footer'>
