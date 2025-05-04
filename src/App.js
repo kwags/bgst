@@ -4,7 +4,7 @@ import BoardGameDetails from './BoardGameDetails';
 import React, { useState, useEffect, useRef, createContext } from "react";
 import BoardGameSearch from './BoardgameSearch.js';
 import PlayHistory from "./PlayHistory.js";
-import { fetchPlayHistory, fetchCollection, fetchUserBookmarks } from "./mockAPI";
+import { fetchPlayHistory, fetchUserCollection, fetchUserBookmarks } from "./mockAPI";
 import GameSessionManager from "./GameSessionManager.js";
 import CollectionManager from "./AddCollectionManager.js";
 import Collection from "./Collection.js";
@@ -16,6 +16,7 @@ import Bookmarks from "./Bookmarks.js";
 import GameStats from "./GameStats.js";
 import FriendPage from './FriendPage.js';
 import FriendsList from './FriendsList.js';
+import BrowseGames from "./BrowseGames.js";
 
 export const UserContext = createContext();
 
@@ -41,7 +42,7 @@ function App() {
 
   useEffect(() => {
     const getCollection = async () => {
-      const data = await fetchCollection();
+      const data = await fetchUserCollection(userId);
       setCollection(data);
     };
     getCollection();
@@ -69,7 +70,7 @@ function App() {
             <h1><Link to="/" style={{ textDecoration: "none", color: "inherit" }}>🎲 Board Game Statistic Tracker</Link></h1>
           </header>
 
-          <main className="app-main">
+          {/* <main className="app-main">
             <BoardGameSearch
               bookmarks={bookmarks}
               setBookmarks={setBookmarks}
@@ -77,7 +78,7 @@ function App() {
               setPlayHistory={setPlayHistory}
               collection={collection}
               setCollection={setCollection} />
-          </main>
+          </main> */}
 
           <Navbar />
 
@@ -228,6 +229,21 @@ function App() {
             <Route path="/friends" element={<FriendsList userId={userId} />} />
             
             <Route path='/user/:userId' element={<FriendPage />} />
+            <Route
+              path="/browse"
+              element={
+                <main className="app-main">
+                  <BrowseGames
+                    bookmarks={bookmarks}
+                    setBookmarks={setBookmarks}
+                    playHistory={playHistory}
+                    setPlayHistory={setPlayHistory}
+                    collection={collection}
+                    setCollection={setCollection}
+                  />
+                </main>
+              }
+            />
           </Routes>
 
         </div>
