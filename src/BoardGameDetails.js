@@ -8,7 +8,6 @@ import AddCollectionForm from './AddCollectionForm';
 import styles from './styles/SharedStyles.module.css';
 import SlidePanel from './SlidePanel';
 
-
 function BoardGameDetails({ bookmarks, setBookmarks, playHistory, setPlayHistory, collection, setCollection }) {
   const { id } = useParams();
   const [game, setGame] = useState(null);
