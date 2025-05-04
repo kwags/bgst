@@ -63,7 +63,26 @@ export const mockData = {
     { id: 4, userId: 2, gameId: 4, purchaseDate: '2025-04-01', purchasePrice: '19.99' },
     { id: 5, userId: 2, gameId: 5, purchaseDate: '2025-04-02', purchasePrice: '31.99' },
     { id: 6, userId: 1, gameId: 6, purchaseDate: '2025-04-05', purchasePrice: '59.99' },
-  ],
+    { id: 7, userId: 3, gameId: 7, purchaseDate: '2025-04-10', purchasePrice: '45.00' },
+    { id: 8, userId: 3, gameId: 8, purchaseDate: '2025-04-15', purchasePrice: '50.00' },
+    { id: 9, userId: 4, gameId: 9, purchaseDate: '2025-04-20', purchasePrice: '70.00' },
+    { id: 10, userId: 4, gameId: 10, purchaseDate: '2025-04-25', purchasePrice: '80.00' },
+    { id: 11, userId: 5, gameId: 11, purchaseDate: '2025-05-01', purchasePrice: '35.00' },
+    { id: 12, userId: 5, gameId: 12, purchaseDate: '2025-05-05', purchasePrice: '60.00' },
+    { id: 13, userId: 1, gameId: 13, purchaseDate: '2025-05-10', purchasePrice: '75.00' },
+    { id: 14, userId: 2, gameId: 14, purchaseDate: '2025-05-15', purchasePrice: '40.00' },
+    { id: 15, userId: 3, gameId: 1, purchaseDate: '2025-05-20', purchasePrice: '25.99' },
+    { id: 16, userId: 4, gameId: 2, purchaseDate: '2025-05-25', purchasePrice: '29.99' },
+    { id: 17, userId: 5, gameId: 3, purchaseDate: '2025-06-01', purchasePrice: '40.99' },
+    { id: 18, userId: 1, gameId: 4, purchaseDate: '2025-06-05', purchasePrice: '19.99' },
+    { id: 19, userId: 2, gameId: 5, purchaseDate: '2025-06-10', purchasePrice: '31.99' },
+    { id: 20, userId: 3, gameId: 6, purchaseDate: '2025-06-15', purchasePrice: '59.99' },
+    { id: 21, userId: 4, gameId: 7, purchaseDate: '2025-06-20', purchasePrice: '45.00' },
+    { id: 22, userId: 5, gameId: 8, purchaseDate: '2025-06-25', purchasePrice: '50.00' },
+    { id: 23, userId: 1, gameId: 9, purchaseDate: '2025-07-01', purchasePrice: '70.00' },
+    { id: 24, userId: 2, gameId: 10, purchaseDate: '2025-07-05', purchasePrice: '80.00' },
+    { id: 25, userId: 3, gameId: 11, purchaseDate: '2025-07-10', purchasePrice: '35.00' },
+],
 
   bookmarks: [
     { id: 1, userId: 1, gameId: 1, wantToOwn: false, wantToPlay: true },
@@ -86,16 +105,63 @@ export const mockData = {
 };
 
 
-//simulates being an API endpoint
-export const fetchBoardGames = async (searchTerm) => {
+export const fetchBoardGames = async (searchTerm = '', filter = '') => {
   return new Promise((resolve) => {
     setTimeout(() => {
-      const filteredGames = mockData.boardgames.filter(game =>
-        game.name.toLowerCase().includes(searchTerm.toLowerCase())
-      );
+      let filteredGames = mockData.boardgames;
+
+      const term = typeof searchTerm === 'string' ? searchTerm.trim() : '';
+
+      if (term.trim()) {
+        filteredGames = filteredGames.filter((game) =>
+          game.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+      }
+
+      switch (filter) {
+        case 'mostOwned':
+          filteredGames = filteredGames.map((game) => {
+            const ownershipCount = mockData.collection.filter(
+              (item) => item.gameId === game.id
+            ).length;
+            return { ...game, ownershipCount };
+          }).sort((a, b) => b.ownershipCount - a.ownershipCount);
+          break;
+
+        case 'mostTimePlayed':
+          filteredGames = filteredGames.map((game) => {
+            const totalTimePlayed = mockData.gameSessions
+              .filter((session) => session.gameId === game.id)
+              .reduce((sum, session) => sum + session.time, 0);
+            return { ...game, totalTimePlayed };
+          }).sort((a, b) => b.totalTimePlayed - a.totalTimePlayed);
+          break;
+
+        case 'byPrice':
+          filteredGames = filteredGames.map((game) => {
+            const price = mockData.collection.find(
+              (item) => item.gameId === game.id
+            )?.purchasePrice || 0;
+            return { ...game, price: parseFloat(price) };
+          }).sort((a, b) => b.price - a.price);
+          break;
+
+        case 'mostWanted':
+          filteredGames = filteredGames.map((game) => {
+            const wantsCount = mockData.bookmarks.filter(
+              (bookmark) => bookmark.gameId === game.id
+            ).length;
+            return { ...game, wantsCount };
+          }).sort((a, b) => b.wantsCount - a.wantsCount);
+          break;
+
+        default:
+          break;
+      }
+
       resolve(filteredGames);
-    }, 500) // Fake delay in ms to simulate network delay
-  })
+    }, 500); // Simulated network delay
+  });
 };
 
 // Simulate adding a new board game to the database
@@ -344,6 +410,7 @@ export const fetchUserCollection = async (userId) => {
           return {
             id: item.id,
             name: game.name,
+            image: game ? game.image : null,
             players: game.players,
             estimatedTime: game.estimatedTime,
             purchaseDate: item.purchaseDate,
@@ -483,61 +550,3 @@ export async function enrichWithBoardGameData(name, formValues) {
   };
 }
 
-export const getGamesByMostOwned = () => {
-  const gameOwnership = mockData.collection.reduce((acc, item) => {
-    acc[item.gameId] = (acc[item.gameId] || 0) + 1;
-    return acc;
-  }, {});
-
-  return Object.entries(gameOwnership)
-    .map(([gameId, count]) => {
-      const game = mockData.boardgames.find(g => g.id === parseInt(gameId));
-      return { ...game, count };
-    })
-    .sort((a, b) => b.count - a.count);
-};
-
-export const getGamesByMostTimePlayed = () => {
-  const gamePlayTime = mockData.gameSessions.reduce((acc, session) => {
-    acc[session.gameId] = (acc[session.gameId] || 0) + session.time;
-    return acc;
-  }, {});
-
-  return Object.entries(gamePlayTime)
-    .map(([gameId, time]) => {
-      const game = mockData.boardgames.find(g => g.id === parseInt(gameId));
-      return { ...game, time };
-    })
-    .sort((a, b) => b.time - a.time);
-};
-
-export const getGamesByPrice = () => {
-  const gamePrices = mockData.collection.reduce((acc, item) => {
-    const game = mockData.boardgames.find(g => g.id === item.gameId);
-    if (game) {
-      acc[item.gameId] = parseFloat(item.purchasePrice);
-    }
-    return acc;
-  }, {});
-
-  return Object.entries(gamePrices)
-    .map(([gameId, price]) => {
-      const game = mockData.boardgames.find(g => g.id === parseInt(gameId));
-      return { ...game, price };
-    })
-    .sort((a, b) => b.price - a.price);
-};
-
-export const getGamesByMostWanted = () => {
-  const gameWants = mockData.bookmarks.reduce((acc, bookmark) => {
-    acc[bookmark.gameId] = (acc[bookmark.gameId] || 0) + 1;
-    return acc;
-  }, {});
-
-  return Object.entries(gameWants)
-    .map(([gameId, wants]) => {
-      const game = mockData.boardgames.find(g => g.id === parseInt(gameId));
-      return { ...game, wants };
-    })
-    .sort((a, b) => b.wants - a.wants);
-};

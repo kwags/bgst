@@ -58,7 +58,7 @@ function Collection({ items, setItems, onEdit, bookmarks, playHistory, setBookma
                   </Link>
                 </h3>
                 <p className={styles.gameInfo}><strong>Players:</strong> {item.players}</p>
-                <p className={styles.gameInfo}><strong>Playtime:</strong> {item.estimatedTime} mins</p>
+                <p className={styles.gameInfo}><strong>Playtime:</strong> {item.estimatedTime}</p>
                 <p className={styles.gameInfo}><strong>Purchase Date:</strong> {item.purchaseDate}</p>
                 <p className={styles.gameInfo}><strong>Purchase Price:</strong> {item.purchasePrice}</p>
                 <div className={styles.buttonGroup}>

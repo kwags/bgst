@@ -1,29 +1,38 @@
 import React, { useState } from 'react';
-import { fetchBoardGames, getGamesByMostOwned, getGamesByMostTimePlayed, getGamesByPrice, getGamesByMostWanted } from './mockAPI';
-import BookmarkButtons from './BookmarkButtons';
+import { fetchBoardGames } from './mockAPI';
+import GameSessionForm from './GameSessionForm';
+import AddCollectionForm from './AddCollectionForm';
 import styles from './styles/BoardGameSearch.module.css';
+// import styles from './styles/SharedStyles.module.css';
+import AddBoardGameForm from './AddBoardGameForm';
+import BookmarkButtons from './BookmarkButtons';
+import SlidePanel from './SlidePanel';
+import { enrichWithBoardGameData } from './mockAPI';
 
 const BoardGameSearch = ({ bookmarks, setBookmarks, setPlayHistory, setCollection }) => {
+    const [selectedGame, setSelectedGame] = useState(null);
+    const [showSessionForm, setShowSessionForm] = useState(false);
+    const [showCollectionForm, setShowCollectionForm] = useState(false);
+    const [showAddGameForm, setShowAddGameForm] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState([]);
-    const [browseResults, setBrowseResults] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [sortType, setSortType] = useState('');
-    const [showFilters, setShowFilters] = useState(false); // State to control filter visibility
+    const [activeFilter, setActiveFilter] = useState('');
 
-    const searchForGame = async (e) => {
-        const term = e.target.value;
-        setSearchTerm(term);
+    const handleAddSession = (game) => {
+        setSelectedGame(game);
+        setShowSessionForm(true);
+    };
 
-        if (term.trim() === '') {
-            setSearchResults([]);
-            setLoading(false);
-            return;
-        }
+    const handleAddToCollection = (game) => {
+        setSelectedGame(game);
+        setShowCollectionForm(true);
+    };
 
+    const handleSearch = async (term = searchTerm, filter = activeFilter) => {
         setLoading(true);
         try {
-            const filteredGames = await fetchBoardGames(term);
+            const filteredGames = await fetchBoardGames(term, filter);
             setSearchResults(filteredGames);
         } catch (error) {
             console.error('Error searching boardgames: ', error);
@@ -35,29 +44,13 @@ const BoardGameSearch = ({ bookmarks, setBookmarks, setPlayHistory, setCollectio
     const handleClearSearch = () => {
         setSearchTerm('');
         setSearchResults([]);
-        setBrowseResults([]);
-        setShowFilters(false); // Hide filters when clearing search
+        setActiveFilter('');
+        setShowAddGameForm(false);
     };
 
-    const handleBrowse = (type) => {
-        setSortType(type);
-        setShowFilters(true); // Show filters when browsing games
-        switch (type) {
-            case 'mostOwned':
-                setBrowseResults(getGamesByMostOwned());
-                break;
-            case 'mostTimePlayed':
-                setBrowseResults(getGamesByMostTimePlayed());
-                break;
-            case 'byPrice':
-                setBrowseResults(getGamesByPrice());
-                break;
-            case 'mostWanted':
-                setBrowseResults(getGamesByMostWanted());
-                break;
-            default:
-                setBrowseResults([]);
-        }
+    const handleFilterClick = (filter) => {
+        setActiveFilter(filter);
+        handleSearch(searchTerm, filter); 
     };
 
     return (
@@ -68,61 +61,51 @@ const BoardGameSearch = ({ bookmarks, setBookmarks, setPlayHistory, setCollectio
                     className={styles.searchInput}
                     placeholder="Search boardgames..."
                     value={searchTerm}
-                    onChange={searchForGame}
+                    onChange={(e) => setSearchTerm(e.target.value)}
                 />
                 <button
                     className={styles.searchButton}
-                    onClick={searchResults.length > 0 || searchTerm.trim() !== '' ? handleClearSearch : null}
+                    onClick={handleSearch}
                 >
-                    <i className={`fas ${searchResults.length > 0 || searchTerm.trim() !== '' ? 'fa-times' : 'fa-search'}`}></i>
+                    <i className="fas fa-search"></i> Search
                 </button>
-                <button className={styles.browseButton} onClick={() => handleBrowse('mostOwned')}>
-                    Browse Games
+                
+            </div>
+            <div className={styles.sortOptions}>
+                <button
+                    className={`${styles.filterButton} ${activeFilter === 'mostOwned' ? styles.active : ''}`}
+                    onClick={() => handleFilterClick('mostOwned')}
+                >
+                    Most Owned
+                </button>
+                <button
+                    className={`${styles.filterButton} ${activeFilter === 'mostTimePlayed' ? styles.active : ''}`}
+                    onClick={() => handleFilterClick('mostTimePlayed')}
+                >
+                    Most Time Played
+                </button>
+                <button
+                    className={`${styles.filterButton} ${activeFilter === 'byPrice' ? styles.active : ''}`}
+                    onClick={() => handleFilterClick('byPrice')}
+                >
+                    Most Expensive
+                </button>
+                <button
+                    className={`${styles.filterButton} ${activeFilter === 'mostWanted' ? styles.active : ''}`}
+                    onClick={() => handleFilterClick('mostWanted')}
+                >
+                    Most Wanted
+                </button>
+                <button
+                    className={styles.clearButton}
+                    onClick={handleClearSearch}
+                >
+                    <i className="fas fa-times"></i> Clear
                 </button>
             </div>
-            {showFilters && ( // Only show filters if "Browse Games" is clicked
-                <div className={styles.sortOptions}>
-                    <button onClick={() => handleBrowse('mostOwned')}>Most Owned</button>
-                    <button onClick={() => handleBrowse('mostTimePlayed')}>Most Time Played</button>
-                    <button onClick={() => handleBrowse('byPrice')}>By Price</button>
-                    <button onClick={() => handleBrowse('mostWanted')}>Most Wanted</button>
-                </div>
-            )}
             <div className={styles.results}>
                 {loading ? (
                     <p className={styles.message}>Loading...</p>
-                ) : browseResults.length > 0 ? (
-                    <ul className={styles.list}>
-                        {browseResults.map((game) => (
-                            <li key={game.id} className={styles.listItem}>
-                                <div className={styles.cardContent}>
-                                    {game.image && (
-                                        <div className={styles.imageMask}>
-                                            <img src={game.image} alt={game.name} className={styles.gameImage} />
-                                        </div>
-                                    )}
-                                    <div className={styles.gameDetails}>
-                                        <h3 className={styles.gameName}>{game.name}</h3>
-                                        <p className={styles.gameInfo}>Players: {game.players}</p>
-                                        <p className={styles.gameInfo}>Playtime: {game.estimatedTime}</p>
-                                        <div className={styles.buttonGroup}>
-                                            <button className="edit-button">
-                                                <i className="fas fa-plus-square"></i> Add Session
-                                            </button>
-                                            <button className="edit-button">
-                                                <i className="fas fa-plus-square"></i> Add to Collection
-                                            </button>
-                                            <BookmarkButtons gameId={game.id} bookmarks={bookmarks} setBookmarks={setBookmarks} />
-                                        </div>
-                                        {sortType === 'mostOwned' && <p>Owned by: {game.count} users</p>}
-                                        {sortType === 'mostTimePlayed' && <p>Time Played: {game.time} minutes</p>}
-                                        {sortType === 'byPrice' && <p>Price: ${game.price.toFixed(2)}</p>}
-                                        {sortType === 'mostWanted' && <p>Wanted by: {game.wants} users</p>}
-                                    </div>
-                                </div>
-                            </li>
-                        ))}
-                    </ul>
                 ) : searchResults.length > 0 ? (
                     <ul className={styles.list}>
                         {searchResults.map((game) => (
@@ -138,10 +121,10 @@ const BoardGameSearch = ({ bookmarks, setBookmarks, setPlayHistory, setCollectio
                                         <p className={styles.gameInfo}>Players: {game.players}</p>
                                         <p className={styles.gameInfo}>Playtime: {game.estimatedTime}</p>
                                         <div className={styles.buttonGroup}>
-                                            <button className="edit-button">
+                                            <button className="edit-button" onClick={() => handleAddSession(game)}>
                                                 <i className="fas fa-plus-square"></i> Add Session
                                             </button>
-                                            <button className="edit-button">
+                                            <button className="edit-button" onClick={() => handleAddToCollection(game)}>
                                                 <i className="fas fa-plus-square"></i> Add to Collection
                                             </button>
                                             <BookmarkButtons gameId={game.id} bookmarks={bookmarks} setBookmarks={setBookmarks} />
@@ -153,8 +136,26 @@ const BoardGameSearch = ({ bookmarks, setBookmarks, setPlayHistory, setCollectio
                     </ul>
                 ) : searchTerm.trim() === '' ? (
                     <p className={styles.message}>Enter a search term to find games</p>
-                ) : (
-                    <p className={styles.message}>No games found for "{searchTerm}"</p>
+                ) : !showAddGameForm ? (
+                    <div className={styles.message}>
+                        <p>No games found for "{searchTerm}"</p>
+                        <button onClick={() => setShowAddGameForm(true)}>Add Game to Database</button>
+                    </div>
+                ) : null}
+
+                {showAddGameForm && (
+                    <div className={styles.addFormWrapper}>
+                        <AddBoardGameForm
+                            autofillGameName={searchTerm}
+                            onSuccess={async () => {
+                                setShowAddGameForm(false);
+                                setLoading(true);
+                                const updatedResults = await fetchBoardGames(searchTerm, activeFilter);
+                                setSearchResults(updatedResults);
+                                setLoading(false);
+                            }}
+                        />
+                    </div>
                 )}
             </div>
         </div>

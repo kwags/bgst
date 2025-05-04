@@ -4,7 +4,7 @@ import BoardGameDetails from './BoardGameDetails';
 import React, { useState, useEffect, useRef, createContext } from "react";
 import BoardGameSearch from './BoardgameSearch.js';
 import PlayHistory from "./PlayHistory.js";
-import { fetchPlayHistory, fetchCollection, fetchUserBookmarks } from "./mockAPI";
+import { fetchPlayHistory, fetchUserCollection, fetchUserBookmarks } from "./mockAPI";
 import GameSessionManager from "./GameSessionManager.js";
 import CollectionManager from "./AddCollectionManager.js";
 import Collection from "./Collection.js";
@@ -31,7 +31,6 @@ function App() {
   const gameSessionFormRef = useRef(null);
   const [bookmarks, setBookmarks] = useState([]);
   const [showSessionForm, setShowSessionForm] = useState(false);
-  const [isBrowsing, setIsBrowsing] = useState(false)
 
   useEffect(() => {
     const getPlayHistory = async () => {
@@ -43,7 +42,7 @@ function App() {
 
   useEffect(() => {
     const getCollection = async () => {
-      const data = await fetchCollection();
+      const data = await fetchUserCollection(userId);
       setCollection(data);
     };
     getCollection();
@@ -71,19 +70,17 @@ function App() {
             <h1><Link to="/" style={{ textDecoration: "none", color: "inherit" }}>🎲 Board Game Statistic Tracker</Link></h1>
           </header>
 
-          <main className="app-main">
+          {/* <main className="app-main">
             <BoardGameSearch
               bookmarks={bookmarks}
               setBookmarks={setBookmarks}
               playHistory={playHistory}
               setPlayHistory={setPlayHistory}
               collection={collection}
-              setCollection={setCollection}
-              setIsBrowsing={setIsBrowsing} // Pass the state setter to BoardGameSearch
-            />
-          </main>
+              setCollection={setCollection} />
+          </main> */}
 
-          {!isBrowsing && <Navbar />}
+          <Navbar />
 
           <Routes>
             <Route path="/" element={
@@ -127,7 +124,7 @@ function App() {
                 </section>
               </main>
             } />
-        
+
             <Route path="/collection" element={
               <main className="app-main">
                 <section className="app-section">
@@ -232,8 +229,21 @@ function App() {
             <Route path="/friends" element={<FriendsList userId={userId} />} />
             
             <Route path='/user/:userId' element={<FriendPage />} />
-
-            <Route path="/browse-games" element={<BrowseGames />} />
+            <Route
+              path="/browse"
+              element={
+                <main className="app-main">
+                  <BrowseGames
+                    bookmarks={bookmarks}
+                    setBookmarks={setBookmarks}
+                    playHistory={playHistory}
+                    setPlayHistory={setPlayHistory}
+                    collection={collection}
+                    setCollection={setCollection}
+                  />
+                </main>
+              }
+            />
           </Routes>
 
         </div>
