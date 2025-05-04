@@ -482,3 +482,62 @@ export async function enrichWithBoardGameData(name, formValues) {
     comments: safeGet(formValues.comments, null, ''),
   };
 }
+
+export const getGamesByMostOwned = () => {
+  const gameOwnership = mockData.collection.reduce((acc, item) => {
+    acc[item.gameId] = (acc[item.gameId] || 0) + 1;
+    return acc;
+  }, {});
+
+  return Object.entries(gameOwnership)
+    .map(([gameId, count]) => {
+      const game = mockData.boardgames.find(g => g.id === parseInt(gameId));
+      return { ...game, count };
+    })
+    .sort((a, b) => b.count - a.count);
+};
+
+export const getGamesByMostTimePlayed = () => {
+  const gamePlayTime = mockData.gameSessions.reduce((acc, session) => {
+    acc[session.gameId] = (acc[session.gameId] || 0) + session.time;
+    return acc;
+  }, {});
+
+  return Object.entries(gamePlayTime)
+    .map(([gameId, time]) => {
+      const game = mockData.boardgames.find(g => g.id === parseInt(gameId));
+      return { ...game, time };
+    })
+    .sort((a, b) => b.time - a.time);
+};
+
+export const getGamesByPrice = () => {
+  const gamePrices = mockData.collection.reduce((acc, item) => {
+    const game = mockData.boardgames.find(g => g.id === item.gameId);
+    if (game) {
+      acc[item.gameId] = parseFloat(item.purchasePrice);
+    }
+    return acc;
+  }, {});
+
+  return Object.entries(gamePrices)
+    .map(([gameId, price]) => {
+      const game = mockData.boardgames.find(g => g.id === parseInt(gameId));
+      return { ...game, price };
+    })
+    .sort((a, b) => b.price - a.price);
+};
+
+export const getGamesByMostWanted = () => {
+  const gameWants = mockData.bookmarks.reduce((acc, bookmark) => {
+    acc[bookmark.gameId] = (acc[bookmark.gameId] || 0) + 1;
+    return acc;
+  }, {});
+
+  return Object.entries(gameWants)
+    .map(([gameId, wants]) => {
+      const game = mockData.boardgames.find(g => g.id === parseInt(gameId));
+      return { ...game, wants };
+    })
+    .sort((a, b) => b.wants - a.wants);
+};

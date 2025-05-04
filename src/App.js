@@ -16,6 +16,7 @@ import Bookmarks from "./Bookmarks.js";
 import GameStats from "./GameStats.js";
 import FriendPage from './FriendPage.js';
 import FriendsList from './FriendsList.js';
+import BrowseGames from "./BrowseGames.js";
 
 export const UserContext = createContext();
 
@@ -30,6 +31,7 @@ function App() {
   const gameSessionFormRef = useRef(null);
   const [bookmarks, setBookmarks] = useState([]);
   const [showSessionForm, setShowSessionForm] = useState(false);
+  const [isBrowsing, setIsBrowsing] = useState(false)
 
   useEffect(() => {
     const getPlayHistory = async () => {
@@ -76,10 +78,12 @@ function App() {
               playHistory={playHistory}
               setPlayHistory={setPlayHistory}
               collection={collection}
-              setCollection={setCollection} />
+              setCollection={setCollection}
+              setIsBrowsing={setIsBrowsing} // Pass the state setter to BoardGameSearch
+            />
           </main>
 
-          <Navbar />
+          {!isBrowsing && <Navbar />}
 
           <Routes>
             <Route path="/" element={
@@ -123,7 +127,7 @@ function App() {
                 </section>
               </main>
             } />
-
+        
             <Route path="/collection" element={
               <main className="app-main">
                 <section className="app-section">
@@ -228,6 +232,8 @@ function App() {
             <Route path="/friends" element={<FriendsList userId={userId} />} />
             
             <Route path='/user/:userId' element={<FriendPage />} />
+
+            <Route path="/browse-games" element={<BrowseGames />} />
           </Routes>
 
         </div>
