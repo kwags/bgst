@@ -6,9 +6,9 @@ import AddBoardGameForm from './AddBoardGameForm';
 import BookmarkButtons from './BookmarkButtons';
 
 const BoardGameSearch = ({ bookmarks, setBookmarks, setPlayHistory, setCollection }) => {
-    const [selectedGame, setSelectedGame] = useState(null);
-    const [showSessionForm, setShowSessionForm] = useState(false);
-    const [showCollectionForm, setShowCollectionForm] = useState(false);
+    const [setSelectedGame] = useState(null);
+    const [setShowSessionForm] = useState(false);
+    const [setShowCollectionForm] = useState(false);
     const [showAddGameForm, setShowAddGameForm] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState([]);

@@ -3,9 +3,7 @@ import styles from './styles/BrowseGames.module.css';
 import BoardGameSearch from './BoardgameSearch';
 
 const BrowseGames = ({bookmarks, setBookmarks, playHistory, setPlayHistory, collection, setCollection}) => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [results, setResults] = useState([]);
-  const [sortType, setSortType] = useState('');
+  const [results] = useState([]);
   return (
     
     <div className={styles.container}>
