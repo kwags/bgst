@@ -19,8 +19,8 @@ const GameStats = () => {
     }
   
     const totalPlays = filteredSessions.length;
-    const totalWins = filteredSessions.filter(s => s.result.toLowerCase() === "win").length;
-    const totalLosses = filteredSessions.filter(s => s.result.toLowerCase() === "loss").length;
+    const totalWins = filteredSessions.filter(s => (s.result || "").toLowerCase() === "win").length;
+    const totalLosses = filteredSessions.filter(s => (s.result || "").toLowerCase() === "loss").length;
     const averageScore = (
       filteredSessions.reduce((sum, session) => sum + (session.score || 0), 0) / totalPlays
     ).toFixed(2);
