@@ -1,21 +1,45 @@
 // Play History is a List of Game Sessions
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import BookmarkButtons from './BookmarkButtons';
-import styles from './styles/PlayHistory.module.css';
+import styles from './styles/SharedStyles.module.css';
+import Sorting from './Sorting';
 
-function PlayHistory({ items, setItems, onEdit, bookmarks, setBookmarks }) {
+function PlayHistory({ items, setItems, onEdit, bookmarks, setBookmarks, readOnly }) {
+
+  const [sortConfig, setSortConfig] = useState({ sortBy: 'date', direction: 'desc' });
+  const [sortedItems, setSortedItems] = useState([]);
+
+  useEffect(() => {
+    const { sortBy, direction } = sortConfig;
+  
+    const sorted = [...items].sort((a, b) => {
+      let comparison = 0;
+  
+      if (sortBy === 'date') {
+        comparison = new Date(a.date) - new Date(b.date);
+      } else if (sortBy === 'name') {
+        comparison = a.name.localeCompare(b.name);
+      }
+  
+      return direction === 'asc' ? comparison : -comparison;
+    });
+  
+    setSortedItems(sorted);
+  }, [items, sortConfig]);
+
   const deleteGameSession = (id) => {
     setItems(items.filter(item => item.id !== id));
   };
-  
+
   const navigate = useNavigate();
 
   return (
     <div className={styles.container}>
+      <Sorting onSortChange={setSortConfig} dateField="date"/>
       <ul className={`${styles.list} ${styles.leftAlignedList}`}>
-        {items.map(item => (
+      {sortedItems.map(item => (
           <li key={`${item.id}-${bookmarks.length}`} className={`${styles.listItem} ${styles.leftCard}`}>
             <div className={styles.cardContent}>
               {item.image && (
@@ -40,15 +64,25 @@ function PlayHistory({ items, setItems, onEdit, bookmarks, setBookmarks }) {
                 <p className={styles.gameInfo}><strong>Minutes Played:</strong> {item.time} mins</p>
                 <p className={styles.gameInfo}><strong>Comments:</strong> {item.comments}</p>
                 <div className={styles.buttonGroup}>
-                  <button className="edit-button" onClick={() => onEdit(item)}><i className="far fa-edit"></i>Edit Session</button>
-                  <button className="edit-button" onClick={() => deleteGameSession(item.id)}><i className="far fa-trash-can"></i>Delete Session</button>
-                  <button className="edit-button" onClick={() => navigate(`/stats/${item.gameId}`, { state: { gameName: item.name, playHistory: items, item: item } })}>
-                    <i className="fas fa-chart-simple"></i>Game Stats</button>
-                  <BookmarkButtons
-                    gameId={item.gameId}
-                    bookmarks={bookmarks}
-                    setBookmarks={setBookmarks}
-                  />
+                  {!readOnly && (
+                    <>
+                      <button className="edit-button" onClick={() => onEdit(item)}>
+                        <i className="far fa-edit"></i>Edit Session
+                      </button>
+                      <button className="edit-button" onClick={() => deleteGameSession(item.id)}>
+                        <i className="far fa-trash-can"></i>Delete Session
+                      </button>
+                      <button className="edit-button" onClick={() => navigate(`/stats/${item.gameId}`, { state: { gameName: item.name, playHistory: items, item: item } })}>
+                    <i className="fas fa-chart-simple"></i>Game Stats
+                    </button>
+                    <BookmarkButtons
+                      gameId={item.gameId}
+                      bookmarks={bookmarks}
+                      setBookmarks={readOnly ? () => {} : setBookmarks} // Disable bookmark changes if readOnly
+                    />
+                    </>
+                  )}
+                  
                 </div>
               </div>
             </div>

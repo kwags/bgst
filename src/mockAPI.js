@@ -27,17 +27,33 @@ export const mockData = {
     { id: 3, username: "user3", password: "password3" },
     { id: 4, username: "user4", password: "password4" },
     { id: 5, username: "user5", password: "password5" },
+    
   ],
 
   gameSessions: [
-    { id: 1, userId: 1, gameId: 1, date: "2025-03-01", numPlayers: 4, score: 10, result: "Win", time: 120, comments: "" },
-    { id: 2, userId: 1, gameId: 2, date: "2025-03-02", numPlayers: 3, score: 5, result: "Loss", time: 60, comments: "" },
-    { id: 3, userId: 1, gameId: 3, date: "2025-03-03", numPlayers: 2, score: 8, result: "Win", time: 90, comments: "" },
+    { id: 1, userId: 1, gameId: 1, date: "2025-01-04", numPlayers: 4, score: 10, result: "Win", time: 120, comments: "" },
+    { id: 2, userId: 1, gameId: 2, date: "2025-01-02", numPlayers: 3, score: 5, result: "Loss", time: 60, comments: "" },
+    { id: 3, userId: 1, gameId: 3, date: "2025-02-03", numPlayers: 2, score: 8, result: "Win", time: 90, comments: "" },
     { id: 4, userId: 2, gameId: 4, date: "2025-03-04", numPlayers: 4, score: 12, result: "Loss", time: 45, comments: "" },
-    { id: 5, userId: 2, gameId: 5, date: "2025-03-05", numPlayers: 3, score: 15, result: "Win", time: 30, comments: "" },
+    { id: 5, userId: 2, gameId: 5, date: "2025-02-05", numPlayers: 3, score: 15, result: "Win", time: 30, comments: "" },
     { id: 6, userId: 1, gameId: 14, date: "2025-03-08", numPlayers: 4, score: 4, result: "Win", time: 120, comments: "First time playing this game" },
-    { id: 7, userId: 1, gameId: 3, date: "2025-03-13", numPlayers: 3, score: 105, result: "Loss", time: 180, comments: "This was really fun!" },
+    { id: 7, userId: 1, gameId: 3, date: "2025-03-13", numPlayers: 3, score: 105, result: "Draw", time: 180, comments: "This was really fun!" },
     { id: 8, userId: 1, gameId: 1, date: "2025-03-27", numPlayers: 3, score: 10, result: "Win", time: 180, comments: "Always a fun game" },
+    { id: 9, userId: 1, gameId: 6, date: "2025-04-01", numPlayers: 5, score: 20, result: "Win", time: 150, comments: "Great teamwork!" },
+    { id: 10, userId: 1, gameId: 7, date: "2025-04-05", numPlayers: 4, score: 18, result: "Loss", time: 90, comments: "Close game!" },
+    { id: 11, userId: 2, gameId: 8, date: "2025-04-10", numPlayers: 3, score: 25, result: "Win", time: 120, comments: "Loved the strategy!" },
+    { id: 12, userId: 2, gameId: 9, date: "2025-04-15", numPlayers: 2, score: 30, result: "Loss", time: 180, comments: "Tough opponent." },
+    { id: 13, userId: 3, gameId: 10, date: "2025-04-20", numPlayers: 4, score: 50, result: "Win", time: 240, comments: "Epic game!" },
+    { id: 14, userId: 3, gameId: 11, date: "2025-02-25", numPlayers: 3, score: 15, result: "Loss", time: 60, comments: "Quick match." },
+    { id: 15, userId: 4, gameId: 12, date: "2025-04-30", numPlayers: 6, score: 40, result: "Win", time: 180, comments: "Amazing experience!" },
+    { id: 16, userId: 4, gameId: 13, date: "2025-05-01", numPlayers: 5, score: 35, result: "DNF", time: 200, comments: "Challenging game." },
+    { id: 17, userId: 1, gameId: 14, date: "2025-05-02", numPlayers: 4, score: 12, result: "Win", time: 90, comments: "Enjoyed this one!" },
+    { id: 18, userId: 2, gameId: 1, date: "2025-05-03", numPlayers: 3, score: 8, result: "Loss", time: 60, comments: "Could have done better." },
+    { id: 19, userId: 3, gameId: 2, date: "2025-05-04", numPlayers: 2, score: 10, result: "Win", time: 45, comments: "Quick and fun!" },
+    { id: 20, userId: 4, gameId: 3, date: "2025-05-05", numPlayers: 4, score: 22, result: "Win", time: 120, comments: "Great strategy!" },
+    { id: 21, userId: 1, gameId: 4, date: "2025-05-06", numPlayers: 3, score: 14, result: "Loss", time: 75, comments: "Close match." },
+    { id: 22, userId: 2, gameId: 5, date: "2025-05-07", numPlayers: 4, score: 18, result: "Win", time: 100, comments: "Teamwork paid off!" },
+    { id: 23, userId: 3, gameId: 6, date: "2025-05-08", numPlayers: 5, score: 25, result: "Draw", time: 150, comments: "Tough competition." },
   ],
 
   collection: [
@@ -47,7 +63,26 @@ export const mockData = {
     { id: 4, userId: 2, gameId: 4, purchaseDate: '2025-04-01', purchasePrice: '19.99' },
     { id: 5, userId: 2, gameId: 5, purchaseDate: '2025-04-02', purchasePrice: '31.99' },
     { id: 6, userId: 1, gameId: 6, purchaseDate: '2025-04-05', purchasePrice: '59.99' },
-  ],
+    { id: 7, userId: 3, gameId: 7, purchaseDate: '2025-04-10', purchasePrice: '45.00' },
+    { id: 8, userId: 3, gameId: 8, purchaseDate: '2025-04-15', purchasePrice: '50.00' },
+    { id: 9, userId: 4, gameId: 9, purchaseDate: '2025-04-20', purchasePrice: '70.00' },
+    { id: 10, userId: 4, gameId: 10, purchaseDate: '2025-04-25', purchasePrice: '80.00' },
+    { id: 11, userId: 5, gameId: 11, purchaseDate: '2025-05-01', purchasePrice: '35.00' },
+    { id: 12, userId: 5, gameId: 12, purchaseDate: '2025-05-05', purchasePrice: '60.00' },
+    { id: 13, userId: 1, gameId: 13, purchaseDate: '2025-05-10', purchasePrice: '75.00' },
+    { id: 14, userId: 2, gameId: 14, purchaseDate: '2025-05-15', purchasePrice: '40.00' },
+    { id: 15, userId: 3, gameId: 1, purchaseDate: '2025-05-20', purchasePrice: '25.99' },
+    { id: 16, userId: 4, gameId: 2, purchaseDate: '2025-05-25', purchasePrice: '29.99' },
+    { id: 17, userId: 5, gameId: 3, purchaseDate: '2025-06-01', purchasePrice: '40.99' },
+    { id: 18, userId: 1, gameId: 4, purchaseDate: '2025-06-05', purchasePrice: '19.99' },
+    { id: 19, userId: 2, gameId: 5, purchaseDate: '2025-06-10', purchasePrice: '31.99' },
+    { id: 20, userId: 3, gameId: 6, purchaseDate: '2025-06-15', purchasePrice: '59.99' },
+    { id: 21, userId: 4, gameId: 7, purchaseDate: '2025-06-20', purchasePrice: '45.00' },
+    { id: 22, userId: 5, gameId: 8, purchaseDate: '2025-06-25', purchasePrice: '50.00' },
+    { id: 23, userId: 1, gameId: 9, purchaseDate: '2025-07-01', purchasePrice: '70.00' },
+    { id: 24, userId: 2, gameId: 10, purchaseDate: '2025-07-05', purchasePrice: '80.00' },
+    { id: 25, userId: 3, gameId: 11, purchaseDate: '2025-07-10', purchasePrice: '35.00' },
+],
 
   bookmarks: [
     { id: 1, userId: 1, gameId: 1, wantToOwn: false, wantToPlay: true },
@@ -58,20 +93,79 @@ export const mockData = {
     { id: 6, userId: 4, gameId: 9, wantToOwn: true, wantToPlay: false }
   ],
 
+<<<<<<< HEAD
 
+=======
+  friends: [
+    { userId: 1, friends: [2, 3] },
+    { userId: 2, friends: [1, 4] },
+    { userId: 3, friends: [1] },
+    { userId: 4, friends: [2, 5] }, 
+    { userId: 5, friends: [4] },
+  ],
+
+  
+>>>>>>> 0c7fc397aa61d41a1bbe68a6b6c858814c4f043c
 };
 
 
-//simulates being an API endpoint
-export const fetchBoardGames = async (searchTerm) => {
+export const fetchBoardGames = async (searchTerm = '', filter = '') => {
   return new Promise((resolve) => {
     setTimeout(() => {
-      const filteredGames = mockData.boardgames.filter(game =>
-        game.name.toLowerCase().includes(searchTerm.toLowerCase())
-      );
+      let filteredGames = mockData.boardgames;
+
+      const term = typeof searchTerm === 'string' ? searchTerm.trim() : '';
+
+      if (term.trim()) {
+        filteredGames = filteredGames.filter((game) =>
+          game.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+      }
+
+      switch (filter) {
+        case 'mostOwned':
+          filteredGames = filteredGames.map((game) => {
+            const ownershipCount = mockData.collection.filter(
+              (item) => item.gameId === game.id
+            ).length;
+            return { ...game, ownershipCount };
+          }).sort((a, b) => b.ownershipCount - a.ownershipCount);
+          break;
+
+        case 'mostTimePlayed':
+          filteredGames = filteredGames.map((game) => {
+            const totalTimePlayed = mockData.gameSessions
+              .filter((session) => session.gameId === game.id)
+              .reduce((sum, session) => sum + session.time, 0);
+            return { ...game, totalTimePlayed };
+          }).sort((a, b) => b.totalTimePlayed - a.totalTimePlayed);
+          break;
+
+        case 'byPrice':
+          filteredGames = filteredGames.map((game) => {
+            const price = mockData.collection.find(
+              (item) => item.gameId === game.id
+            )?.purchasePrice || 0;
+            return { ...game, price: parseFloat(price) };
+          }).sort((a, b) => b.price - a.price);
+          break;
+
+        case 'mostWanted':
+          filteredGames = filteredGames.map((game) => {
+            const wantsCount = mockData.bookmarks.filter(
+              (bookmark) => bookmark.gameId === game.id
+            ).length;
+            return { ...game, wantsCount };
+          }).sort((a, b) => b.wantsCount - a.wantsCount);
+          break;
+
+        default:
+          break;
+      }
+
       resolve(filteredGames);
-    }, 500) // Fake delay in ms to simulate network delay
-  })
+    }, 500); // Simulated network delay
+  });
 };
 
 // Simulate adding a new board game to the database
@@ -109,6 +203,54 @@ export async function fetchPlayHistory() {
   return history;
 }
 
+
+export const fetchUserInfo = async (userId) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const user = mockData.users.find(u => u.id === userId);
+      if (user) {
+        resolve({ id: user.id, username: user.username });
+      } else {
+        reject(new Error(`User with ID ${userId} not found`));
+      }
+    }, 300); // Simulated delay
+  });
+};
+
+export const fetchFriends = async (userId) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      console.log("Fetching friends for userId:", userId); // Debugging log
+      const userFriends = mockData.friends.find(f => f.userId === userId);
+      if (!userFriends) {
+        console.error(`No friends found for userId: ${userId}`); // Debugging log
+        reject(new Error(`No friends found for user with ID ${userId}`));
+        return;
+      }
+
+      const friendsDetails = userFriends.friends.map(friendId => {
+        const friend = mockData.users.find(u => u.id === friendId);
+        return friend ? { id: friend.id, username: friend.username } : null;
+      }).filter(Boolean);
+
+      console.log("Friends details:", friendsDetails); // Debugging log
+      resolve(friendsDetails);
+    }, 300);
+  });
+};
+
+export const fetchUserByName = async (username) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const user = mockData.users.find(u => u.username.toLowerCase() === username.toLowerCase());
+      if (user) {
+        resolve({ id: user.id, username: user.username });
+      } else {
+        reject(new Error(`User with username "${username}" not found`));
+      }
+    }, 300); // Simulated delay
+  });
+};
 
 // Simulate fetching user-specific play history
 export const fetchUserPlayHistory = async (userId) => {
@@ -272,6 +414,7 @@ export const fetchUserCollection = async (userId) => {
           return {
             id: item.id,
             name: game.name,
+            image: game ? game.image : null,
             players: game.players,
             estimatedTime: game.estimatedTime,
             purchaseDate: item.purchaseDate,
@@ -287,7 +430,8 @@ export const fetchUserCollection = async (userId) => {
 export const fetchUserStats = async (userId) => {
   return new Promise((resolve) => {
     setTimeout(() => {
-      const userSessions = mockData.gameSessions.filter(session => session.userId === userId);
+      const userSessions = mockData.gameSessions.filter(session => session.userId === Number(userId));
+      console.log("Filtered sessions for userId:", userId, userSessions); // Debugging log
 
       // Calculate stats
       const stats = userSessions.reduce(
@@ -314,11 +458,10 @@ export const fetchUserStats = async (userId) => {
 
       stats.totalDifferentGamesPlayed = Object.keys(stats.gameFrequency).length;
 
-
       resolve(stats);
     }, 500);
   });
-}
+};
 
 // Toggle Want to Own
 export const toggleWantToOwn = async (userId, gameId) => {
@@ -409,4 +552,9 @@ export async function enrichWithBoardGameData(name, formValues) {
     time: safeGet(formValues.time, null, 0),
     comments: safeGet(formValues.comments, null, ''),
   };
+<<<<<<< HEAD
 }
+=======
+}
+
+>>>>>>> 0c7fc397aa61d41a1bbe68a6b6c858814c4f043c

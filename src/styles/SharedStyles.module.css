@@ -72,3 +72,43 @@
     margin-right: 20px;
     height: 34px;
   }
+
+  .bookmarkButton2 {
+    height: 34px;
+  }
+
+  .tabButton {
+    padding: 8px 16px;
+    border: 1px solid #ccc;
+    border-bottom: none;
+    background: white;
+    color: #111827;
+    cursor: pointer;
+    border-radius: 0;
+  }
+  
+  .activeTab {
+    background: #4f46e5;
+    color: white;
+    font-weight: bold;
+  }
+
+  .centeredChart {
+    width: 100%;
+    max-width: 700px;
+    margin: 0;
+  }
+
+  .tabWrapper {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .rightSection {
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }

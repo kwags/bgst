@@ -1,16 +1,15 @@
-
 import React, { useState } from 'react';
 import { fetchBoardGames } from './mockAPI';
 import GameSessionForm from './GameSessionForm';
 import AddCollectionForm from './AddCollectionForm';
 import styles from './styles/BoardGameSearch.module.css';
+// import styles from './styles/SharedStyles.module.css';
 import AddBoardGameForm from './AddBoardGameForm';
 import BookmarkButtons from './BookmarkButtons';
 import SlidePanel from './SlidePanel';
+import { enrichWithBoardGameData } from './mockAPI';
 
-const BoardGameSearch = ({ bookmarks, setBookmarks }) => {
-
-    //State variables and their setter functions
+const BoardGameSearch = ({ bookmarks, setBookmarks, setPlayHistory, setCollection }) => {
     const [selectedGame, setSelectedGame] = useState(null);
     const [showSessionForm, setShowSessionForm] = useState(false);
     const [showCollectionForm, setShowCollectionForm] = useState(false);
@@ -18,57 +17,90 @@ const BoardGameSearch = ({ bookmarks, setBookmarks }) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState([]);
     const [loading, setLoading] = useState(false);
-
+    const [activeFilter, setActiveFilter] = useState('');
 
     const handleAddSession = (game) => {
         setSelectedGame(game);
         setShowSessionForm(true);
-        
     };
-    
+
     const handleAddToCollection = (game) => {
         setSelectedGame(game);
         setShowCollectionForm(true);
     };
 
-
-    //Called by an event (onChange) and calls a mock API in mockAPI.js, passing it the searchTerm
-    const searchForGame = async (e) => {
-        const term = e.target.value;
-        setSearchTerm(term);
-
-        if (term.trim() === ''){
-            setSearchResults([]); //Clear results if search term is empty
-            setLoading(false);
-            return;
-        }
-
+    const handleSearch = async (term = searchTerm, filter = activeFilter) => {
         setLoading(true);
-        //Call to API with fetchBoardGames, loosely represents calling an API endpoint and can be swapped out later
-        try{
-            const filteredGames = await fetchBoardGames(term);
+        try {
+            const filteredGames = await fetchBoardGames(term, filter);
             setSearchResults(filteredGames);
-        } catch (error){
+        } catch (error) {
             console.error('Error searching boardgames: ', error);
         } finally {
             setLoading(false);
         }
-    }
+    };
 
     const handleClearSearch = () => {
         setSearchTerm('');
         setSearchResults([]);
+        setActiveFilter('');
         setShowAddGameForm(false);
     };
 
+    const handleFilterClick = (filter) => {
+        setActiveFilter(filter);
+        handleSearch(searchTerm, filter); 
+    };
+
     return (
-        // The classNames allow for specific css that wont affect other components
         <div className={styles.container}>
             <div className={styles.searchWrapper}>
-                <input type='text' className={styles.searchInput} placeholder='Search boardgames...' value={searchTerm} onChange={searchForGame} />
-                <button className={styles.searchButton}
-                    onClick={searchResults.length > 0 || searchTerm.trim() !== '' ? handleClearSearch : null}>
-                    <i className={`fas ${searchResults.length > 0 || searchTerm.trim() !== '' ? 'fa-times' : 'fa-search'}`}></i>
+                <input
+                    type="text"
+                    className={styles.searchInput}
+                    placeholder="Search boardgames..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <button
+                    className={styles.searchButton}
+                    onClick={handleSearch}
+                >
+                    <i className="fas fa-search"></i> Search
+                </button>
+                
+            </div>
+            <div className={styles.sortOptions}>
+                <button
+                    className={`${styles.filterButton} ${activeFilter === 'mostOwned' ? styles.active : ''}`}
+                    onClick={() => handleFilterClick('mostOwned')}
+                >
+                    Most Owned
+                </button>
+                <button
+                    className={`${styles.filterButton} ${activeFilter === 'mostTimePlayed' ? styles.active : ''}`}
+                    onClick={() => handleFilterClick('mostTimePlayed')}
+                >
+                    Most Time Played
+                </button>
+                <button
+                    className={`${styles.filterButton} ${activeFilter === 'byPrice' ? styles.active : ''}`}
+                    onClick={() => handleFilterClick('byPrice')}
+                >
+                    Most Expensive
+                </button>
+                <button
+                    className={`${styles.filterButton} ${activeFilter === 'mostWanted' ? styles.active : ''}`}
+                    onClick={() => handleFilterClick('mostWanted')}
+                >
+                    Most Wanted
+                </button>
+                <button
+                    className={styles.clearButton}
+                    onClick={handleClearSearch}
+                >
+                    <i className="fas fa-times"></i> Clear
                 </button>
             </div>
             <div className={styles.results}>
@@ -76,7 +108,7 @@ const BoardGameSearch = ({ bookmarks, setBookmarks }) => {
                     <p className={styles.message}>Loading...</p>
                 ) : searchResults.length > 0 ? (
                     <ul className={styles.list}>
-                        {searchResults.map(game => (
+                        {searchResults.map((game) => (
                             <li key={game.id} className={styles.listItem}>
                                 <div className={styles.cardContent}>
                                     {game.image && (
@@ -89,8 +121,12 @@ const BoardGameSearch = ({ bookmarks, setBookmarks }) => {
                                         <p className={styles.gameInfo}>Players: {game.players}</p>
                                         <p className={styles.gameInfo}>Playtime: {game.estimatedTime}</p>
                                         <div className={styles.buttonGroup}>
-                                            <button onClick={() => handleAddSession(game)}>Add Session</button>
-                                            <button onClick={() => handleAddToCollection(game)}>Add to Collection</button>
+                                            <button className="edit-button" onClick={() => handleAddSession(game)}>
+                                                <i className="fas fa-plus-square"></i> Add Session
+                                            </button>
+                                            <button className="edit-button" onClick={() => handleAddToCollection(game)}>
+                                                <i className="fas fa-plus-square"></i> Add to Collection
+                                            </button>
                                             <BookmarkButtons gameId={game.id} bookmarks={bookmarks} setBookmarks={setBookmarks} />
                                         </div>
                                     </div>
@@ -101,59 +137,29 @@ const BoardGameSearch = ({ bookmarks, setBookmarks }) => {
                 ) : searchTerm.trim() === '' ? (
                     <p className={styles.message}>Enter a search term to find games</p>
                 ) : !showAddGameForm ? (
-                  <div className={styles.message}>
-                    <p>No games found for "{searchTerm}"</p>
-                    <button onClick={() => setShowAddGameForm(true)}>Add Game to Database</button>
-                  </div>
+                    <div className={styles.message}>
+                        <p>No games found for "{searchTerm}"</p>
+                        <button onClick={() => setShowAddGameForm(true)}>Add Game to Database</button>
+                    </div>
                 ) : null}
-            
 
                 {showAddGameForm && (
                     <div className={styles.addFormWrapper}>
-
-                        <AddBoardGameForm autofillGameName={searchTerm} onSuccess={async () => { 
-                            setShowAddGameForm(false);
-                            setLoading(true);
-                            const updatedResults = await fetchBoardGames(searchTerm);
-                            setSearchResults(updatedResults);
-                            setLoading(false);}}/>
-
+                        <AddBoardGameForm
+                            autofillGameName={searchTerm}
+                            onSuccess={async () => {
+                                setShowAddGameForm(false);
+                                setLoading(true);
+                                const updatedResults = await fetchBoardGames(searchTerm, activeFilter);
+                                setSearchResults(updatedResults);
+                                setLoading(false);
+                            }}
+                        />
                     </div>
                 )}
-
-
-                {/* Add Session Slide Panel */}
-                <SlidePanel
-                    show={showSessionForm}
-                    onClose={() => setShowSessionForm(false)}
-                    heading="Add Game Session">
-                    {selectedGame && (
-                        <GameSessionForm
-                            onAdd={() => setShowSessionForm(false)}
-                            onCancelEdit={() => setShowSessionForm(false)}
-                            autofillGameName={selectedGame.name}/>
-                    )}
-                </SlidePanel>
-                
-                {/* Add to Collection Slide Panel */}
-                <SlidePanel
-                    show={showCollectionForm}
-                    onClose={() => setShowCollectionForm(false)}
-                    heading="Add to Collection">
-                    {selectedGame && (
-                        <AddCollectionForm
-                            onAdd={() => setShowCollectionForm(false)}
-                            onCancelEdit={() => setShowCollectionForm(false)}
-                            autofillGameName={selectedGame.name}
-                            autofillNumPlayers={selectedGame.players}
-                            autofillEstimatedTime={selectedGame.estimatedTime}/>
-                    )}
-                </SlidePanel>
-
-               
             </div>
         </div>
     );
-}
+};
 
 export default BoardGameSearch;

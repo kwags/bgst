@@ -4,7 +4,7 @@ import BoardGameDetails from './BoardGameDetails';
 import React, { useState, useEffect, useRef, createContext } from "react";
 import BoardGameSearch from './BoardgameSearch.js';
 import PlayHistory from "./PlayHistory.js";
-import { fetchPlayHistory, fetchCollection, fetchUserBookmarks } from "./mockAPI";
+import { fetchPlayHistory, fetchUserCollection, fetchUserBookmarks } from "./mockAPI";
 import GameSessionManager from "./GameSessionManager.js";
 import CollectionManager from "./AddCollectionManager.js";
 import Collection from "./Collection.js";
@@ -14,6 +14,9 @@ import SlidePanel from './SlidePanel';
 import Navbar from './Navbar.js';
 import Bookmarks from "./Bookmarks.js";
 import GameStats from "./GameStats.js";
+import FriendPage from './FriendPage.js';
+import FriendsList from './FriendsList.js';
+import BrowseGames from "./BrowseGames.js";
 
 export const UserContext = createContext();
 
@@ -39,7 +42,7 @@ function App() {
 
   useEffect(() => {
     const getCollection = async () => {
-      const data = await fetchCollection();
+      const data = await fetchUserCollection(userId);
       setCollection(data);
     };
     getCollection();
@@ -67,7 +70,11 @@ function App() {
             <h1><Link to="/" style={{ textDecoration: "none", color: "inherit" }}>🎲 Board Game Statistic Tracker</Link></h1>
           </header>
 
+<<<<<<< HEAD
           <main className="app-main">
+=======
+          {/* <main className="app-main">
+>>>>>>> 0c7fc397aa61d41a1bbe68a6b6c858814c4f043c
             <BoardGameSearch
               bookmarks={bookmarks}
               setBookmarks={setBookmarks}
@@ -75,7 +82,11 @@ function App() {
               setPlayHistory={setPlayHistory}
               collection={collection}
               setCollection={setCollection} />
+<<<<<<< HEAD
           </main>
+=======
+          </main> */}
+>>>>>>> 0c7fc397aa61d41a1bbe68a6b6c858814c4f043c
 
           <Navbar />
 
@@ -84,7 +95,10 @@ function App() {
 
               <main className="app-main">
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 0c7fc397aa61d41a1bbe68a6b6c858814c4f043c
                 <div ref={gameSessionFormRef}></div>
                 {/* Add a Play Session Button and Slide Panel */}
                 <section className="app-section">
@@ -151,6 +165,10 @@ function App() {
                   <Collection
                     items={collection}
                     setItems={setCollection}
+<<<<<<< HEAD
+=======
+                    playHistory={playHistory}
+>>>>>>> 0c7fc397aa61d41a1bbe68a6b6c858814c4f043c
                     bookmarks={bookmarks}
                     setBookmarks={setBookmarks}
                     onEdit={(item) => {
@@ -165,7 +183,16 @@ function App() {
             <Route path="/stats" element={
               <main className="app-main">
                 <section className="app-section">
+<<<<<<< HEAD
                   <UserStats userId={userId} />
+=======
+                <div className="section-header">
+                  <h3 className="section-title">User Stats</h3>
+                </div>
+                  <UserStats userId={userId}
+                    playHistory={playHistory}
+                  />
+>>>>>>> 0c7fc397aa61d41a1bbe68a6b6c858814c4f043c
                 </section>
               </main>
             } />
@@ -176,7 +203,13 @@ function App() {
                   <div className="section-header">
                     <h3 className="section-title">Bookmarks</h3>
                   </div>
-                  <Bookmarks bookmarks={bookmarks} setBookmarks={setBookmarks} />
+                  <Bookmarks bookmarks={bookmarks} 
+                    setBookmarks={setBookmarks} 
+                    playHistory={playHistory}
+                    setPlayHistory={setPlayHistory}
+                    collection={collection}
+                    setCollection={setCollection}
+                  />
                 </section>
               </main>
             } />
@@ -195,6 +228,7 @@ function App() {
               </main>
             } />
 
+<<<<<<< HEAD
             <Route path="/game/:id" element={<BoardGameDetails
               bookmarks={bookmarks}
               setBookmarks={setBookmarks}
@@ -207,6 +241,45 @@ function App() {
             <Route path='/user/:userId' element={<FriendPage />} />
           </Routes>
 
+=======
+            <Route path="/game/:id" element={
+              <main className="app-main">
+                <section className="app-section">
+                  <div className="section-header">
+                    <h3 className="section-title">Game Details</h3>
+                  </div>
+                  <BoardGameDetails
+                  bookmarks={bookmarks}
+                  setBookmarks={setBookmarks}
+                  playHistory={playHistory}
+                  setPlayHistory={setPlayHistory}
+                  collection={collection}
+                  setCollection={setCollection}/>
+                </section>
+              </main>
+            } />
+
+            <Route path="/friends" element={<FriendsList userId={userId} />} />
+            
+            <Route path='/user/:userId' element={<FriendPage />} />
+            <Route
+              path="/browse"
+              element={
+                <main className="app-main">
+                  <BrowseGames
+                    bookmarks={bookmarks}
+                    setBookmarks={setBookmarks}
+                    playHistory={playHistory}
+                    setPlayHistory={setPlayHistory}
+                    collection={collection}
+                    setCollection={setCollection}
+                  />
+                </main>
+              }
+            />
+          </Routes>
+
+>>>>>>> 0c7fc397aa61d41a1bbe68a6b6c858814c4f043c
         </div>
         <footer>
           <section className='app-footer'>

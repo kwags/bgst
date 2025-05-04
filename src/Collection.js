@@ -1,22 +1,46 @@
 //Collection is a list of the User's Games
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import BookmarkButtons from './BookmarkButtons';
-import styles from './styles/PlayHistory.module.css';
+import styles from './styles/SharedStyles.module.css';
+import Sorting from './Sorting';
 
-function Collection({ items = [], setItems, onEdit, onAddSession, bookmarks = [], setBookmarks, userId }) {
+function Collection({ items, setItems, onEdit, bookmarks, playHistory, setBookmarks, readOnly }) {
   const deleteGame = (id) => {
     setItems(items.filter(item => item.id !== id));
   };
 
-  const navigate = useNavigate();
+  const [sortConfig, setSortConfig] = useState({ sortBy: 'purchaseDate', direction: 'desc' });
+  const [sortedItems, setSortedItems] = useState([]);
+
+
+  useEffect(() => {
+    const { sortBy, direction } = sortConfig;
+    
+    const sorted = [...items].sort((a, b) => {
+      let comparison = 0;
+  
+      if (sortBy === 'purchaseDate') {
+        comparison = new Date(a.purchaseDate) - new Date(b.purchaseDate);
+      } else if (sortBy === 'name') {
+        comparison = a.name.localeCompare(b.name);
+      }
+  
+      return direction === 'asc' ? comparison : -comparison;
+    });
+  
+    setSortedItems(sorted);
+  }, [items, sortConfig]);
+
+    const navigate = useNavigate();
 
   return (
     <div className={styles.container}>
+        <Sorting onSortChange={setSortConfig} dateField="purchaseDate" />
       <ul className={`${styles.list} ${styles.leftAlignedList}`}>
-        {items.map(item => (
-          <li key={item.id} className={`${styles.listItem} ${styles.leftCard}`}>
+      {sortedItems.map(item => (
+          <li key={`${item.id}-${bookmarks.length}`} className={`${styles.listItem} ${styles.leftCard}`}>
             <div className={styles.cardContent}>
               {item.image && (
                 <div className={styles.imageMask}>
@@ -34,19 +58,33 @@ function Collection({ items = [], setItems, onEdit, onAddSession, bookmarks = []
                   </Link>
                 </h3>
                 <p className={styles.gameInfo}><strong>Players:</strong> {item.players}</p>
-                <p className={styles.gameInfo}><strong>Playtime:</strong> {item.estimatedTime} mins</p>
+                <p className={styles.gameInfo}><strong>Playtime:</strong> {item.estimatedTime}</p>
                 <p className={styles.gameInfo}><strong>Purchase Date:</strong> {item.purchaseDate}</p>
                 <p className={styles.gameInfo}><strong>Purchase Price:</strong> {item.purchasePrice}</p>
                 <div className={styles.buttonGroup}>
-                  {/* <button onClick={() => onAddSession(item.name)}>Add Session</button> */}
-                  <button className="edit-button" onClick={() => onEdit(item)}><i className="far fa-edit"></i>Edit Game</button>
-                  <button className="edit-button" onClick={() => deleteGame(item.id)}><i className="far fa-trash-can"></i>Delete Game</button>
-                  <button className="edit-button" onClick={() => navigate(`/stats/${item.gameId}`)}><i className="fas fa-chart-simple"></i>Game Stats</button>
-                  <BookmarkButtons
-                    gameId={item.gameId}
-                    bookmarks={bookmarks}
-                    setBookmarks={setBookmarks}
-                  />
+                  {!readOnly && (
+                    <>
+                      <button className="edit-button" onClick={() => onEdit(item)}>
+                        <i className="far fa-edit"></i>Edit Game
+                      </button>
+                      <button className="edit-button" onClick={() => deleteGame(item.id)}>
+                        <i className="far fa-trash-can"></i>Delete Game
+                      </button>
+                      <button className="edit-button" onClick={() => navigate(`/stats/${item.gameId}`, { 
+                        state: { gameName: item.name,
+                          playHistory: playHistory.filter((entry) => entry.gameId === item.gameId),
+                          item: item } })}>
+                    <i className="fas fa-chart-simple"></i>Game Stats
+                    </button>
+                    <BookmarkButtons
+                      gameId={item.gameId}
+                      bookmarks={bookmarks}
+                      setBookmarks={readOnly ? () => {} : setBookmarks} // Disable bookmark changes if readOnly
+                    />
+
+                    </>
+                  )}
+                  
                 </div>
               </div>
             </div>

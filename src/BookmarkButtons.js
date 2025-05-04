@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { toggleWantToOwn, toggleWantToPlay, fetchUserBookmarks } from "./mockAPI";
 import { UserContext } from "./App";   
-import styles from './styles/PlayHistory.module.css';
+import styles from './styles/SharedStyles.module.css';
 
 function BookmarkButtons({ gameId, bookmarks = [], setBookmarks }) {
   const userId = useContext(UserContext);
