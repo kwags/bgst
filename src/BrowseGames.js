@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { getGamesByMostOwned, getGamesByMostTimePlayed, getGamesByPrice, getGamesByMostWanted } from './mockAPI';
 import styles from './styles/BrowseGames.module.css';
 import BoardGameSearch from './BoardgameSearch';
 

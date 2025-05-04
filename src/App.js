@@ -2,7 +2,6 @@ import './styles/App.css';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import BoardGameDetails from './BoardGameDetails';
 import React, { useState, useEffect, useRef, createContext } from "react";
-import BoardGameSearch from './BoardgameSearch.js';
 import PlayHistory from "./PlayHistory.js";
 import { fetchPlayHistory, fetchUserCollection, fetchUserBookmarks } from "./mockAPI";
 import GameSessionManager from "./GameSessionManager.js";
