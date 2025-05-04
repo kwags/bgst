@@ -1,13 +1,19 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+global.crypto = {
+  randomUUID: () => 'mock-uuid-1234',
+  getRandomValues: (buffer) => require('crypto').randomFillSync(buffer),
+};
+
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { act } from 'react';
 import App from './App';
 import GameSessionForm from './GameSessionForm';
 import AddCollectionForm from './AddCollectionForm';
+import CollectionManager from './AddCollectionManager';
 
 // AddCollectionForm Tests
 test('AddCollectionForm submits correct data', () => {
   const handleAdd = jest.fn();
-  
+
   render(<AddCollectionForm onAdd={handleAdd} />);
 
   fireEvent.change(screen.getByPlaceholderText('Game Name'), { target: { value: 'Test Game' } });
@@ -25,6 +31,40 @@ test('AddCollectionForm submits correct data', () => {
       purchasePrice: 29.99
     })
   );
+});
+
+test('CollectionManager calls setCollection and setShowCollectionForm on add', async () => {
+  const mockSetCollection = jest.fn(() => {
+    console.log('mockSetCollection called');
+  });
+  const mockSetShowCollectionForm = jest.fn((value) => {
+    console.log(`mockSetShowCollectionForm called with: ${value}`);
+  });
+
+  render(
+    <CollectionManager
+      collection={[]}
+      setCollection={mockSetCollection}
+      editingCollectionItem={null}
+      setEditingCollectionItem={() => { }}
+      setShowCollectionForm={mockSetShowCollectionForm}
+    />
+  );
+
+  // Fill out the form
+  fireEvent.change(screen.getByPlaceholderText(/game name/i), { target: { value: "Catan" } });
+  fireEvent.change(screen.getByPlaceholderText(/number of players/i), { target: { value: "3" } });
+  fireEvent.change(screen.getByPlaceholderText(/estimated playtime/i), { target: { value: "60 min" } });
+  fireEvent.change(screen.getByPlaceholderText(/purchase date/i), { target: { value: "2025-05-01" } });
+  fireEvent.change(screen.getByPlaceholderText(/purchase price/i), { target: { value: "29.99" } });
+
+  fireEvent.click(screen.getByText(/add game/i));
+
+  // Wait for the mocks to be called
+  await waitFor(() => {
+    expect(mockSetCollection).toHaveBeenCalled();
+    expect(mockSetShowCollectionForm).toHaveBeenCalledWith(false);
+  });
 });
 
 // GameSessionForm Tests
