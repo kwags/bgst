@@ -11,6 +11,8 @@ import AddCollectionForm from './AddCollectionForm';
 import CollectionManager from './AddCollectionManager';
 import AddFriend from './AddFriend';
 import * as mockAPI from './mockAPI';
+import FriendPage from './FriendPage';
+import { MemoryRouter } from 'react-router-dom';
 
 // Friend Search Tests
 test('Searches from Friends page and adds friend', async () => {
@@ -168,4 +170,27 @@ test('renders app without crashing', async () => {
   await act(async () => {
     render(<App />);
   });
+});
+
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useParams: () => ({ userId: '2' }),
+}));
+
+test('FriendPage loads and displays user data', async () => {
+  jest.spyOn(mockAPI, 'fetchUserInfo').mockResolvedValue({ id: 2, username: 'user2' });
+  jest.spyOn(mockAPI, 'fetchPlayHistory').mockResolvedValue([]);
+  jest.spyOn(mockAPI, 'fetchCollection').mockResolvedValue([]);
+  jest.spyOn(mockAPI, 'fetchUserBookmarks').mockResolvedValue([]);
+
+  render(
+    <MemoryRouter>
+      <FriendPage />
+    </MemoryRouter>
+  );
+
+  expect(await screen.findByText(/Viewing user2's Page/i)).toBeInTheDocument();
+  expect(screen.getByText(/User Stats/i)).toBeInTheDocument();
+  expect(screen.getByText(/Play History/i)).toBeInTheDocument();
+  expect(screen.getByText(/Collection/i)).toBeInTheDocument();
 });
