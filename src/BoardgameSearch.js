@@ -1,18 +1,14 @@
 import React, { useState } from 'react';
 import { fetchBoardGames } from './mockAPI';
-import GameSessionForm from './GameSessionForm';
-import AddCollectionForm from './AddCollectionForm';
 import styles from './styles/BoardGameSearch.module.css';
 // import styles from './styles/SharedStyles.module.css';
 import AddBoardGameForm from './AddBoardGameForm';
 import BookmarkButtons from './BookmarkButtons';
-import SlidePanel from './SlidePanel';
-import { enrichWithBoardGameData } from './mockAPI';
 
 const BoardGameSearch = ({ bookmarks, setBookmarks, setPlayHistory, setCollection }) => {
-    const [selectedGame, setSelectedGame] = useState(null);
-    const [showSessionForm, setShowSessionForm] = useState(false);
-    const [showCollectionForm, setShowCollectionForm] = useState(false);
+    const [setSelectedGame] = useState(null);
+    const [setShowSessionForm] = useState(false);
+    const [setShowCollectionForm] = useState(false);
     const [showAddGameForm, setShowAddGameForm] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState([]);
