@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { fetchUserByName } from "./mockAPI"; // Use the new function
 import styles from "./styles/AddFriend.module.css";
+import { enrichFriendData, addFriendForUser } from "./mockAPI";
 
 const AddFriend = ({ userId, onFriendAdded }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -26,9 +27,11 @@ const AddFriend = ({ userId, onFriendAdded }) => {
     }
   };
 
-  const handleAddFriend = () => {
+  const handleAddFriend = async () => {
     if (searchResult) {
-      onFriendAdded(searchResult);
+      const enrichedFriend = await enrichFriendData(searchResult.username, searchResult);
+      await addFriendForUser(userId, enrichedFriend);
+      onFriendAdded(enrichedFriend);
       setSearchResult(null);
       setSearchTerm("");
     }
