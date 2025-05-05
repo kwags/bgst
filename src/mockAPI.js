@@ -549,3 +549,30 @@ export async function enrichWithBoardGameData(name, formValues) {
   };
 }
 
+export async function enrichFriendData(username, userObject) {
+  const results = await fetchBoardGames(username); 
+  const favoriteGame = results.length > 0 ? results[0] : null;
+
+  return {
+    id: userObject.id || crypto.randomUUID(),
+    username: userObject.username,
+    image: userObject.image,
+    favoriteGame: favoriteGame ? favoriteGame.name : null,
+    gameImage: favoriteGame ? favoriteGame.image : null,
+  };
+}
+
+export const addFriendForUser = async (userId, friend) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+
+      let userEntry = mockData.friends.find(f => f.userId === userId);
+
+      mockData.friends.push(userEntry);
+
+      userEntry.friends.push(friend.id);
+
+      resolve(friend);
+    }, 300);
+  });
+};
