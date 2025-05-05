@@ -22,12 +22,11 @@ export const mockData = {
 
 
   users: [
-    { id: 1, username: "user1", password: "password1" },
-    { id: 2, username: "user2", password: "password2" },
-    { id: 3, username: "user3", password: "password3" },
-    { id: 4, username: "user4", password: "password4" },
-    { id: 5, username: "user5", password: "password5" },
-    
+    { id: 1, username: "Demo", password: "password1", image: '/img/user1.png' },
+    { id: 2, username: "Rex", password: "password2", image: '/img/user2.png'},
+    { id: 3, username: "Braden", password: "password3", image: '/img/user3.png'},
+    { id: 4, username: "Kayla", password: "password4", image: '/img/user4.png'},
+    { id: 5, username: "Jacob", password: "password5", image: '/img/user5.png'},
   ],
 
   gameSessions: [
@@ -226,7 +225,7 @@ export const fetchFriends = async (userId) => {
 
       const friendsDetails = userFriends.friends.map(friendId => {
         const friend = mockData.users.find(u => u.id === friendId);
-        return friend ? { id: friend.id, username: friend.username } : null;
+        return friend ? { id: friend.id, username: friend.username, image: friend.image } : null;
       }).filter(Boolean);
 
       console.log("Friends details:", friendsDetails); // Debugging log
@@ -240,7 +239,7 @@ export const fetchUserByName = async (username) => {
     setTimeout(() => {
       const user = mockData.users.find(u => u.username.toLowerCase() === username.toLowerCase());
       if (user) {
-        resolve({ id: user.id, username: user.username });
+        resolve({ id: user.id, username: user.username, image: user.image });
       } else {
         reject(new Error(`User with username "${username}" not found`));
       }

@@ -1,33 +1,41 @@
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start; /* Align the component to the left */
-    gap: 0.5rem;
-    margin-bottom: 1rem;
-    width: auto; /* Prevent it from stretching across the parent */
-  }
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+}
   
   .input {
-    width: 200px; /* Set a fixed width for the input field */
-    padding: 0.5rem;
-    border: 1px solid #ddd;
+    width: 100%;
+    padding: 0.5rem 2.5rem 0.5rem 0.75rem;
+    font-size: 0.9rem;
+    border: 1px solid #ccc;
     border-radius: 4px;
-    font-size: 1rem;
+    box-sizing: border-box;
   }
   
   .searchButton {
-    padding: 0.5rem 1rem;
-    background-color: #0082bc;
+    position: absolute;
+    right: 0rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #FF815D;
+    padding: 1rem;
     color: white;
-    border: none;
-    border-radius: 4px;
+    font-size: 1rem;
     cursor: pointer;
+    height: (102%);
   }
-  
-  .searchButton:hover {
-    background-color: #005f8a;
+
+  .searchBar {
+    position: relative; 
+    display: flex;
+    align-items: center;
+    width: 95%;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
   }
-  
+
   .error {
     color: red;
     font-size: 0.9rem;
@@ -35,19 +43,32 @@
   
   .result {
     display: flex;
-    align-items: center;
-    gap: 1rem;
+    flex-direction: column; 
+    align-items: flex-start; 
+    gap: 0.5rem;
+    padding: 2rem 0;
   }
   
   .addButton {
     padding: 0.5rem 1rem;
-    background-color: #4caf50;
+    background-color: #4F46E5;
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
   }
-  
-  .addButton:hover {
-    background-color: #388e3c;
+
+  .avatarMask {
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .userImage {
+    width: 100%;
+    height: 100%;
   }

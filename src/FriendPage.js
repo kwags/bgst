@@ -4,7 +4,7 @@ import { fetchPlayHistory, fetchCollection, fetchUserBookmarks, fetchUserInfo } 
 import UserStats from "./UserStats";
 import PlayHistory from "./PlayHistory";
 import Collection from "./Collection";
-import styles from './styles/FriendsPage.module.css';
+import styles from "./styles/SharedStyles.module.css";
 
 const FriendPage = () => {
   const { userId } = useParams(); // Get userId from the URL
@@ -55,39 +55,37 @@ const FriendPage = () => {
   }, [userId]);
 
   return (
-    <div className={styles.friendPageContainer}>
-      <header className={styles.header}>
-        Viewing {username}'s Page
-      </header>
+    <div className={styles.container}>
 
-      <section className="app-section">
-        <h2>User Stats</h2>
-        <UserStats userId={userId} />
-      </section>
+        <div className={styles.sectionWrapper}>
+          <h3 className="section-title">{username}'s Stats</h3>
+          <UserStats playHistory={playHistory} />
+        </div>
+      
+        <div className={styles.sectionWrapper}>
+          <h3 className="section-title">{username}'s Play History</h3>
+            <PlayHistory
+              items={playHistory}
+              setItems={readOnly ? () => {} : setPlayHistory} // Disable changes if readOnly
+              bookmarks={bookmarks}
+              setBookmarks={readOnly ? () => {} : setBookmarks} // Disable changes if readOnly
+              userId={userId}
+              readOnly={readOnly}
+            />
+        </div>
 
-      <section className="app-section">
-        <h2>Play History</h2>
-        <PlayHistory
-          items={playHistory}
-          setItems={readOnly ? () => {} : setPlayHistory} // Disable changes if readOnly
-          bookmarks={bookmarks}
-          setBookmarks={readOnly ? () => {} : setBookmarks} // Disable changes if readOnly
-          userId={userId}
-          readOnly={readOnly}
-        />
-      </section>
-
-      <section className="app-section">
-        <h2>Collection</h2>
-        <Collection
-          items={collection}
-          setItems={readOnly ? () => {} : setCollection} // Disable changes if readOnly
-          bookmarks={bookmarks}
-          setBookmarks={readOnly ? () => {} : setBookmarks} // Disable changes if readOnly
-          userId={userId}
-          readOnly={readOnly}
-        />
-      </section>
+      <div className={styles.sectionWrapper}>
+        <h3 className="section-title">{username}'s Collection</h3>
+          <Collection
+            items={collection}
+            setItems={readOnly ? () => {} : setCollection} // Disable changes if readOnly
+            bookmarks={bookmarks}
+            setBookmarks={readOnly ? () => {} : setBookmarks} // Disable changes if readOnly
+            userId={userId}
+            readOnly={readOnly}
+          />
+      </div>
+      
     </div>
   );
 };
