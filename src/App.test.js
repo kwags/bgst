@@ -9,6 +9,33 @@ import App from './App';
 import GameSessionForm from './GameSessionForm';
 import AddCollectionForm from './AddCollectionForm';
 import CollectionManager from './AddCollectionManager';
+import AddFriend from './AddFriend';
+import * as mockAPI from './mockAPI';
+
+// Friend Search Tests
+test('Searches from Friends page and adds friend', async () => {
+  const mockUser = { id: 2, username: 'testuser' };
+  const mockOnFriendAdded = jest.fn();
+
+  jest.spyOn(mockAPI, 'fetchUserByName').mockResolvedValue(mockUser);
+
+  render(<AddFriend userId={1} onFriendAdded={mockOnFriendAdded} />);
+
+  fireEvent.change(screen.getByPlaceholderText(/search by username/i), {
+    target: { value: 'testuser' },
+  });
+
+  fireEvent.click(screen.getByText(/search/i));
+
+  // Wait for result
+  expect(await screen.findByText('testuser')).toBeInTheDocument();
+  expect(screen.getByText(/add friend/i)).toBeInTheDocument();
+
+  // Simulate clicking "add friend"
+  fireEvent.click(screen.getByText(/add friend/i));
+
+  expect(mockOnFriendAdded).toHaveBeenCalledWith(mockUser);
+});
 
 // AddCollectionForm Tests
 test('AddCollectionForm submits correct data', () => {
