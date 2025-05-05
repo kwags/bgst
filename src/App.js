@@ -2,7 +2,6 @@ import './styles/App.css';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import BoardGameDetails from './BoardGameDetails';
 import React, { useState, useEffect, useRef, createContext } from "react";
-import BoardGameSearch from './BoardgameSearch.js';
 import PlayHistory from "./PlayHistory.js";
 import { fetchPlayHistory, fetchUserCollection, fetchUserBookmarks } from "./mockAPI";
 import GameSessionManager from "./GameSessionManager.js";
@@ -46,7 +45,7 @@ function App() {
       setCollection(data);
     };
     getCollection();
-  }, []);
+  }, [userId]);
 
   useEffect(() => {
     const getBookmarks = async () => {
@@ -69,16 +68,6 @@ function App() {
           <header className="app-header">
             <h1><Link to="/" style={{ textDecoration: "none", color: "inherit" }}>🎲 Board Game Statistic Tracker</Link></h1>
           </header>
-
-          {/* <main className="app-main">
-            <BoardGameSearch
-              bookmarks={bookmarks}
-              setBookmarks={setBookmarks}
-              playHistory={playHistory}
-              setPlayHistory={setPlayHistory}
-              collection={collection}
-              setCollection={setCollection} />
-          </main> */}
 
           <Navbar />
 
@@ -168,9 +157,9 @@ function App() {
             <Route path="/stats" element={
               <main className="app-main">
                 <section className="app-section">
-                <div className="section-header">
-                  <h3 className="section-title">User Stats</h3>
-                </div>
+                  <div className="section-header">
+                    <h3 className="section-title">User Stats</h3>
+                  </div>
                   <UserStats userId={userId}
                     playHistory={playHistory}
                   />
@@ -184,8 +173,8 @@ function App() {
                   <div className="section-header">
                     <h3 className="section-title">Bookmarks</h3>
                   </div>
-                  <Bookmarks bookmarks={bookmarks} 
-                    setBookmarks={setBookmarks} 
+                  <Bookmarks bookmarks={bookmarks}
+                    setBookmarks={setBookmarks}
                     playHistory={playHistory}
                     setPlayHistory={setPlayHistory}
                     collection={collection}
@@ -216,18 +205,18 @@ function App() {
                     <h3 className="section-title">Game Details</h3>
                   </div>
                   <BoardGameDetails
-                  bookmarks={bookmarks}
-                  setBookmarks={setBookmarks}
-                  playHistory={playHistory}
-                  setPlayHistory={setPlayHistory}
-                  collection={collection}
-                  setCollection={setCollection}/>
+                    bookmarks={bookmarks}
+                    setBookmarks={setBookmarks}
+                    playHistory={playHistory}
+                    setPlayHistory={setPlayHistory}
+                    collection={collection}
+                    setCollection={setCollection} />
                 </section>
               </main>
             } />
 
             <Route path="/friends" element={<FriendsList userId={userId} />} />
-            
+
             <Route path='/user/:userId' element={<FriendPage />} />
             <Route
               path="/browse"
