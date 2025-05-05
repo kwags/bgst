@@ -60,13 +60,9 @@ test('AddCollectionForm submits correct data', () => {
   );
 });
 
-test('CollectionManager calls setCollection and setShowCollectionForm on add', async () => {
-  const mockSetCollection = jest.fn(() => {
-    console.log('mockSetCollection called');
-  });
-  const mockSetShowCollectionForm = jest.fn((value) => {
-    console.log(`mockSetShowCollectionForm called with: ${value}`);
-  });
+test('CollectionManager submits new collection item form and updates collection', async () => {
+  const mockSetCollection = jest.fn();
+  const mockSetShowCollectionForm = jest.fn();
 
   render(
     <CollectionManager
