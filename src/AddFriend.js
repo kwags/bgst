@@ -36,19 +36,28 @@ const AddFriend = ({ userId, onFriendAdded }) => {
 
   return (
     <div className={styles.container}>
-      <input
-        type="text"
-        placeholder="Search by username"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        className={styles.input}
-      />
-      <button onClick={handleSearch} className={styles.searchButton}>
-        Search
-      </button>
+      <div className={styles.searchBar}>
+        <input
+          type="text"
+          placeholder="Search by username"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className={styles.input}
+        />
+        <button onClick={handleSearch} className={styles.searchButton}>
+          Search
+        </button>
+      </div>
       {error && <p className={styles.error}>{error}</p>}
       {searchResult && (
         <div className={styles.result}>
+          <div className={styles.avatarMask}>
+            <img
+              src={searchResult.image}
+              alt={searchResult.username}
+              className={styles.userImage} 
+            />
+          </div>
           <span>{searchResult.username}</span>
           <button onClick={handleAddFriend} className={styles.addButton}>
             Add Friend

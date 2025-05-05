@@ -215,9 +215,25 @@ function App() {
               </main>
             } />
 
-            <Route path="/friends" element={<FriendsList userId={userId} />} />
 
-            <Route path='/user/:userId' element={<FriendPage />} />
+            <Route path="/friends" element={
+              <main className="app-main">
+                <section className="app-section">
+                  <FriendsList userId={userId} />
+                </section>
+              </main>
+              } />
+
+            <Route path='/user/:userId' element={
+              <main className="app-main">
+                <section className="app-section">
+                  <FriendPage />
+                </section>
+              </main>
+              } />
+
+
+
             <Route
               path="/browse"
               element={
