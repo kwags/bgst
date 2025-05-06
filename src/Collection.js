@@ -70,12 +70,9 @@ function Collection({ items, setItems, onEdit, bookmarks, playHistory, setBookma
                       <button className="edit-button" onClick={() => deleteGame(item.id)}>
                         <i className="far fa-trash-can"></i>Delete Game
                       </button>
-                      <button className="edit-button" onClick={() => navigate(`/stats/${item.gameId}`, { 
-                        state: { gameName: item.name,
-                          playHistory: playHistory.filter((entry) => entry.gameId === item.gameId),
-                          item: item } })}>
-                    <i className="fas fa-chart-simple"></i>Game Stats
-                    </button>
+                      <button className="edit-button" onClick={() => navigate(`/stats/${item.gameId}`, {state: { gameName: item.name, playHistory: playHistory, item: item }})}>
+                        <i className="fas fa-chart-simple"></i>Game Stats
+                      </button>
                     <BookmarkButtons
                       gameId={item.gameId}
                       bookmarks={bookmarks}
