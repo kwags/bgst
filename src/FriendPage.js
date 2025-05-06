@@ -70,6 +70,7 @@ const FriendPage = () => {
               setBookmarks={readOnly ? () => {} : setBookmarks} // Disable changes if readOnly
               userId={userId}
               readOnly={readOnly}
+              showHeading={false}
             />
         </div>
 
@@ -82,6 +83,7 @@ const FriendPage = () => {
             setBookmarks={readOnly ? () => {} : setBookmarks} // Disable changes if readOnly
             userId={parseInt(userId)}
             readOnly={readOnly}
+            showHeading={false}
           />
       </div>
       

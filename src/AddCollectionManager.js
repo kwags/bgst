@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import AddCollectionForm from "./AddCollectionForm";
 import { enrichWithBoardGameData } from "./mockAPI";
 
@@ -7,39 +7,49 @@ const CollectionManager = ({
   setCollection,
   editingCollectionItem,
   setEditingCollectionItem,
+  selectedGameForCollection,
+  setSelectedGameForCollection,
   setShowCollectionForm,
 }) => {
+  const [loading, setLoading] = useState(false);
 
-  const handleAddCollection = async (newItem) => {
+  const handleAdd = async (newItem) => {
+    setLoading(true);
+
     try {
       const enrichedItem = await enrichWithBoardGameData(newItem.name, newItem);
       setCollection([...collection, enrichedItem]);
       setShowCollectionForm(false);
     } catch (error) {
       console.error('Error enriching collection item:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
+  const handleUpdate = (updatedItem) => {
+    setCollection(
+      collection.map((item) =>
+        item.id === updatedItem.id ? updatedItem : item
+      )
+    );
+    setEditingCollectionItem(null);
+    setShowCollectionForm(false);
+  };
 
   return (
     <AddCollectionForm
-      onAdd={handleAddCollection}
       editingItem={editingCollectionItem}
-      onUpdate={(updatedItem) => {
-        setCollection(
-          collection.map((item) =>
-            item.id === updatedItem.id ? updatedItem : item
-          )
-        );
-        setEditingCollectionItem(null);
-        setShowCollectionForm(false);
-      }}
+      autofillGameName={selectedGameForCollection || ""}
+      onAdd={handleAdd}
+      onUpdate={handleUpdate}
       onCancelEdit={() => {
         setEditingCollectionItem(null);
+        setSelectedGameForCollection("");
         setShowCollectionForm(false);
       }}
+      loading={loading}
     />
   );
 };
-
 export default CollectionManager;

@@ -79,6 +79,9 @@ function BoardGameDetails({ bookmarks, setBookmarks, playHistory, setPlayHistory
 
   return (
     <div className={styles.container}>
+      <div className="section-header">
+        <h3 className="section-title">Game Details</h3>
+      </div>
       <ul className={`${styles.list} ${styles.leftAlignedList}`}>
         <li className={`${styles.listItem} ${styles.leftCard}`}>
           <div className={styles.cardContent}>

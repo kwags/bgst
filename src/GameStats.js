@@ -29,6 +29,12 @@ const GameStats = () => {
   
     return (
       <div className={styles.container}>
+      <div className="section-header">
+        <h3 className="section-title">Game Stats</h3>
+        <Link to={'/stats/'} className="stats-button">
+          <i className="fas fa-chart-simple"></i>Overall Stats
+        </Link>
+      </div>
         <ul className={`${styles.list} ${styles.leftAlignedList}`}>
             <li key={item.id} className={`${styles.listItem} ${styles.leftCard}`}>
               <div className={styles.cardContent}>

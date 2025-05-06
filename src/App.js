@@ -1,20 +1,18 @@
-import './styles/App.css';
+import React, { useState, useEffect, createContext } from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import BoardGameDetails from './BoardGameDetails';
-import React, { useState, useEffect, useRef, createContext } from "react";
-import PlayHistory from "./PlayHistory.js";
 import { fetchPlayHistory, fetchCollection, fetchUserBookmarks, fetchUserInfo } from "./mockAPI";
-import CollectionManager from "./AddCollectionManager.js";
+import Navbar from './Navbar.js';
+import BoardGameDetails from './BoardGameDetails';
+import PlayHistory from "./PlayHistory.js";
 import Collection from "./Collection.js";
 import UserStats from './UserStats.js';
-import '@fortawesome/fontawesome-free/css/all.min.css';
-import SlidePanel from './SlidePanel';
-import Navbar from './Navbar.js';
-import Bookmarks from "./Bookmarks.js";
 import GameStats from "./GameStats.js";
+import Bookmarks from "./Bookmarks.js";
 import FriendPage from './FriendPage.js';
 import FriendsList from './FriendsList.js';
 import BrowseGames from "./BrowseGames.js";
+import './styles/App.css';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 export const UserContext = createContext();
 
@@ -22,13 +20,7 @@ function App() {
   const [userId] = useState(1);
   const [playHistory, setPlayHistory] = useState([]);
   const [collection, setCollection] = useState([]);
-  const [showCollectionForm, setShowCollectionForm] = useState(false);
-  const [setEditingPlayHistoryItem] = useState(null);
-  const [editingCollectionItem, setEditingCollectionItem] = useState(null);
-  const [setSelectedGameForSession] = useState(null);
-  const gameSessionFormRef = useRef(null);
   const [bookmarks, setBookmarks] = useState([]);
-  const [setShowSessionForm] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
 
   useEffect(() => {
@@ -108,38 +100,14 @@ function App() {
             <Route path="/collection" element={
               <main className="app-main">
                 <section className="app-section">
-                  <div className="section-header">
-                    <h3 className="section-title">Collection</h3>
-                    <button className="add-button" onClick={() => setShowCollectionForm(true)}><i className="fas fa-plus-square"></i>Add to Collection</button>
-                  </div>
-                  <SlidePanel
-                    show={showCollectionForm}
-                    onClose={() => {
-                      setShowCollectionForm(false);
-                      setEditingCollectionItem(null);
-                    }}
-                    heading={editingCollectionItem ? "Edit Collection Item" : "Add to Collection"}>
-
-                    <CollectionManager
-                      collection={collection}
-                      setCollection={setCollection}
-                      editingCollectionItem={editingCollectionItem}
-                      setEditingCollectionItem={setEditingCollectionItem}
-                      setShowCollectionForm={setShowCollectionForm}
-                    />
-                  </SlidePanel>
-
                   <Collection
+                    userId={userId}
                     items={collection}
                     setItems={setCollection}
                     playHistory={playHistory}
                     bookmarks={bookmarks}
                     setBookmarks={setBookmarks}
-                    onEdit={(item) => {
-                      setEditingCollectionItem(item);
-                      setSelectedGameForSession(item.name);
-                      setShowCollectionForm(true);
-                    }} />
+                  />
                 </section>
               </main>
             } />
@@ -175,12 +143,6 @@ function App() {
             <Route path="/stats/:id" element={
               <main className="app-main">
                 <section className="app-section">
-                  <div className="section-header">
-                    <h3 className="section-title">Game Stats</h3>
-                    <Link to={'/stats/'} className="stats-button">
-                      <i className="fas fa-chart-simple"></i>Overall Stats
-                    </Link>
-                  </div>
                   <GameStats />
                 </section>
               </main>
@@ -189,9 +151,6 @@ function App() {
             <Route path="/game/:id" element={
               <main className="app-main">
                 <section className="app-section">
-                  <div className="section-header">
-                    <h3 className="section-title">Game Details</h3>
-                  </div>
                   <BoardGameDetails
                     bookmarks={bookmarks}
                     setBookmarks={setBookmarks}
@@ -202,7 +161,6 @@ function App() {
                 </section>
               </main>
             } />
-
 
             <Route path="/friends" element={
               <main className="app-main">
@@ -219,8 +177,6 @@ function App() {
                 </section>
               </main>
               } />
-
-
 
             <Route
               path="/browse"

@@ -7,15 +7,14 @@ import styles from './styles/SharedStyles.module.css';
 import Sorting from './Sorting';
 import SlidePanel from './SlidePanel';
 import GameSessionManager from "./GameSessionManager.js";
-import { fetchPlayHistory, fetchCollection, fetchUserBookmarks, fetchUserInfo } from "./mockAPI";
+import { fetchPlayHistory } from "./mockAPI";
 
-function PlayHistory({ userId, items, setItems, onEdit, bookmarks, setBookmarks, readOnly }) {
+function PlayHistory({ userId, items, setItems, bookmarks, setBookmarks, readOnly, showHeading=true }) {
 
   const [sortConfig, setSortConfig] = useState({ sortBy: 'date', direction: 'desc' });
   const [sortedItems, setSortedItems] = useState([]);
   const [showSessionForm, setShowSessionForm] = useState(false);
   const [editingPlayHistoryItem, setEditingPlayHistoryItem] = useState(null);
-  const [selectedGameForSession, setSelectedGameForSession] = useState(null);
   const [playHistory, setPlayHistory] = useState([]);
 
   useEffect(() => {
@@ -52,10 +51,14 @@ function PlayHistory({ userId, items, setItems, onEdit, bookmarks, setBookmarks,
 
   return (
     <div className={styles.container}>
-       <div className="section-header">
+      {showHeading && (
+        <div className="section-header">
           <h3 className="section-title">Play History</h3>
-          <button className="add-button" onClick={() => setShowSessionForm(true)}><i className="fas fa-plus-square"></i>Add Play Session</button>
+          <button className="add-button" onClick={() => setShowSessionForm(true)}>
+            <i className="fas fa-plus-square"></i>Add Play Session
+          </button>
         </div>
+      )}
       <Sorting onSortChange={setSortConfig} dateField="date"/>
       <ul className={`${styles.list} ${styles.leftAlignedList}`}>
       {sortedItems.map(item => (
@@ -87,7 +90,6 @@ function PlayHistory({ userId, items, setItems, onEdit, bookmarks, setBookmarks,
                     <>
                       <button className="edit-button" onClick={() => {
                         setEditingPlayHistoryItem(item);
-                        setSelectedGameForSession(item.name);
                         setShowSessionForm(true);
                       }}>
                         <i className="far fa-edit"></i>Edit Session
@@ -96,8 +98,8 @@ function PlayHistory({ userId, items, setItems, onEdit, bookmarks, setBookmarks,
                         <i className="far fa-trash-can"></i>Delete Session
                       </button>
                       <button className="edit-button" onClick={() => navigate(`/stats/${item.gameId}`, { state: { gameName: item.name, playHistory: items, item: item } })}>
-                    <i className="fas fa-chart-simple"></i>Game Stats
-                    </button>
+                        <i className="fas fa-chart-simple"></i>Game Stats
+                      </button>
                     <BookmarkButtons
                       gameId={item.gameId}
                       bookmarks={bookmarks}
@@ -113,7 +115,7 @@ function PlayHistory({ userId, items, setItems, onEdit, bookmarks, setBookmarks,
         ))}
       </ul>
       <SlidePanel show={showSessionForm}
-          onClose={() => { setShowSessionForm(false); setEditingPlayHistoryItem(null); setSelectedGameForSession(""); }}
+          onClose={() => { setShowSessionForm(false); setEditingPlayHistoryItem(null); }}
           heading={editingPlayHistoryItem ? "Edit Play Session" : "Add Play Session"}>
 
           <GameSessionManager
@@ -124,8 +126,6 @@ function PlayHistory({ userId, items, setItems, onEdit, bookmarks, setBookmarks,
             }}
             editingPlayHistoryItem={editingPlayHistoryItem}
             setEditingPlayHistoryItem={setEditingPlayHistoryItem}
-            selectedGameForSession={selectedGameForSession}
-            setSelectedGameForSession={setSelectedGameForSession}
             setShowSessionForm={setShowSessionForm}
           />
         </SlidePanel>
