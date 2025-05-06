@@ -1,11 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ResultDonutChart, { GamesPerMonthChart, ScoreOverTimeChart }  from './StatsCharts';
+import { fetchUserInfo } from './mockAPI';
 import styles from './styles/SharedStyles.module.css';
 
-const UserStats = ({ playHistory, boardgames }) => {
+const UserStats = ({ playHistory, userId }) => {
     const [activeTab, setActiveTab] = useState("results");
+    const [user, setUser] = useState(null);
 
-    if (!playHistory || playHistory.length === 0) {
+    useEffect(() => {
+        fetchUserInfo(userId)
+            .then(setUser)
+            .catch(err => console.error(err));
+    }, [userId]);
+
+    if (!user || !playHistory || playHistory.length === 0) {
         return <p>Loading stats...</p>;
     }
 
@@ -52,16 +60,22 @@ const UserStats = ({ playHistory, boardgames }) => {
       
     return (
         <div className={styles.container}>
+            <div className="section-header">
+            <h3 className="section-title">{user.username}'s Stats</h3>
+            </div>
             <ul className={`${styles.list} ${styles.leftAlignedList}`}>
                 <li className={`${styles.listItem} ${styles.leftCard}`}>
                     <div className={styles.cardContent}>
+                    <div className={styles.avatarMask}>
+                        <img src={user.image} alt={`${user.username}'s avatar`} className={styles.userImage}/>
+                    </div>
                         <div className={`${styles.gameDetails} ${styles.leftDetails}`}>
-                            <p>Total Games Played: {totalGames}</p>
-                            <p>Total Wins: {resultCounts.win}</p>
-                            <p>Total Losses: {resultCounts.loss}</p>
-                            <p>Average Score: {averageScore.toFixed(2)}</p>
-                            <p>Most Played Game: {mostPlayedGame}</p>
-                            <p>Total Different Games Played: {totalDifferentGamesPlayed}</p>
+                            <p><strong>Total Games Played:</strong> {totalGames}</p>
+                            <p><strong>Total Wins:</strong> {resultCounts.win}</p>
+                            <p><strong>Total Losses:</strong> {resultCounts.loss}</p>
+                            <p><strong>Average Score:</strong> {averageScore.toFixed(2)}</p>
+                            <p><strong>Most Played Game:</strong> {mostPlayedGame}</p>
+                            <p><strong>Total Different Games Played:</strong> {totalDifferentGamesPlayed}</p>
                         </div>
                         <div className={styles.rightSection}>
                         <div className={styles.tabWrapper}>
@@ -73,7 +87,7 @@ const UserStats = ({ playHistory, boardgames }) => {
                                 <button onClick={() => 
                                     setActiveTab("scores")} className={`${styles.tabButton} ${activeTab === "scores" ? styles.activeTab : ""}`}>Score Over Time</button>
                             </div>
-
+                            
                             <div className={styles.centeredChart}>
                             {activeTab === "results" && <ResultDonutChart sessions={playHistory} />}
                             {activeTab === "monthly" && <GamesPerMonthChart sessions={playHistory} />}
