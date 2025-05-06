@@ -4,7 +4,6 @@ import BoardGameDetails from './BoardGameDetails';
 import React, { useState, useEffect, useRef, createContext } from "react";
 import PlayHistory from "./PlayHistory.js";
 import { fetchPlayHistory, fetchCollection, fetchUserBookmarks, fetchUserInfo } from "./mockAPI";
-import GameSessionManager from "./GameSessionManager.js";
 import CollectionManager from "./AddCollectionManager.js";
 import Collection from "./Collection.js";
 import UserStats from './UserStats.js';
@@ -24,12 +23,12 @@ function App() {
   const [playHistory, setPlayHistory] = useState([]);
   const [collection, setCollection] = useState([]);
   const [showCollectionForm, setShowCollectionForm] = useState(false);
-  const [editingPlayHistoryItem, setEditingPlayHistoryItem] = useState(null);
+  const [setEditingPlayHistoryItem] = useState(null);
   const [editingCollectionItem, setEditingCollectionItem] = useState(null);
-  const [selectedGameForSession, setSelectedGameForSession] = useState(null);
+  const [setSelectedGameForSession] = useState(null);
   const gameSessionFormRef = useRef(null);
   const [bookmarks, setBookmarks] = useState([]);
-  const [showSessionForm, setShowSessionForm] = useState(false);
+  const [setShowSessionForm] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
 
   useEffect(() => {
@@ -94,40 +93,14 @@ function App() {
             <Route path="/" element={
 
               <main className="app-main">
-
-                <div ref={gameSessionFormRef}></div>
-                {/* Add a Play Session Button and Slide Panel */}
                 <section className="app-section">
-                  <div className="section-header">
-                    <h3 className="section-title">Play History</h3>
-                    <button className="add-button" onClick={() => setShowSessionForm(true)}><i className="fas fa-plus-square"></i>Add Play Session</button>
-                  </div>
-                  <SlidePanel show={showSessionForm}
-                    onClose={() => { setShowSessionForm(false); setEditingPlayHistoryItem(null); setSelectedGameForSession(""); }}
-                    heading={editingPlayHistoryItem ? "Edit Play Session" : "Add Play Session"}>
-
-                    <GameSessionManager
-                      playHistory={playHistory}
-                      setPlayHistory={setPlayHistory}
-                      editingPlayHistoryItem={editingPlayHistoryItem}
-                      setEditingPlayHistoryItem={setEditingPlayHistoryItem}
-                      selectedGameForSession={selectedGameForSession}
-                      setSelectedGameForSession={setSelectedGameForSession}
-                      setShowSessionForm={setShowSessionForm}
-                    />
-
-                  </SlidePanel>
-
                   <PlayHistory
+                    userId={userId}
                     items={playHistory}
                     setItems={setPlayHistory}
                     bookmarks={bookmarks}
                     setBookmarks={setBookmarks}
-                    onEdit={(item) => {
-                      setEditingPlayHistoryItem(item);
-                      setSelectedGameForSession(item.name);
-                      setShowSessionForm(true);
-                    }} />
+                  />
                 </section>
               </main>
             } />
@@ -154,7 +127,6 @@ function App() {
                       setEditingCollectionItem={setEditingCollectionItem}
                       setShowCollectionForm={setShowCollectionForm}
                     />
-
                   </SlidePanel>
 
                   <Collection
@@ -176,7 +148,7 @@ function App() {
               <main className="app-main">
                 <section className="app-section">
 
-                  <UserStats userId={1}
+                  <UserStats userId={userId}
                     playHistory={playHistory}
                   />
                 </section>
