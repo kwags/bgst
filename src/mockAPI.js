@@ -22,7 +22,7 @@ export const mockData = {
 
 
   users: [
-    { id: 1, username: "Demo", password: "password1", image: '/img/user1.png' },
+    { id: 1, username: "Jane Doe", password: "password1", image: '/img/user1.png' },
     { id: 2, username: "Rex", password: "password2", image: '/img/user2.png'},
     { id: 3, username: "Braden", password: "password3", image: '/img/user3.png'},
     { id: 4, username: "Kayla", password: "password4", image: '/img/user4.png'},
@@ -204,7 +204,7 @@ export const fetchUserInfo = async (userId) => {
     setTimeout(() => {
       const user = mockData.users.find(u => u.id === userId);
       if (user) {
-        resolve({ id: user.id, username: user.username });
+        resolve({ id: user.id, username: user.username, image: user.image });
       } else {
         reject(new Error(`User with ID ${userId} not found`));
       }

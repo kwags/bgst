@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import BoardGameDetails from './BoardGameDetails';
 import React, { useState, useEffect, useRef, createContext } from "react";
 import PlayHistory from "./PlayHistory.js";
-import { fetchPlayHistory, fetchUserCollection, fetchUserBookmarks } from "./mockAPI";
+import { fetchPlayHistory, fetchUserCollection, fetchUserBookmarks, fetchUserInfo } from "./mockAPI";
 import GameSessionManager from "./GameSessionManager.js";
 import CollectionManager from "./AddCollectionManager.js";
 import Collection from "./Collection.js";
@@ -30,6 +30,7 @@ function App() {
   const gameSessionFormRef = useRef(null);
   const [bookmarks, setBookmarks] = useState([]);
   const [showSessionForm, setShowSessionForm] = useState(false);
+  const [userInfo, setUserInfo] = useState(null);
 
   useEffect(() => {
     const getPlayHistory = async () => {
@@ -55,13 +56,31 @@ function App() {
     getBookmarks();
   }, [userId]);
 
+  useEffect(() => {
+    const getUserInfo = async () => {
+      try {
+        const data = await fetchUserInfo(userId);
+        setUserInfo(data);
+      } catch (err) {
+        console.error("Failed to fetch user info:", err);
+      }
+    };
+    getUserInfo();
+  }, [userId]);
+
   return (
     <Router>
       <UserContext.Provider value={userId} >
         <div className="topBar">
           <div className="userSection">
-            <i className="fas fa-user"></i>
-            <span className="username">DEMO_USER</span>
+            {userInfo && (
+              <>
+                <img src={userInfo.image} alt={userInfo.username} className="user-avatar"
+                  style={{ width: "30px", height: "30px", borderRadius: "50%" }}
+                />
+                <span className="username">{userInfo.username}</span>
+              </>
+            )}          
           </div>
         </div>
         <div className="app-container">
@@ -157,10 +176,8 @@ function App() {
             <Route path="/stats" element={
               <main className="app-main">
                 <section className="app-section">
-                  <div className="section-header">
-                    <h3 className="section-title">User Stats</h3>
-                  </div>
-                  <UserStats userId={userId}
+
+                  <UserStats userId={1}
                     playHistory={playHistory}
                   />
                 </section>
