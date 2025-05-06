@@ -34,11 +34,11 @@ function App() {
 
   useEffect(() => {
     const getPlayHistory = async () => {
-      const data = await fetchPlayHistory();
+      const data = await fetchPlayHistory(userId);
       setPlayHistory(data);
     };
     getPlayHistory();
-  }, []);
+  }, [userId]);
 
   useEffect(() => {
     const getCollection = async () => {
@@ -123,7 +123,6 @@ function App() {
                     setItems={setPlayHistory}
                     bookmarks={bookmarks}
                     setBookmarks={setBookmarks}
-                    userId={userId}
                     onEdit={(item) => {
                       setEditingPlayHistoryItem(item);
                       setSelectedGameForSession(item.name);

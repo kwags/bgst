@@ -175,28 +175,31 @@ export const addBoardGame = async (newGame) => {
 };
 
 // Simulate fetching play history (all sessions)
-export async function fetchPlayHistory() {
-  const history = mockData.gameSessions.map(session => {
-    const game = mockData.boardgames.find(game => game.id === session.gameId);
-    const user = mockData.users.find(user => user.id === session.userId);
-
+export const fetchPlayHistory = async (userId) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const gameSessions = mockData.gameSessions
+      .filter(gameSessions => gameSessions.userId === Number(userId))
+      .map(gameSessions => {
+        const game = mockData.boardgames.find(game => game.id === gameSessions.gameId);
     return {
-      id: session.id,
-      userId: session.userId,
-      username: user ? user.username : "Unknown",
-      gameId: game ? game.id : null,
+      id: gameSessions.id,
+      userId: gameSessions.userId,
+      gameId: gameSessions.gameId,
       name: game ? game.name : "Unknown",
       image: game ? game.image : null,
-      date: session.date,
-      numPlayers: session.numPlayers,
-      score: session.score,
-      result: session.result,
-      time: session.time,
-      comments: session.comments,
+      date: gameSessions.date,
+      numPlayers: gameSessions.numPlayers,
+      score: gameSessions.score,
+      result: gameSessions.result,
+      time: gameSessions.time,
+      comments: gameSessions.comments,
     };
   });
-  return history;
-}
+  resolve(gameSessions);
+}, 300);
+});
+};
 
 
 export const fetchUserInfo = async (userId) => {
@@ -378,6 +381,7 @@ export const fetchCollection = async (userId) => {
       .filter(collection => collection.userId === Number(userId))
       .map(collection => {
         const game = mockData.boardgames.find(game => game.id === collection.gameId);
+
     return {
       id: collection.id,
       userId: collection.userId,
