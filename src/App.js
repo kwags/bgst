@@ -176,7 +176,7 @@ function App() {
               <main className="app-main">
                 <section className="app-section">
 
-                  <UserStats userId={1}
+                  <UserStats userId={userId}
                     playHistory={playHistory}
                   />
                 </section>
