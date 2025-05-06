@@ -1,6 +1,7 @@
 // src/mockData.js
 
 import { v4 as uuidv4 } from 'uuid'; // for creating unique id's
+import Collection from './Collection';
 
 export const mockData = {
   boardgames: [
@@ -175,28 +176,31 @@ export const addBoardGame = async (newGame) => {
 };
 
 // Simulate fetching play history (all sessions)
-export async function fetchPlayHistory() {
-  const history = mockData.gameSessions.map(session => {
-    const game = mockData.boardgames.find(game => game.id === session.gameId);
-    const user = mockData.users.find(user => user.id === session.userId);
-
+export const fetchPlayHistory = async (userId) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const gameSessions = mockData.gameSessions
+      .filter(gameSessions => gameSessions.userId === Number(userId))
+      .map(gameSessions => {
+        const game = mockData.boardgames.find(game => game.id === gameSessions.gameId);
     return {
-      id: session.id,
-      userId: session.userId,
-      username: user ? user.username : "Unknown",
-      gameId: game ? game.id : null,
+      id: gameSessions.id,
+      userId: gameSessions.userId,
+      gameId: gameSessions.gameId,
       name: game ? game.name : "Unknown",
       image: game ? game.image : null,
-      date: session.date,
-      numPlayers: session.numPlayers,
-      score: session.score,
-      result: session.result,
-      time: session.time,
-      comments: session.comments,
+      date: gameSessions.date,
+      numPlayers: gameSessions.numPlayers,
+      score: gameSessions.score,
+      result: gameSessions.result,
+      time: gameSessions.time,
+      comments: gameSessions.comments,
     };
   });
-  return history;
-}
+  resolve(gameSessions);
+}, 300);
+});
+};
 
 
 export const fetchUserInfo = async (userId) => {
@@ -371,27 +375,30 @@ export const saveCollectionItem = async (collectionItem) => {
 
 
 // Simulate fetching all collection items
-export async function fetchCollection() {
-  const collection = mockData.collection.map(session => {
-    const game = mockData.boardgames.find(game => game.id === session.gameId);
-    const user = mockData.users.find(user => user.id === session.userId);
+export const fetchCollection = async (userId) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const collection = mockData.collection
+      .filter(collection => collection.userId === Number(userId))
+      .map(collection => {
+        const game = mockData.boardgames.find(game => game.id === collection.gameId);
 
     return {
-      id: session.id,
-      userId: session.userId,
-      username: user ? user.username : "Unknown",
-      gameId: game ? game.id : null,
+      id: collection.id,
+      userId: collection.userId,
+      gameId: collection.gameId,
       name: game ? game.name : "Unknown",
       image: game ? game.image : null,
       players: game.players,
       estimatedTime: game.estimatedTime,
-      purchaseDate: session.purchaseDate,
-      purchasePrice: session.purchasePrice,
+      purchaseDate: collection.purchaseDate,
+      purchasePrice: collection.purchasePrice,
     };
   });
-  return collection;
-}
-
+  resolve(collection);
+}, 300);
+});
+};
 
 
 // Simulate fetching user-specific collection items
