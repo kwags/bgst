@@ -1,7 +1,6 @@
 // src/mockData.js
 
 import { v4 as uuidv4 } from 'uuid'; // for creating unique id's
-import Collection from './Collection';
 
 export const mockData = {
   boardgames: [

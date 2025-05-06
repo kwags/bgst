@@ -243,7 +243,7 @@ function App() {
             <Route path='/user/:userId' element={
               <main className="app-main">
                 <section className="app-section">
-                  <FriendPage />
+                  <FriendPage userId={userId}/>
                 </section>
               </main>
               } />

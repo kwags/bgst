@@ -80,7 +80,7 @@ const FriendPage = () => {
             setItems={readOnly ? () => {} : setCollection} // Disable changes if readOnly
             bookmarks={bookmarks}
             setBookmarks={readOnly ? () => {} : setBookmarks} // Disable changes if readOnly
-            userId={userId}
+            userId={parseInt(userId)}
             readOnly={readOnly}
           />
       </div>
