@@ -5,11 +5,26 @@ import { Link, useNavigate } from 'react-router-dom';
 import BookmarkButtons from './BookmarkButtons';
 import styles from './styles/SharedStyles.module.css';
 import Sorting from './Sorting';
+import SlidePanel from './SlidePanel';
+import GameSessionManager from "./GameSessionManager.js";
+import { fetchPlayHistory, fetchCollection, fetchUserBookmarks, fetchUserInfo } from "./mockAPI";
 
-function PlayHistory({ items, setItems, onEdit, bookmarks, setBookmarks, readOnly }) {
+function PlayHistory({ userId, items, setItems, onEdit, bookmarks, setBookmarks, readOnly }) {
 
   const [sortConfig, setSortConfig] = useState({ sortBy: 'date', direction: 'desc' });
   const [sortedItems, setSortedItems] = useState([]);
+  const [showSessionForm, setShowSessionForm] = useState(false);
+  const [editingPlayHistoryItem, setEditingPlayHistoryItem] = useState(null);
+  const [selectedGameForSession, setSelectedGameForSession] = useState(null);
+  const [playHistory, setPlayHistory] = useState([]);
+
+  useEffect(() => {
+    const getPlayHistory = async () => {
+      const data = await fetchPlayHistory(userId);
+      setPlayHistory(data);
+    };
+    getPlayHistory();
+  }, [userId]);
 
   useEffect(() => {
     const { sortBy, direction } = sortConfig;
@@ -37,6 +52,10 @@ function PlayHistory({ items, setItems, onEdit, bookmarks, setBookmarks, readOnl
 
   return (
     <div className={styles.container}>
+       <div className="section-header">
+          <h3 className="section-title">Play History</h3>
+          <button className="add-button" onClick={() => setShowSessionForm(true)}><i className="fas fa-plus-square"></i>Add Play Session</button>
+        </div>
       <Sorting onSortChange={setSortConfig} dateField="date"/>
       <ul className={`${styles.list} ${styles.leftAlignedList}`}>
       {sortedItems.map(item => (
@@ -66,7 +85,11 @@ function PlayHistory({ items, setItems, onEdit, bookmarks, setBookmarks, readOnl
                 <div className={styles.buttonGroup}>
                   {!readOnly && (
                     <>
-                      <button className="edit-button" onClick={() => onEdit(item)}>
+                      <button className="edit-button" onClick={() => {
+                        setEditingPlayHistoryItem(item);
+                        setSelectedGameForSession(item.name);
+                        setShowSessionForm(true);
+                      }}>
                         <i className="far fa-edit"></i>Edit Session
                       </button>
                       <button className="edit-button" onClick={() => deleteGameSession(item.id)}>
@@ -89,6 +112,23 @@ function PlayHistory({ items, setItems, onEdit, bookmarks, setBookmarks, readOnl
           </li>
         ))}
       </ul>
+      <SlidePanel show={showSessionForm}
+          onClose={() => { setShowSessionForm(false); setEditingPlayHistoryItem(null); setSelectedGameForSession(""); }}
+          heading={editingPlayHistoryItem ? "Edit Play Session" : "Add Play Session"}>
+
+          <GameSessionManager
+            playHistory={playHistory}
+            setPlayHistory={(newList) => {
+              setPlayHistory(newList);
+              setItems(newList);
+            }}
+            editingPlayHistoryItem={editingPlayHistoryItem}
+            setEditingPlayHistoryItem={setEditingPlayHistoryItem}
+            selectedGameForSession={selectedGameForSession}
+            setSelectedGameForSession={setSelectedGameForSession}
+            setShowSessionForm={setShowSessionForm}
+          />
+        </SlidePanel>
     </div>
   );
 }
