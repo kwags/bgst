@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import BoardGameDetails from './BoardGameDetails';
 import React, { useState, useEffect, useRef, createContext } from "react";
 import PlayHistory from "./PlayHistory.js";
-import { fetchPlayHistory, fetchUserCollection, fetchUserBookmarks, fetchUserInfo } from "./mockAPI";
+import { fetchPlayHistory, fetchCollection, fetchUserBookmarks, fetchUserInfo } from "./mockAPI";
 import GameSessionManager from "./GameSessionManager.js";
 import CollectionManager from "./AddCollectionManager.js";
 import Collection from "./Collection.js";
@@ -42,7 +42,7 @@ function App() {
 
   useEffect(() => {
     const getCollection = async () => {
-      const data = await fetchUserCollection(userId);
+      const data = await fetchCollection(userId);
       setCollection(data);
     };
     getCollection();
