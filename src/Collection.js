@@ -129,6 +129,8 @@ function Collection({ userId, items, setItems, bookmarks, playHistory, setBookma
           editingCollectionItem={editingCollectionItem}
           setEditingCollectionItem={setEditingCollectionItem}
           setShowCollectionForm={setShowCollectionForm}
+          selectedGameForCollection={null}
+          setSelectedGameForCollection={() => {}} 
         />
       </SlidePanel>
     </div>

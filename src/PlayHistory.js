@@ -127,6 +127,8 @@ function PlayHistory({ userId, items, setItems, bookmarks, setBookmarks, readOnl
             editingPlayHistoryItem={editingPlayHistoryItem}
             setEditingPlayHistoryItem={setEditingPlayHistoryItem}
             setShowSessionForm={setShowSessionForm}
+            selectedGameForSession={null}
+            setSelectedGameForSession={() => {}} 
           />
         </SlidePanel>
     </div>
