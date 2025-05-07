@@ -53,6 +53,10 @@ export const mockData = {
     { id: 21, userId: 1, gameId: 4, date: "2025-05-06", numPlayers: 3, score: 14, result: "Loss", time: 75, comments: "Close match." },
     { id: 22, userId: 2, gameId: 5, date: "2025-05-07", numPlayers: 4, score: 18, result: "Win", time: 100, comments: "Teamwork paid off!" },
     { id: 23, userId: 3, gameId: 6, date: "2025-05-08", numPlayers: 5, score: 25, result: "Draw", time: 150, comments: "Tough competition." },
+    { id: 24, userId: 5, gameId: 7, date: "2025-03-05", numPlayers: 4, score: 18, result: "Loss", time: 90, comments: "Really close one!" },
+    { id: 25, userId: 5, gameId: 8, date: "2025-04-10", numPlayers: 3, score: 25, result: "Win", time: 120, comments: "Interesting strategy!" },
+    { id: 26, userId: 5, gameId: 9, date: "2025-05-07", numPlayers: 2, score: 30, result: "Loss", time: 180, comments: "Tough compotition." },
+    { id: 27, userId: 5, gameId: 10, date: "2025-04-20", numPlayers: 4, score: 50, result: "Win", time: 240, comments: "What a game!" },
   ],
 
   collection: [
@@ -93,7 +97,7 @@ export const mockData = {
   ],
 
   friends: [
-    { userId: 1, friends: [2, 3] },
+    { userId: 1, friends: [2, 3, 4] },
     { userId: 2, friends: [1, 4] },
     { userId: 3, friends: [1] },
     { userId: 4, friends: [2, 5] }, 

@@ -7,7 +7,7 @@ import styles from './styles/SharedStyles.module.css';
 import { Link, useNavigate } from 'react-router-dom';
 import Sorting from './Sorting';
 
-function Bookmarks({ items, setItems, onEdit, bookmarks = [], playHistory, setBookmarks, setPlayHistory, setCollection }) {
+function Bookmarks({ bookmarks = [], playHistory, setBookmarks, setPlayHistory, setCollection }) {
   const [showSessionForm, setShowSessionForm] = useState(false);
   const [showCollectionForm, setShowCollectionForm] = useState(false);
   const [selectedGame, setSelectedGame] = useState(null);
@@ -18,7 +18,11 @@ function Bookmarks({ items, setItems, onEdit, bookmarks = [], playHistory, setBo
   useEffect(() => {
     const { sortBy, direction } = sortConfig;
   
-    const sorted = [...bookmarks].sort((a, b) => {
+    const filtered = bookmarks.filter(
+      (b) => b.wantToOwn || b.wantToPlay
+    );
+
+    const sorted = [...filtered].sort((a, b) => {
       let comparison = 0;
   
       if (sortBy === 'name') {
@@ -51,26 +55,15 @@ function Bookmarks({ items, setItems, onEdit, bookmarks = [], playHistory, setBo
                 <h3 className={styles.gameName}>
                   <Link
                     to={`/game/${encodeURIComponent(bookmark.name)}`}
+                    state={{}}
                     style={{ textDecoration: 'none', color: '#0082BC' }}
                   >
                     {bookmark.name}
                   </Link>
                 </h3>
                 <p className={styles.gameInfo}><strong>Players:</strong> {bookmark.players || "N/A"}</p>
-                <p className={styles.gameInfo}><strong>Playtime:</strong> {bookmark.estimatedTime || "N/A"}</p>
+                <p className={styles.gameInfo}><strong>Playtime:</strong> {bookmark.estimatedTime || "N/A"} mins</p>
                 <div className={styles.buttonGroup}>
-                  <button className="edit-button" onClick={() => { setSelectedGame(bookmark); setShowSessionForm(true); }}>
-                      <i className="fas fa-plus-square"></i> Add Session
-                  </button>
-                  <button className="edit-button" onClick={() => { setSelectedGame(bookmark); setShowCollectionForm(true); }}>
-                    <i className="fas fa-plus-square"></i> Add to Collection
-                  </button>
-                  <button className="edit-button" onClick={() => navigate(`/stats/${bookmark.gameId}`, { 
-                    state: { gameName: bookmark.name,
-                      playHistory: playHistory.filter((entry) => entry.gameId === bookmark.gameId),
-                      item: bookmark } })}>
-                    <i className="fas fa-chart-simple"></i>Game Stats
-                  </button>
                   <BookmarkButtons
                     gameId={bookmark.gameId}
                     bookmarks={bookmarks}
