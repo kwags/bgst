@@ -1,11 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import AddBoardGameForm from './AddBoardGameForm';
-<<<<<<< HEAD
-import { fetchPlayHistory, fetchCollection, fetchBoardGames, fetchUserBookmarks, toggleWantToOwn, toggleWantToPlay } from './mockAPI';
-=======
 import { fetchBoardGames, fetchUserBookmarks, toggleWantToOwn, toggleWantToPlay, enrichWithBoardGameData } from './mockAPI';
->>>>>>> e22e86c225da4fefd45ec588a3e407d8f703f4d6
 import { UserContext } from './App';
 import GameSessionForm from './GameSessionForm';
 import AddCollectionForm from './AddCollectionForm';
@@ -13,7 +9,6 @@ import styles from './styles/SharedStyles.module.css';
 import SlidePanel from './SlidePanel';
 
 function BoardGameDetails({ bookmarks, setBookmarks, playHistory, setPlayHistory, collection, setCollection }) {
->>>>>>> e22e86c225da4fefd45ec588a3e407d8f703f4d6
   const { id } = useParams();
   const [game, setGame] = useState(null);
   const [error, setError] = useState(null);
@@ -21,30 +16,10 @@ function BoardGameDetails({ bookmarks, setBookmarks, playHistory, setPlayHistory
   const [showCollectionForm, setShowCollectionForm] = useState(false);
 
   const userId = useContext(UserContext);
-  const location = useLocation();
-
-  const [playHistory, setPlayHistory] = useState([]);
-  const [collection, setCollection] = useState([]);
 
   const existingBookmark = bookmarks.find(
     (b) => b.userId === userId && b.gameId === game?.id
   );
-
-  useEffect(() => {
-    if (location.state?.playHistory) {
-      setPlayHistory(location.state.playHistory);
-    } else {
-      fetchPlayHistory().then(setPlayHistory);
-    }
-  }, [location.state?.playHistory]);
-  
-  useEffect(() => {
-    if (location.state?.collection) {
-      setCollection(location.state.collection);
-    } else {
-      fetchCollection().then(setCollection);
-    }
-  }, [location.state?.collection]);
 
   useEffect(() => {
     const loadGame = async () => {
