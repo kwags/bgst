@@ -7,7 +7,7 @@ import styles from './styles/SharedStyles.module.css';
 import { Link, useNavigate } from 'react-router-dom';
 import Sorting from './Sorting';
 
-function Bookmarks({ items, setItems, onEdit, bookmarks = [], playHistory, setBookmarks, setPlayHistory, setCollection }) {
+function Bookmarks({ bookmarks = [], playHistory, setBookmarks, setPlayHistory, setCollection }) {
   const [showSessionForm, setShowSessionForm] = useState(false);
   const [showCollectionForm, setShowCollectionForm] = useState(false);
   const [selectedGame, setSelectedGame] = useState(null);
@@ -18,7 +18,11 @@ function Bookmarks({ items, setItems, onEdit, bookmarks = [], playHistory, setBo
   useEffect(() => {
     const { sortBy, direction } = sortConfig;
   
-    const sorted = [...bookmarks].sort((a, b) => {
+    const filtered = bookmarks.filter(
+      (b) => b.wantToOwn || b.wantToPlay
+    );
+
+    const sorted = [...filtered].sort((a, b) => {
       let comparison = 0;
   
       if (sortBy === 'name') {
