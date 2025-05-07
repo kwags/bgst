@@ -30,11 +30,11 @@ export const mockData = {
   ],
 
   gameSessions: [
-    { id: 1, userId: 1, gameId: 1, date: "2025-01-04", numPlayers: 4, score: 10, result: "Win", time: 120, comments: "" },
-    { id: 2, userId: 1, gameId: 2, date: "2025-01-02", numPlayers: 3, score: 5, result: "Loss", time: 60, comments: "" },
-    { id: 3, userId: 1, gameId: 3, date: "2025-02-03", numPlayers: 2, score: 8, result: "Win", time: 90, comments: "" },
-    { id: 4, userId: 2, gameId: 4, date: "2025-03-04", numPlayers: 4, score: 12, result: "Loss", time: 45, comments: "" },
-    { id: 5, userId: 2, gameId: 5, date: "2025-02-05", numPlayers: 3, score: 15, result: "Win", time: 30, comments: "" },
+    { id: 1, userId: 1, gameId: 1, date: "2025-01-04", numPlayers: 4, score: 10, result: "Win", time: 120, comments: "Excellent competion!" },
+    { id: 2, userId: 1, gameId: 2, date: "2025-01-02", numPlayers: 3, score: 5, result: "Loss", time: 60, comments: "Exciting game throughout" },
+    { id: 3, userId: 1, gameId: 3, date: "2025-02-03", numPlayers: 2, score: 8, result: "Win", time: 90, comments: "Hard fought win" },
+    { id: 4, userId: 2, gameId: 4, date: "2025-03-04", numPlayers: 4, score: 12, result: "Loss", time: 45, comments: "Quick game." },
+    { id: 5, userId: 2, gameId: 5, date: "2025-02-05", numPlayers: 3, score: 15, result: "Win", time: 30, comments: "Challenging competition." },
     { id: 6, userId: 1, gameId: 14, date: "2025-03-08", numPlayers: 4, score: 4, result: "Win", time: 120, comments: "First time playing this game" },
     { id: 7, userId: 1, gameId: 3, date: "2025-03-13", numPlayers: 3, score: 105, result: "Draw", time: 180, comments: "This was really fun!" },
     { id: 8, userId: 1, gameId: 1, date: "2025-03-27", numPlayers: 3, score: 10, result: "Win", time: 180, comments: "Always a fun game" },
@@ -53,6 +53,10 @@ export const mockData = {
     { id: 21, userId: 1, gameId: 4, date: "2025-05-06", numPlayers: 3, score: 14, result: "Loss", time: 75, comments: "Close match." },
     { id: 22, userId: 2, gameId: 5, date: "2025-05-07", numPlayers: 4, score: 18, result: "Win", time: 100, comments: "Teamwork paid off!" },
     { id: 23, userId: 3, gameId: 6, date: "2025-05-08", numPlayers: 5, score: 25, result: "Draw", time: 150, comments: "Tough competition." },
+    { id: 24, userId: 5, gameId: 7, date: "2025-03-05", numPlayers: 4, score: 18, result: "Loss", time: 90, comments: "Really close one!" },
+    { id: 25, userId: 5, gameId: 8, date: "2025-04-10", numPlayers: 3, score: 25, result: "Win", time: 120, comments: "Interesting strategy!" },
+    { id: 26, userId: 5, gameId: 9, date: "2025-05-07", numPlayers: 2, score: 30, result: "Loss", time: 180, comments: "Tough compotition." },
+    { id: 27, userId: 5, gameId: 10, date: "2025-04-20", numPlayers: 4, score: 50, result: "Win", time: 240, comments: "Great game!" },
   ],
 
   collection: [

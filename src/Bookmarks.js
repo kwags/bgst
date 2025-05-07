@@ -18,6 +18,10 @@ function Bookmarks({ items, setItems, onEdit, bookmarks = [], playHistory, setBo
   useEffect(() => {
     const { sortBy, direction } = sortConfig;
   
+    const filtered = bookmarks.filter(
+      (b) => b.wantToOwn || b.wantToPlay
+    );
+
     const sorted = [...bookmarks].sort((a, b) => {
       let comparison = 0;
   
