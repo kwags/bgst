@@ -103,10 +103,8 @@ export const mockData = {
     { userId: 4, friends: [2, 5] }, 
     { userId: 5, friends: [4] },
   ],
-
   
 };
-
 
 export const fetchBoardGames = async (searchTerm = '', filter = '') => {
   return new Promise((resolve) => {
