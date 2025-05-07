@@ -46,11 +46,7 @@ function PlayHistory({ userId, items, setItems, bookmarks, setBookmarks, readOnl
   const deleteGameSession = (id) => {
     setItems(items.filter(item => item.id !== id));
   };
-<<<<<<< HEAD
-  
-=======
 
->>>>>>> e22e86c225da4fefd45ec588a3e407d8f703f4d6
   const navigate = useNavigate();
 
   return (
@@ -90,17 +86,6 @@ function PlayHistory({ userId, items, setItems, bookmarks, setBookmarks, readOnl
                 <p className={styles.gameInfo}><strong>Minutes Played:</strong> {item.time} mins</p>
                 <p className={styles.gameInfo}><strong>Comments:</strong> {item.comments}</p>
                 <div className={styles.buttonGroup}>
-<<<<<<< HEAD
-                  <button className="edit-button" onClick={() => onEdit(item)}><i className="far fa-edit"></i>Edit Session</button>
-                  <button className="edit-button" onClick={() => deleteGameSession(item.id)}><i className="far fa-trash-can"></i>Delete Session</button>
-                  <button className="edit-button" onClick={() => navigate(`/stats/${item.gameId}`, { state: { gameName: item.name, playHistory: items, item: item } })}>
-                    <i className="fas fa-chart-simple"></i>Game Stats</button>
-                  <BookmarkButtons
-                    gameId={item.gameId}
-                    bookmarks={bookmarks}
-                    setBookmarks={setBookmarks}
-                  />
-=======
                   {!readOnly && (
                     <>
                       <button className="edit-button" onClick={() => {
@@ -123,7 +108,6 @@ function PlayHistory({ userId, items, setItems, bookmarks, setBookmarks, readOnl
                     </>
                   )}
                   
->>>>>>> e22e86c225da4fefd45ec588a3e407d8f703f4d6
                 </div>
               </div>
             </div>
