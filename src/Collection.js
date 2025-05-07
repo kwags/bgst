@@ -9,7 +9,6 @@ import SlidePanel from './SlidePanel';
 import CollectionManager from "./AddCollectionManager.js";
 import { fetchCollection } from "./mockAPI";
 
-
 function Collection({ userId, items, setItems, bookmarks, playHistory, setBookmarks, readOnly, showHeading=true }) {
 
   const [sortConfig, setSortConfig] = useState({ sortBy: 'purchaseDate', direction: 'desc' });
