@@ -85,6 +85,17 @@ function Collection({ userId, items, setItems, bookmarks, playHistory, setBookma
                 <p className={styles.gameInfo}><strong>Purchase Date:</strong> {item.purchaseDate}</p>
                 <p className={styles.gameInfo}><strong>Purchase Price:</strong> {item.purchasePrice}</p>
                 <div className={styles.buttonGroup}>
+<<<<<<< HEAD
+                  {/* <button onClick={() => onAddSession(item.name)}>Add Session</button> */}
+                  <button className="edit-button" onClick={() => onEdit(item)}><i className="far fa-edit"></i>Edit Game</button>
+                  <button className="edit-button" onClick={() => deleteGame(item.id)}><i className="far fa-trash-can"></i>Delete Game</button>
+                  <button className="edit-button" onClick={() => navigate(`/stats/${item.gameId}`)}><i className="fas fa-chart-simple"></i>Game Stats</button>
+                  <BookmarkButtons
+                    gameId={item.gameId}
+                    bookmarks={bookmarks}
+                    setBookmarks={setBookmarks}
+                  />
+=======
                   {!readOnly && (
                     <>
                       <button className="edit-button" onClick={() => {
@@ -107,6 +118,7 @@ function Collection({ userId, items, setItems, bookmarks, playHistory, setBookma
                     </>
                   )}
                   
+>>>>>>> e22e86c225da4fefd45ec588a3e407d8f703f4d6
                 </div>
               </div>
             </div>

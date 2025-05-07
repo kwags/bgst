@@ -136,6 +136,7 @@ function App() {
                     collection={collection}
                     setCollection={setCollection}
                   />
+>>>>>>> e22e86c225da4fefd45ec588a3e407d8f703f4d6
                 </section>
               </main>
             } />
