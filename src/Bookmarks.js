@@ -22,7 +22,7 @@ function Bookmarks({ bookmarks = [], playHistory, setBookmarks, setPlayHistory, 
       (b) => b.wantToOwn || b.wantToPlay
     );
 
-    const sorted = [...filtered].sort((a, b) => {
+    const sorted = [...bookmarks].sort((a, b) => {
       let comparison = 0;
   
       if (sortBy === 'name') {
