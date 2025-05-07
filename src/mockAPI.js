@@ -97,7 +97,7 @@ export const mockData = {
   ],
 
   friends: [
-    { userId: 1, friends: [2, 3] },
+    { userId: 1, friends: [2, 3, 4] },
     { userId: 2, friends: [1, 4] },
     { userId: 3, friends: [1] },
     { userId: 4, friends: [2, 5] }, 

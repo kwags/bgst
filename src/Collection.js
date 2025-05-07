@@ -85,28 +85,15 @@ function Collection({ userId, items, setItems, bookmarks, playHistory, setBookma
                 <p className={styles.gameInfo}><strong>Purchase Date:</strong> {item.purchaseDate}</p>
                 <p className={styles.gameInfo}><strong>Purchase Price:</strong> {item.purchasePrice}</p>
                 <div className={styles.buttonGroup}>
-                  {!readOnly && (
-                    <>
-                      <button className="edit-button" onClick={() => {
-                        setEditingCollectionItem(item);
-                        setShowCollectionForm(true);
-                      }}>
-                         <i className="far fa-edit"></i>Edit Game
-                      </button>
-                      <button className="edit-button" onClick={() => deleteGame(item.id)}>
-                        <i className="far fa-trash-can"></i>Delete Game
-                      </button>
-                      <button className="edit-button" onClick={() => navigate(`/stats/${item.gameId}`, {state: { gameName: item.name, playHistory: playHistory, item: item }})}>
-                        <i className="fas fa-chart-simple"></i>Game Stats
-                      </button>
-                    <BookmarkButtons
-                      gameId={item.gameId}
-                      bookmarks={bookmarks}
-                      setBookmarks={readOnly ? () => {} : setBookmarks} // Disable bookmark changes if readOnly
-                    />
-                    </>
-                  )}
-                  
+                  {/* <button onClick={() => onAddSession(item.name)}>Add Session</button> */}
+                  <button className="edit-button" onClick={() => onEdit(item)}><i className="far fa-edit"></i>Edit Game</button>
+                  <button className="edit-button" onClick={() => deleteGame(item.id)}><i className="far fa-trash-can"></i>Delete Game</button>
+                  <button className="edit-button" onClick={() => navigate(`/stats/${item.gameId}`)}><i className="fas fa-chart-simple"></i>Game Stats</button>
+                  <BookmarkButtons
+                    gameId={item.gameId}
+                    bookmarks={bookmarks}
+                    setBookmarks={setBookmarks}
+                  />
                 </div>
               </div>
             </div>
