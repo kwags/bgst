@@ -119,7 +119,7 @@ function PlayHistory({ userId, items, setItems, bookmarks, setBookmarks, readOnl
           heading={editingPlayHistoryItem ? "Edit Play Session" : "Add Play Session"}>
 
           <GameSessionManager
-            playHistory={playHistory}
+            playHistory={items}
             setPlayHistory={(newList) => {
               setPlayHistory(newList);
               setItems(newList);
