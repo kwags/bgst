@@ -27,8 +27,6 @@ function Collection({ userId, items, setItems, bookmarks, playHistory, setBookma
 
   useEffect(() => {
     const { sortBy, direction } = sortConfig;
-
-
     const sorted = [...items].sort((a, b) => {
       let comparison = 0;
   
@@ -37,7 +35,6 @@ function Collection({ userId, items, setItems, bookmarks, playHistory, setBookma
       } else if (sortBy === 'name') {
         comparison = a.name.localeCompare(b.name);
       }
-  
       return direction === 'asc' ? comparison : -comparison;
     });
   
@@ -121,6 +118,7 @@ function Collection({ userId, items, setItems, bookmarks, playHistory, setBookma
         heading={editingCollectionItem ? "Edit Collection Item" : "Add to Collection"}>
 
         <CollectionManager
+          key={showCollectionForm ? (editingCollectionItem?.id || 'new') : 'closed'}
           collection={items}
           setCollection={(newList) => {
             setCollection(newList);
