@@ -1,13 +1,52 @@
 import React, { useState, useEffect } from "react";
-import styles from "./styles/GameSessionForm.module.css";
+import styles from "./styles/Form.module.css";
 
-function AddCollectionForm({ onAdd, editingItem, onUpdate, onCancelEdit,autofillGameName, autofillNumPlayers, autofillEstimatedTime }) {
+function AddCollectionForm({ onAdd, editingItem, onUpdate, onCancelEdit, autofillGameName, autofillNumPlayers, autofillEstimatedTime, boardgames }) {
   const [collectionGameName, setCollectionGameName] = useState("");
   const [collectionPlayers, setCollectionPlayers] = useState("");  
   const [collectionTime, setCollectionTime] = useState("");  
   const [collectionDate, setCollectionDate] = useState("");
   const [collectionPrice, setCollectionPrice] = useState("");   
   const getTodayDateString = () => { const today = new Date(); return today.toISOString().split('T')[0]; };
+  const [suggestions, setSuggestions] = useState([]);
+  const [selectedIndex, setSelectedIndex] = useState(-1);
+
+  const handleSuggestionClick = (game) => {
+    setCollectionGameName(game.name);
+    setCollectionPlayers(game.players || "");
+    setCollectionTime(game.estimatedTime || "");
+    setSuggestions([]);
+  };
+
+  const handleGameNameChange = (e) => {
+    const value = e.target.value;
+    setCollectionGameName(value);
+    setSelectedIndex(-1);
+  
+    if (!value.trim()) {
+      setSuggestions([]);
+      return;
+    }
+  
+    const filteredSuggestions = boardgames
+    ?.filter(game => game.name.toLowerCase().includes(value.toLowerCase()))
+    .sort((a, b) => {
+      const val = value.toLowerCase();
+      const aName = a.name.toLowerCase();
+      const bName = b.name.toLowerCase();
+  
+      const aStarts = aName.startsWith(val) ? 0 : 1;
+      const bStarts = bName.startsWith(val) ? 0 : 1;
+  
+      if (aStarts !== bStarts) {
+        return aStarts - bStarts;
+      }
+      return aName.localeCompare(bName);
+    })
+    .slice(0, 5);
+  
+    setSuggestions(filteredSuggestions);
+  };
 
   useEffect(() => {
     if (editingItem) {
@@ -26,6 +65,18 @@ function AddCollectionForm({ onAdd, editingItem, onUpdate, onCancelEdit,autofill
     }
   }, [editingItem, autofillGameName, autofillNumPlayers, autofillEstimatedTime]);
   
+  useEffect(() => {
+    const matchedGame = boardgames?.find(
+      (game) => game.name.toLowerCase() === collectionGameName.toLowerCase()
+    );
+  
+    if (matchedGame && !editingItem) {
+      setCollectionPlayers(matchedGame.players || "");
+      setCollectionTime(matchedGame.estimatedTime || "");
+    }
+  }, [collectionGameName, boardgames, editingItem]);
+
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -54,8 +105,42 @@ function AddCollectionForm({ onAdd, editingItem, onUpdate, onCancelEdit,autofill
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
       <div className={styles.row}>
-        <div className={styles.inputGroup}>
-          <input placeholder = "Game Name" value={collectionGameName} onChange={e => setCollectionGameName(e.target.value)} />
+        <div className={styles.inputGroup} style={{ position: "relative" }}>
+          <input
+            placeholder="Game Name"
+            value={collectionGameName}
+            onChange={handleGameNameChange}
+            onKeyDown={(e) => {
+              if (suggestions.length === 0) return;
+
+              if (e.key === "ArrowDown") {
+                e.preventDefault();
+                setSelectedIndex((prev) => (prev + 1) % suggestions.length);
+              } else if (e.key === "ArrowUp") {
+                e.preventDefault();
+                setSelectedIndex((prev) =>
+                  prev === 0 ? suggestions.length - 1 : prev - 1
+                );
+              } else if (e.key === "Enter" && selectedIndex >= 0) {
+                e.preventDefault();
+                handleSuggestionClick(suggestions[selectedIndex]);
+              }
+            }}
+            autoComplete="off"
+          />
+          {suggestions.length > 0 && (
+            <ul className={styles.suggestionList}>
+              {suggestions.map((game, index) => (
+                <li
+                  key={index}
+                  className={`${styles.suggestionItem} ${index === selectedIndex ? styles.activeItem : ""}`}
+                  onClick={() => handleSuggestionClick(game)}
+                >
+                  {game.name}
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
 
         <div className={styles.inputGroup}>
