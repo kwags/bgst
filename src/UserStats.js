@@ -3,7 +3,7 @@ import ResultDonutChart, { GamesPerMonthChart, ScoreOverTimeChart }  from './Sta
 import { fetchUserInfo } from './mockAPI';
 import styles from './styles/SharedStyles.module.css';
 
-const UserStats = ({ playHistory, userId }) => {
+const UserStats = ({ playHistory, userId, showHeading=true }) => {
     const [activeTab, setActiveTab] = useState("results");
     const [user, setUser] = useState(null);
 
@@ -60,9 +60,11 @@ const UserStats = ({ playHistory, userId }) => {
       
     return (
         <div className={styles.container}>
+            {showHeading && (
             <div className="section-header">
-            <h3 className="section-title">{user.username}'s Stats</h3>
+            <h3 className="section-title">Stats</h3>
             </div>
+            )}
             <ul className={`${styles.list} ${styles.leftAlignedList}`}>
                 <li className={`${styles.listItem} ${styles.leftCard}`}>
                     <div className={styles.cardContent}>

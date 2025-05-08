@@ -58,7 +58,9 @@ const FriendPage = () => {
     <div className={styles.container}>
 
         <div className={styles.sectionWrapper}>
-          <UserStats playHistory={playHistory} userId={parseInt(userId)} />
+        <h3 className="section-title">{username}'s Stats</h3>
+          <UserStats playHistory={playHistory} userId={parseInt(userId)} showHeading={false}
+          />
         </div>
       
         <div className={styles.sectionWrapper}>
