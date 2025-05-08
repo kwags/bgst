@@ -121,7 +121,7 @@ function Collection({ userId, items, setItems, bookmarks, playHistory, setBookma
         heading={editingCollectionItem ? "Edit Collection Item" : "Add to Collection"}>
 
         <CollectionManager
-          collection={collection}
+          collection={items}
           setCollection={(newList) => {
             setCollection(newList);
             setItems(newList);
