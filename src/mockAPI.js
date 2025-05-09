@@ -108,60 +108,62 @@ export const mockData = {
 
 export const fetchBoardGames = async (searchTerm = '', filter = '') => {
   return new Promise((resolve) => {
-    setTimeout(() => {
-      let filteredGames = mockData.boardgames;
+      setTimeout(() => {
+          let filteredGames = mockData.boardgames;
 
-      const term = typeof searchTerm === 'string' ? searchTerm.trim() : '';
+          const term = typeof searchTerm === 'string' ? searchTerm.trim() : '';
 
-      if (term.trim()) {
-        filteredGames = filteredGames.filter((game) =>
-          game.name.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-      }
+          if (term.trim()) {
+              filteredGames = filteredGames.filter((game) =>
+                  game.name.toLowerCase().includes(searchTerm.toLowerCase())
+              );
+          }
 
-      switch (filter) {
-        case 'mostOwned':
           filteredGames = filteredGames.map((game) => {
-            const ownershipCount = mockData.collection.filter(
-              (item) => item.gameId === game.id
-            ).length;
-            return { ...game, ownershipCount };
-          }).sort((a, b) => b.ownershipCount - a.ownershipCount);
-          break;
+              const ownershipCount = mockData.collection.filter(
+                  (item) => item.gameId === game.id
+              ).length;
 
-        case 'mostTimePlayed':
-          filteredGames = filteredGames.map((game) => {
-            const totalTimePlayed = mockData.gameSessions
-              .filter((session) => session.gameId === game.id)
-              .reduce((sum, session) => sum + session.time, 0);
-            return { ...game, totalTimePlayed };
-          }).sort((a, b) => b.totalTimePlayed - a.totalTimePlayed);
-          break;
+              const totalTimePlayed = mockData.gameSessions
+                  .filter((session) => session.gameId === game.id)
+                  .reduce((sum, session) => sum + session.time, 0);
 
-        case 'byPrice':
-          filteredGames = filteredGames.map((game) => {
-            const price = mockData.collection.find(
-              (item) => item.gameId === game.id
-            )?.purchasePrice || 0;
-            return { ...game, price: parseFloat(price) };
-          }).sort((a, b) => b.price - a.price);
-          break;
+              const price = mockData.collection.find(
+                  (item) => item.gameId === game.id
+              )?.purchasePrice || 0;
 
-        case 'mostWanted':
-          filteredGames = filteredGames.map((game) => {
-            const wantsCount = mockData.bookmarks.filter(
-              (bookmark) => bookmark.gameId === game.id
-            ).length;
-            return { ...game, wantsCount };
-          }).sort((a, b) => b.wantsCount - a.wantsCount);
-          break;
+              const wantsCount = mockData.bookmarks.filter(
+                  (bookmark) => bookmark.gameId === game.id
+              ).length;
 
-        default:
-          break;
-      }
+              return {
+                  ...game,
+                  ownershipCount,
+                  totalTimePlayed,
+                  price: parseFloat(price),
+                  wantsCount,
+              };
+          });
 
-      resolve(filteredGames);
-    }, 500); // Simulated network delay
+          switch (filter) {
+              case 'mostOwned':
+                  filteredGames = filteredGames.sort((a, b) => b.ownershipCount - a.ownershipCount);
+                  break;
+              case 'mostTimePlayed':
+                  filteredGames = filteredGames.sort((a, b) => b.totalTimePlayed - a.totalTimePlayed);
+                  break;
+              case 'byPrice':
+                  filteredGames = filteredGames.sort((a, b) => b.price - a.price);
+                  break;
+              case 'mostWanted':
+                  filteredGames = filteredGames.sort((a, b) => b.wantsCount - a.wantsCount);
+                  break;
+              default:
+                  break;
+          }
+
+          resolve(filteredGames);
+      }, 500);
   });
 };
 

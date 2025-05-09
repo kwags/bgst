@@ -27,6 +27,11 @@ function AddCollectionForm({ onAdd, editingItem, onUpdate, onCancelEdit, autofil
       setSuggestions([]);
       return;
     }
+
+    if (!Array.isArray(boardgames)) {
+      setSuggestions([]);
+      return;
+    }
   
     const filteredSuggestions = boardgames
     ?.filter(game => game.name.toLowerCase().includes(value.toLowerCase()))

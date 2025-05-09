@@ -28,6 +28,11 @@ function GameSessionForm({ onAdd, editingItem, onUpdate, onCancelEdit, autofillG
       setSuggestions([]);
       return;
     }
+
+    if (!Array.isArray(boardgames)) {
+      setSuggestions([]);
+      return;
+    }
   
     const filteredSuggestions = boardgames
       ?.filter(game => game.name.toLowerCase().includes(value.toLowerCase()))
