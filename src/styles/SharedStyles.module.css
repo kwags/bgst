@@ -85,6 +85,12 @@
     color: #111827;
     cursor: pointer;
     border-radius: 0;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .tabButton:hover {
+  background-color: #D6C4FF;
+  transform: scale(1.05);
   }
   
   .activeTab {
