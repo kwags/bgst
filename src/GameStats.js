@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import styles from './styles/SharedStyles.module.css';
 import { Link } from 'react-router-dom';
+import BookmarkButtons from './BookmarkButtons';
+
 import ResultDonutChart, { GamesPerMonthChart, ScoreOverTimeChart } from './StatsCharts';
 
 
-const GameStats = () => {
+const GameStats = ({ bookmarks, setBookmarks }) => {
     const location = useLocation();
     const { gameName, playHistory, item } = location.state || {};
     const [activeTab, setActiveTab] = useState("results");
@@ -41,6 +43,11 @@ const GameStats = () => {
                   {item.image && (
                     <div className={styles.imageMask}>
                        <img src={item.image} alt={item.name} className={styles.gameImage} />
+                        <BookmarkButtons
+                          gameId={item.gameId}
+                          bookmarks={bookmarks}
+                          setBookmarks={setBookmarks}
+                        />
                     </div>
                   )}
                     <div className={`${styles.gameDetails} ${styles.leftDetails}`}>

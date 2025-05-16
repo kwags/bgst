@@ -143,7 +143,9 @@ function App() {
             <Route path="/stats/:id" element={
               <main className="app-main">
                 <section className="app-section">
-                  <GameStats />
+                  <GameStats 
+                    bookmarks={bookmarks}
+                    setBookmarks={setBookmarks}/>
                 </section>
               </main>
             } />
@@ -173,7 +175,11 @@ function App() {
             <Route path='/user/:userId' element={
               <main className="app-main">
                 <section className="app-section">
-                  <FriendPage userId={userId}/>
+                  <FriendPage 
+                    currentUserId={userId}
+                    bookmarks={bookmarks}
+                    setBookmarks={setBookmarks}
+                  />
                 </section>
               </main>
               } />

@@ -64,6 +64,11 @@ function Collection({ userId, items, setItems, bookmarks, playHistory, setBookma
               {item.image && (
                 <div className={styles.imageMask}>
                   <img src={item.image} alt={item.name} className={styles.gameImage} />
+                    <BookmarkButtons
+                      gameId={item.gameId}
+                      bookmarks={bookmarks}
+                      setBookmarks={setBookmarks}
+                    />
                 </div>
               )}
               <div className={`${styles.gameDetails} ${styles.leftDetails}`}>
@@ -95,11 +100,7 @@ function Collection({ userId, items, setItems, bookmarks, playHistory, setBookma
                       <button className="edit-button" onClick={() => navigate(`/stats/${item.gameId}`, {state: { gameName: item.name, playHistory: playHistory, item: item }})}>
                         <i className="fas fa-chart-simple"></i>Game Stats
                       </button>
-                    <BookmarkButtons
-                      gameId={item.gameId}
-                      bookmarks={bookmarks}
-                      setBookmarks={readOnly ? () => {} : setBookmarks} // Disable bookmark changes if readOnly
-                    />
+
                     </>
                   )}
                   

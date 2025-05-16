@@ -1,4 +1,5 @@
 
+
 import React, { useState } from 'react';
 import { fetchBoardGames } from './mockAPI';
 import GameSessionForm from './GameSessionForm';
@@ -52,7 +53,7 @@ const BoardGameSearch = ({ playHistory, handleSearch, bookmarks, setBookmarks, s
             const allGames = await fetchBoardGames(term);
             const lowerTerm = term.toLowerCase();
 
-    const sortedGames = allGames
+            const sortedGames = allGames
                 .filter(game => game.name.toLowerCase().includes(lowerTerm))
                 .sort((a, b) => {
                     const aName = a.name.toLowerCase();
@@ -101,7 +102,12 @@ const BoardGameSearch = ({ playHistory, handleSearch, bookmarks, setBookmarks, s
                                 <div className={styles.cardContent}>
                                     {game.image && (
                                         <div className={styles.imageMask}>
-                                            <img src={game.image} alt={game.name} className={styles.gameImage} />
+                                        <img src={game.image} alt={game.name} className={styles.gameImage} />
+                                            <BookmarkButtons
+                                                gameId={game.id}
+                                                bookmarks={bookmarks}
+                                                setBookmarks={setBookmarks}
+                                            />
                                         </div>
                                     )}
                                     <div className={styles.gameDetails}>
@@ -120,7 +126,6 @@ const BoardGameSearch = ({ playHistory, handleSearch, bookmarks, setBookmarks, s
                                             })}>
                                             <i className="fas fa-chart-simple"></i>Game Stats
                                         </button>
-                                            <BookmarkButtons gameId={game.id} bookmarks={bookmarks} setBookmarks={setBookmarks} />
                                         </div>
                                     </div>
                                 </div>

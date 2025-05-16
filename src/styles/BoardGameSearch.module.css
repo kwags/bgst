@@ -92,6 +92,7 @@
   overflow: hidden;
   border-radius: 8px;
   flex-shrink: 0;
+  position: relative;
 }
 
 .gameImage {
@@ -170,4 +171,22 @@
 
 .edit-button i {
   padding-right: .5rem;
+}
+
+  .overlayBookmarkButton {
+  position: absolute;
+  top: 8px;
+  right: 0px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.bookmarkedIcon {
+  color: #FF815D;
+  font-size: 1.5rem;
+}
+
+.unbookmarkedIcon {
+  color:#FF815D;
+  font-size: 1.5rem;
 }

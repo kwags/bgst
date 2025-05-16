@@ -468,37 +468,24 @@ export const fetchUserStats = async (userId) => {
   });
 };
 
-// Toggle Want to Own
-export const toggleWantToOwn = async (userId, gameId) => {
+// Toggle Bookmark
+export const toggleBookmark = async (userId, gameId) => {
   return new Promise((resolve) => {
     setTimeout(() => {
-      const bookmark = mockData.bookmarks.find(
+      const index = mockData.bookmarks.findIndex(
         (b) => b.userId === userId && b.gameId === gameId
       );
-      if (bookmark) {
-        bookmark.wantToOwn = !bookmark.wantToOwn;
-        resolve({ ...bookmark });
+      if (index !== -1) {
+        // Remove the bookmark if it exists
+        mockData.bookmarks.splice(index, 1);
+        resolve(null);
       } else {
-        const newBookmark = { id: uuidv4(), userId, gameId, wantToOwn: true, wantToPlay: false };
-        mockData.bookmarks.push(newBookmark);
-        resolve(newBookmark);
-      }
-    }, 300);
-  });
-};
-
-// Toggle Want to Play
-export const toggleWantToPlay = async (userId, gameId) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      const bookmark = mockData.bookmarks.find(
-        (b) => b.userId === userId && b.gameId === gameId
-      );
-      if (bookmark) {
-        bookmark.wantToPlay = !bookmark.wantToPlay;
-        resolve({ ...bookmark });
-      } else {
-        const newBookmark = { id: uuidv4(), userId, gameId, wantToOwn: false, wantToPlay: true };
+        // Add a new bookmark
+        const newBookmark = {
+          id: uuidv4(),
+          userId,
+          gameId,
+        };
         mockData.bookmarks.push(newBookmark);
         resolve(newBookmark);
       }

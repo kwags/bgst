@@ -95,6 +95,11 @@ const BrowseGames = ({
                   {game.image && (
                     <div className={styles.imageMask}>
                       <img src={game.image} alt={game.name} className={styles.gameImage} />
+                        <BookmarkButtons
+                          gameId={game.id}
+                          bookmarks={bookmarks}
+                          setBookmarks={setBookmarks}
+                        />
                     </div>
                   )}
                   <div className={`${styles.gameDetails} ${styles.leftDetails}`}>
@@ -130,7 +135,6 @@ const BrowseGames = ({
                       >
                         <i className="fas fa-chart-simple"></i>Game Stats
                       </button>
-                        <BookmarkButtons gameId={game.id} bookmarks={bookmarks} setBookmarks={setBookmarks} />
                     </div>
                   </div>
                 </div>

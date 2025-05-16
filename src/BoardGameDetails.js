@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import AddBoardGameForm from './AddBoardGameForm';
-import { fetchBoardGames, fetchUserBookmarks, toggleWantToOwn, toggleWantToPlay, enrichWithBoardGameData } from './mockAPI';
+import { fetchBoardGames, fetchUserBookmarks, toggleBookmark, enrichWithBoardGameData } from './mockAPI';
 import { UserContext } from './App';
 import GameSessionForm from './GameSessionForm';
 import AddCollectionForm from './AddCollectionForm';
+import BookmarkButtons from './BookmarkButtons';
 import styles from './styles/SharedStyles.module.css';
 import SlidePanel from './SlidePanel';
 
@@ -55,13 +56,9 @@ function BoardGameDetails({ bookmarks, setBookmarks, playHistory, setPlayHistory
     setBookmarks(updated);
   };
 
-  const handleToggle = async (type) => {
+  const handleToggle = async () => {
     try {
-      if (type === 'own') {
-        await toggleWantToOwn(userId, game.id);
-      } else if (type === 'play') {
-        await toggleWantToPlay(userId, game.id);
-      }
+      await toggleBookmark(userId, id);
       await refreshBookmarks();
     } catch (error) {
       console.error("Failed to toggle bookmark", error);
@@ -84,12 +81,17 @@ function BoardGameDetails({ bookmarks, setBookmarks, playHistory, setPlayHistory
       </div>
       <ul className={`${styles.list} ${styles.leftAlignedList}`}>
         <li className={`${styles.listItem} ${styles.leftCard}`}>
-          <div className={styles.cardContent}>
-            {game.image && (
-              <div className={styles.imageMask}>
-                <img src={game.image} alt={game.name} className={styles.gameImage} />
-              </div>
-            )}
+              <div className={styles.cardContent}>
+                {game.image && (
+                  <div className={styles.imageMask}>
+                    <img src={game.image} alt={game.name} className={styles.gameImage} />
+                    <BookmarkButtons
+                      gameId={game.id}
+                      bookmarks={bookmarks}
+                      setBookmarks={setBookmarks}
+                    />
+                  </div>
+                )}
               <div className={`${styles.gameDetails} ${styles.leftDetails}`}>
                 <h3 className={styles.gameName}>{game.name}</h3>
                 <p className={styles.gameInfo}><strong>Players:</strong> {game.players}</p>
@@ -106,13 +108,6 @@ function BoardGameDetails({ bookmarks, setBookmarks, playHistory, setPlayHistory
                     <i className="fas fa-plus-square"></i>Add to Collection
                   </button>
 
-                {/* Bookmark Buttons */}
-                  <button className={styles.bookmarkButton2} onClick={() => handleToggle('own')}>
-                    {existingBookmark?.wantToOwn ? "⭐ Want to Own" : "☆ Want to Own"}
-                  </button>
-                  <button className={styles.bookmarkButton2} onClick={() => handleToggle('play')} >
-                    {existingBookmark?.wantToPlay ? "🎮 Want to Play" : "❌ Want to Play"}
-                  </button>
               </div>
             </div>
 
