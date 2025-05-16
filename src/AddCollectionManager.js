@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import AddCollectionForm from "./AddCollectionForm";
 import { enrichWithBoardGameData } from "./mockAPI";
+import { mockData } from "./mockAPI.js";
 
 const CollectionManager = ({
   collection,
@@ -48,7 +49,7 @@ const CollectionManager = ({
         setSelectedGameForCollection("");
         setShowCollectionForm(false);
       }}
-      loading={loading}
+      boardgames={mockData.boardgames}
     />
   );
 };

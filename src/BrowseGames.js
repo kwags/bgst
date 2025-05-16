@@ -1,33 +1,179 @@
-import React, { useState } from 'react';
-import styles from './styles/BrowseGames.module.css';
-import BoardGameSearch from './BoardgameSearch';
+import React, { useState, useEffect } from 'react';
+import styles from './styles/BoardGameSearch.module.css';
+import SlidePanel from './SlidePanel';
+import GameSessionForm from './GameSessionForm';
+import AddCollectionForm from './AddCollectionForm';
+import BookmarkButtons from './BookmarkButtons';
+import { Link, useNavigate } from 'react-router-dom';
+import { fetchBoardGames } from './mockAPI';
 
-const BrowseGames = ({bookmarks, setBookmarks, playHistory, setPlayHistory, collection, setCollection}) => {
-  const [results] = useState([]);
+const BrowseGames = ({
+  playHistory,
+  setPlayHistory,
+  setCollection,
+  bookmarks,
+  setBookmarks,
+}) => {
+  const navigate = useNavigate();
+    //State variables and their setter functions
+    const [selectedGame, setSelectedGame] = useState(null);
+    const [showSessionForm, setShowSessionForm] = useState(false);
+    const [showCollectionForm, setShowCollectionForm] = useState(false);
+    const [showAddGameForm, setShowAddGameForm] = useState(false);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [searchResults, setSearchResults] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [activeFilter, setActiveFilter] = useState('mostOwned');
+ 
+    const handleAddSession = (game) => {
+        setSelectedGame(game);
+        setShowSessionForm(true);
+        
+    };
+
+        const handleAddToCollection = (game) => {
+        setSelectedGame(game);
+        setShowCollectionForm(true);
+    };
+
+
+  const handleSearch = async (term = searchTerm, filter = activeFilter) => {
+        setLoading(true);
+        try {
+            let filteredGames = await fetchBoardGames(term, filter);
+
+            if (!Array.isArray(filteredGames)) {
+                filteredGames = [];
+            }
+            if(!filter){
+                filteredGames = filteredGames.sort((a, b) => a.name.localeCompare(b.name));
+            }
+            
+            setSearchResults(filteredGames);
+        } catch (error) {
+            console.error('Error searching boardgames: ', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleFilterClick = (filter) => {
+        setActiveFilter((prevFilter) => (prevFilter === filter ? '' : filter));
+        handleSearch(searchTerm, activeFilter === filter ? '' : filter);
+    };
+
+    useEffect(() => {
+      handleSearch(searchTerm, 'mostOwned');
+    }, []);
+    
   return (
     
-    <div className={styles.container}>
-      <h1>Browse Games</h1>
-      <BoardGameSearch
-              bookmarks={bookmarks}
-              setBookmarks={setBookmarks}
-              playHistory={playHistory}
-              setPlayHistory={setPlayHistory}
-              collection={collection}
-              setCollection={setCollection} />
-
-      
-      <div className={styles.results}>
-        {results.map((game) => (
-          <div key={game.id} className={styles.gameCard}>
-            <img src={game.image} alt={game.name} className={styles.gameImage} />
-            <h3>{game.name}</h3>
-            <p>Players: {game.players}</p>
-            <p>Playtime: {game.estimatedTime}</p>
-          </div>
+   <>
+      <div className={styles.sortOptions}>
+        {['mostOwned', 'mostTimePlayed', 'byPrice', 'mostWanted'].map((filter) => (
+          <button
+            key={filter}
+            className={`${styles.filterButton} ${activeFilter === filter ? styles.active : ''}`}
+            onClick={() => handleFilterClick(filter)}
+          >
+            {filter === 'mostOwned' && 'Most Owned'}
+            {filter === 'mostTimePlayed' && 'Most Time Played'}
+            {filter === 'byPrice' && 'Most Expensive'}
+            {filter === 'mostWanted' && 'Most Wanted'}
+          </button>
         ))}
       </div>
-    </div>
+
+      <div className={styles.results}>
+        {loading ? (
+          <p className={styles.message}>Loading...</p>
+        ) : searchResults.length > 0 ? (
+          <ul className={`${styles.list} ${styles.leftAlignedList}`}>
+            {searchResults.map((game) => (
+              <li key={game.id} className={`${styles.listItem} ${styles.leftCard}`}>
+                <div className={styles.cardContent}>
+                  {game.image && (
+                    <div className={styles.imageMask}>
+                      <img src={game.image} alt={game.name} className={styles.gameImage} />
+                        <BookmarkButtons
+                          gameId={game.id}
+                          bookmarks={bookmarks}
+                          setBookmarks={setBookmarks}
+                        />
+                    </div>
+                  )}
+                  <div className={`${styles.gameDetails} ${styles.leftDetails}`}>
+                    <h3 className={styles.gameName}>
+                      <Link to={`/game/${encodeURIComponent(game.name)}`} style={{ textDecoration: 'none', color: '#0082BC' }}>
+                        {game.name}
+                      </Link>
+                    </h3>
+                    <p className={styles.gameInfo}><strong>Players:</strong> {game.players || "N/A"}</p>
+                    <p className={styles.gameInfo}><strong>Playtime:</strong> {game.estimatedTime || "N/A"}</p>
+                    <p className={styles.gameInfo}><strong>Amount Owned:</strong> {game.ownershipCount || 0}</p>
+                    <p className={styles.gameInfo}><strong>Total Time Played:</strong> {game.totalTimePlayed || 0} minutes</p>
+                    <p className={styles.gameInfo}><strong>Cost:</strong> ${game.price || "N/A"}</p>
+                    <p className={styles.gameInfo}><strong>Amount Wanted:</strong> {game.wantsCount || 0}</p>
+                    <div className={styles.buttonGroup}>
+                      <button className="edit-button" onClick={() => handleAddSession(game)}>
+                        <i className="fas fa-plus-square"></i> Add Session
+                      </button>
+                      <button className="edit-button" onClick={() => handleAddToCollection(game)}>
+                        <i className="fas fa-plus-square"></i> Add to Collection
+                      </button>
+
+                      <button  className="edit-button" 
+                        onClick={() =>
+                          navigate(`/stats/${game.id}`, {
+                            state: {
+                              gameName: game.name,
+                              playHistory: playHistory.filter((entry) => entry.gameId === game.id),
+                              item: game,
+                            },
+                          })
+                        }
+                      >
+                        <i className="fas fa-chart-simple"></i>Game Stats
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className={styles.message}>No games found</p>
+        )}
+      </div>
+
+      <SlidePanel show={showSessionForm} onClose={() => setShowSessionForm(false)} heading="Add Game Session">
+        {selectedGame && (
+          <GameSessionForm
+            onAdd={(sessionData) => {
+              setPlayHistory((prev) => [...prev, { ...sessionData, ...selectedGame }]);
+              setShowSessionForm(false);
+            }}
+            onCancelEdit={() => setShowSessionForm(false)}
+            autofillGameName={selectedGame.name}
+          />
+        )}
+      </SlidePanel>
+
+      <SlidePanel show={showCollectionForm} onClose={() => setShowCollectionForm(false)} heading="Add to Collection">
+        {selectedGame && (
+          <AddCollectionForm
+            onAdd={(collectionData) => {
+              setCollection((prev) => [...prev, { ...collectionData, ...selectedGame }]);
+              setShowCollectionForm(false);
+            }}
+            onCancelEdit={() => setShowCollectionForm(false)}
+            autofillGameName={selectedGame.name}
+            autofillNumPlayers={selectedGame.players}
+            autofillEstimatedTime={selectedGame.estimatedTime}
+          />
+        )}
+      </SlidePanel>
+    </>
   );
 };
 

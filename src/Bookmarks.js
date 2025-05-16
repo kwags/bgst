@@ -18,9 +18,7 @@ function Bookmarks({ bookmarks = [], playHistory, setBookmarks, setPlayHistory, 
   useEffect(() => {
     const { sortBy, direction } = sortConfig;
   
-    const filtered = bookmarks.filter(
-      (b) => b.wantToOwn || b.wantToPlay
-    );
+  const filtered = [...bookmarks];
 
     const sorted = [...filtered].sort((a, b) => {
       let comparison = 0;
@@ -49,6 +47,11 @@ function Bookmarks({ bookmarks = [], playHistory, setBookmarks, setPlayHistory, 
               {bookmark.image && (
                 <div className={styles.imageMask}>
                   <img src={bookmark.image} alt={bookmark.name} className={styles.gameImage} />
+                  <BookmarkButtons
+                    gameId={bookmark.gameId}
+                    bookmarks={bookmarks}
+                    setBookmarks={setBookmarks}
+                  />
                 </div>
               )}
               <div className={`${styles.gameDetails} ${styles.leftDetails}`}>
@@ -75,11 +78,6 @@ function Bookmarks({ bookmarks = [], playHistory, setBookmarks, setPlayHistory, 
                       item: bookmark } })}>
                     <i className="fas fa-chart-simple"></i>Game Stats
                   </button>
-                  <BookmarkButtons
-                    gameId={bookmark.gameId}
-                    bookmarks={bookmarks}
-                    setBookmarks={setBookmarks}
-                  />
                 </div>
               </div>
             </div>

@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { fetchPlayHistory, fetchCollection, fetchUserBookmarks, fetchUserInfo } from "./mockAPI";
+import { fetchPlayHistory, fetchCollection, fetchUserBookmarks, fetchUserInfo, toggleBookmark } from "./mockAPI";
 import UserStats from "./UserStats";
 import PlayHistory from "./PlayHistory";
 import Collection from "./Collection";
 import styles from "./styles/SharedStyles.module.css";
 
-const FriendPage = () => {
+const FriendPage = ({ currentUserId, bookmarks, setBookmarks }) => {
   const { userId } = useParams(); // Get userId from the URL
   const [playHistory, setPlayHistory] = useState([]);
   const [collection, setCollection] = useState([]);
-  const [bookmarks, setBookmarks] = useState([]);
   const [username, setUsername] = useState(""); // State to store the username
 
   const isFriendPage = !!userId; // If userId exists in the URL, it's a friend's page
@@ -46,19 +45,28 @@ const FriendPage = () => {
     getCollection();
   }, [userId]);
 
-  useEffect(() => {
-    const getBookmarks = async () => {
-      const data = await fetchUserBookmarks(userId);
-      setBookmarks(data);
-    };
-    getBookmarks();
-  }, [userId]);
+useEffect(() => {
+  const getBookmarks = async () => {
+    const data = await fetchUserBookmarks(currentUserId);
+    setBookmarks(data);
+  };
+  getBookmarks();
+}, [currentUserId]);
+
+const handleToggleBookmark = async (gameId) => {
+  await toggleBookmark(currentUserId, gameId);
+  const updated = await fetchUserBookmarks(currentUserId);
+  setBookmarks(updated); // this now updates the shared state
+};
+
 
   return (
     <div className={styles.container}>
 
         <div className={styles.sectionWrapper}>
-          <UserStats playHistory={playHistory} userId={parseInt(userId)} />
+        <h3 className="section-title">{username}'s Stats</h3>
+          <UserStats playHistory={playHistory} userId={parseInt(userId)} showHeading={false}
+          />
         </div>
       
         <div className={styles.sectionWrapper}>
@@ -67,7 +75,8 @@ const FriendPage = () => {
               items={playHistory}
               setItems={readOnly ? () => {} : setPlayHistory} // Disable changes if readOnly
               bookmarks={bookmarks}
-              setBookmarks={readOnly ? () => {} : setBookmarks} // Disable changes if readOnly
+              setBookmarks={setBookmarks}
+              onToggleBookmark={handleToggleBookmark}
               userId={userId}
               readOnly={readOnly}
               showHeading={false}
@@ -80,7 +89,8 @@ const FriendPage = () => {
             items={collection}
             setItems={readOnly ? () => {} : setCollection} // Disable changes if readOnly
             bookmarks={bookmarks}
-            setBookmarks={readOnly ? () => {} : setBookmarks} // Disable changes if readOnly
+            setBookmarks={setBookmarks}
+            onToggleBookmark={handleToggleBookmark}
             userId={parseInt(userId)}
             readOnly={readOnly}
             showHeading={false}

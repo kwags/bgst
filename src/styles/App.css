@@ -112,6 +112,14 @@
   padding-left: 2rem;
 }
 
+.center-title {
+  justify-content: center;
+  text-align: center;
+  margin: 0 auto;
+  padding-top: 2rem;
+}
+
+
 .edit-button i {
   padding-right: .5rem;
 }

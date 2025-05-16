@@ -27,8 +27,6 @@ function Collection({ userId, items, setItems, bookmarks, playHistory, setBookma
 
   useEffect(() => {
     const { sortBy, direction } = sortConfig;
-
-
     const sorted = [...items].sort((a, b) => {
       let comparison = 0;
   
@@ -37,7 +35,6 @@ function Collection({ userId, items, setItems, bookmarks, playHistory, setBookma
       } else if (sortBy === 'name') {
         comparison = a.name.localeCompare(b.name);
       }
-  
       return direction === 'asc' ? comparison : -comparison;
     });
   
@@ -67,6 +64,11 @@ function Collection({ userId, items, setItems, bookmarks, playHistory, setBookma
               {item.image && (
                 <div className={styles.imageMask}>
                   <img src={item.image} alt={item.name} className={styles.gameImage} />
+                    <BookmarkButtons
+                      gameId={item.gameId}
+                      bookmarks={bookmarks}
+                      setBookmarks={setBookmarks}
+                    />
                 </div>
               )}
               <div className={`${styles.gameDetails} ${styles.leftDetails}`}>
@@ -81,8 +83,8 @@ function Collection({ userId, items, setItems, bookmarks, playHistory, setBookma
                 </h3>
                 <p className={styles.gameInfo}><strong>Players:</strong> {item.players}</p>
                 <p className={styles.gameInfo}><strong>Playtime:</strong> {item.estimatedTime}</p>
-                <p className={styles.gameInfo}><strong>Purchase Date:</strong> {item.purchaseDate}</p>
-                <p className={styles.gameInfo}><strong>Purchase Price:</strong> {item.purchasePrice}</p>
+                <p className={styles.gameInfo}><strong>Purchase Date:</strong> ${item.purchaseDate}</p>
+                <p className={styles.gameInfo}><strong>Purchase Price:</strong> ${item.purchasePrice}</p>
                 <div className={styles.buttonGroup}>
                   {!readOnly && (
                     <>
@@ -98,11 +100,7 @@ function Collection({ userId, items, setItems, bookmarks, playHistory, setBookma
                       <button className="edit-button" onClick={() => navigate(`/stats/${item.gameId}`, {state: { gameName: item.name, playHistory: playHistory, item: item }})}>
                         <i className="fas fa-chart-simple"></i>Game Stats
                       </button>
-                    <BookmarkButtons
-                      gameId={item.gameId}
-                      bookmarks={bookmarks}
-                      setBookmarks={readOnly ? () => {} : setBookmarks} // Disable bookmark changes if readOnly
-                    />
+
                     </>
                   )}
                   
@@ -121,7 +119,8 @@ function Collection({ userId, items, setItems, bookmarks, playHistory, setBookma
         heading={editingCollectionItem ? "Edit Collection Item" : "Add to Collection"}>
 
         <CollectionManager
-          collection={collection}
+          key={showCollectionForm ? (editingCollectionItem?.id || 'new') : 'closed'}
+          collection={items}
           setCollection={(newList) => {
             setCollection(newList);
             setItems(newList);
@@ -129,6 +128,8 @@ function Collection({ userId, items, setItems, bookmarks, playHistory, setBookma
           editingCollectionItem={editingCollectionItem}
           setEditingCollectionItem={setEditingCollectionItem}
           setShowCollectionForm={setShowCollectionForm}
+          selectedGameForCollection={null}
+          setSelectedGameForCollection={() => {}} 
         />
       </SlidePanel>
     </div>
