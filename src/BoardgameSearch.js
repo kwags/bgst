@@ -49,9 +49,26 @@ const BoardGameSearch = ({ playHistory, handleSearch, bookmarks, setBookmarks, s
         setLoading(true);
         //Call to API with fetchBoardGames, loosely represents calling an API endpoint and can be swapped out later
         try{
-            const filteredGames = await fetchBoardGames(term);
-            setSearchResults(filteredGames);
-        } catch (error){
+            const allGames = await fetchBoardGames(term);
+            const lowerTerm = term.toLowerCase();
+
+    const sortedGames = allGames
+                .filter(game => game.name.toLowerCase().includes(lowerTerm))
+                .sort((a, b) => {
+                    const aName = a.name.toLowerCase();
+                    const bName = b.name.toLowerCase();
+
+                    const aStarts = aName.startsWith(lowerTerm) ? 0 : 1;
+                    const bStarts = bName.startsWith(lowerTerm) ? 0 : 1;
+
+                    if (aStarts !== bStarts) {
+                        return aStarts - bStarts;
+                    }
+                    return aName.localeCompare(bName);
+                });
+
+            setSearchResults(sortedGames);
+        } catch (error) {
             console.error('Error searching boardgames: ', error);
         } finally {
             setLoading(false);
