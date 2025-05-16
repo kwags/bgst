@@ -78,8 +78,8 @@ function Collection({ userId, items, setItems, bookmarks, playHistory, setBookma
                 </h3>
                 <p className={styles.gameInfo}><strong>Players:</strong> {item.players}</p>
                 <p className={styles.gameInfo}><strong>Playtime:</strong> {item.estimatedTime}</p>
-                <p className={styles.gameInfo}><strong>Purchase Date:</strong> {item.purchaseDate}</p>
-                <p className={styles.gameInfo}><strong>Purchase Price:</strong> {item.purchasePrice}</p>
+                <p className={styles.gameInfo}><strong>Purchase Date:</strong> ${item.purchaseDate}</p>
+                <p className={styles.gameInfo}><strong>Purchase Price:</strong> ${item.purchasePrice}</p>
                 <div className={styles.buttonGroup}>
                   {!readOnly && (
                     <>

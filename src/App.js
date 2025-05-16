@@ -10,7 +10,7 @@ import GameStats from "./GameStats.js";
 import Bookmarks from "./Bookmarks.js";
 import FriendPage from './FriendPage.js';
 import FriendsList from './FriendsList.js';
-import BrowseGames from "./BrowseGames.js";
+import BrowsePage from "./BrowsePage.js";
 import './styles/App.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
@@ -182,7 +182,8 @@ function App() {
               path="/browse"
               element={
                 <main className="app-main">
-                  <BrowseGames
+                  <section className="app-section">
+                  <BrowsePage
                     bookmarks={bookmarks}
                     setBookmarks={setBookmarks}
                     playHistory={playHistory}
@@ -190,6 +191,7 @@ function App() {
                     collection={collection}
                     setCollection={setCollection}
                   />
+                  </section>
                 </main>
               }
             />
