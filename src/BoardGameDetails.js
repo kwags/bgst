@@ -8,6 +8,7 @@ import AddCollectionForm from './AddCollectionForm';
 import BookmarkButtons from './BookmarkButtons';
 import styles from './styles/SharedStyles.module.css';
 import SlidePanel from './SlidePanel';
+import { useNavigate } from 'react-router-dom';
 
 function BoardGameDetails({ bookmarks, setBookmarks, playHistory, setPlayHistory, collection, setCollection }) {
   const { id } = useParams();
@@ -15,6 +16,7 @@ function BoardGameDetails({ bookmarks, setBookmarks, playHistory, setPlayHistory
   const [error, setError] = useState(null);
   const [showSessionForm, setShowSessionForm] = useState(false);
   const [showCollectionForm, setShowCollectionForm] = useState(false);
+  const navigate = useNavigate();
 
   const userId = useContext(UserContext);
 
@@ -107,7 +109,12 @@ function BoardGameDetails({ bookmarks, setBookmarks, playHistory, setPlayHistory
                   <button className="edit-button" onClick={() => setShowCollectionForm(true)}>
                     <i className="fas fa-plus-square"></i>Add to Collection
                   </button>
-
+                  <button className="edit-button" onClick={() => navigate(`/stats/${game.id}`, { 
+                    state: { gameName: game.name,
+                      playHistory: playHistory.filter((entry) => entry.gameId === game.id),
+                      item: game } })}>
+                    <i className="fas fa-chart-simple"></i>Game Stats
+                  </button>
               </div>
             </div>
 
