@@ -27,6 +27,8 @@ I focused on the application's **front-end development, programming, and impleme
 * Added client-side sorting functionality to allow users to organize and filter their recorded sessions
 * Integrated play history components with the application's session management and state-handling logic
 
+<img width="1458" height="898" alt="playhistory" src="https://github.com/user-attachments/assets/d9128f07-44b0-4ab5-92a4-91a39d8038c1" />
+
 ### Collection
 
 * Developed the Collection interface using React components and reusable UI patterns
@@ -34,6 +36,8 @@ I focused on the application's **front-end development, programming, and impleme
 * Designed the collection layout to present game information in a clear and consistent format
 * Added client-side sorting functionality for organizing games within the collection
 * Integrated collection views with the application's collection management and data-handling logic
+
+<img width="1458" height="895" alt="collection" src="https://github.com/user-attachments/assets/eb55c1b4-0bbc-4c8e-a8e3-cf1837f46ab7" />
 
 ### Sorting
 
