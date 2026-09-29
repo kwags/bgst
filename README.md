@@ -4,6 +4,9 @@ A React web application designed to help board game players organize their colle
 
 The project was developed as a software engineering project and focuses on creating an organized, user-friendly interface for managing board game data.
 
+[Click Through Demo](https://bgst-three.vercel.appm)
+
+
 ## Features
 
 * **Play History** — View and manage previously recorded game sessions
