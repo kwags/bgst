@@ -85,7 +85,7 @@ const UserStats = ({ playHistory, userId, showHeading=true }) => {
                                     setActiveTab("results")} className={`${styles.tabButton} ${activeTab === "results" ? styles.activeTab : ""}`}>Results
                                 </button>
                                 <button onClick={() =>
-                                    setActiveTab("monthly")} className={`${styles.tabButton} ${activeTab === "monthly" ? styles.activeTab : ""}`}>Plays in 2025</button>
+                                    setActiveTab("monthly")} className={`${styles.tabButton} ${activeTab === "monthly" ? styles.activeTab : ""}`}>Plays in 2026</button>
                                 <button onClick={() => 
                                     setActiveTab("scores")} className={`${styles.tabButton} ${activeTab === "scores" ? styles.activeTab : ""}`}>Score Over Time</button>
                             </div>
