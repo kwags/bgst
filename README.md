@@ -1,70 +1,160 @@
-# Getting Started with Create React App
+# Board Game Statistic Tracker
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A React web application designed to help board game players organize their collections, track play history, and view statistics about their games.
 
-## Available Scripts
+The project was developed as a software engineering project and focuses on creating an organized, user-friendly interface for managing board game data.
 
-In the project directory, you can run:
+[Live Demo](https://bgst-three.vercel.app)
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Features
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+* **Play History** — View and manage previously recorded game sessions
+* **Game Collection** — Browse and manage games in a personal collection
+* **Game Statistics** — View statistics and interactive charts for games
+* **Bookmarks** — Save games for quick access
+* **Friends** — View and manage friends and their game-related information
+* **Game Search & Browse** — Search for and browse board games
+* **Game Details** — View detailed information about individual games
+* **Sorting** — Sort play history, collection, bookmarks, and friends lists
 
-### `npm test`
+## My Contributions
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+I focused on the application's **front-end development, programming, and implementation of user-facing features** including play history, collection, sorting, and data visualization charts. I also contributed to the application's **styling, layout, and overall user experience**.
 
-### `npm run build`
+### Play History
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+* Developed the Play History interface using reusable React components
+* Implemented the rendering and organization of recorded game sessions from application data
+* Structured play history views to display relevant game, player, date, and session information
+* Added client-side sorting functionality to allow users to organize and filter their recorded sessions
+* Integrated play history components with the application's session management and state-handling logic
+  
+<img width="1000" alt="playhistory" src="https://github.com/user-attachments/assets/8aaa9863-c314-4c33-814d-2fef6a636e64" />
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Collection
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+* Developed the Collection interface using React components and reusable UI patterns
+* Implemented the rendering of games stored in a user's collection
+* Designed the collection layout to present game information in a clear and consistent format
+* Added client-side sorting functionality for organizing games within the collection
+* Integrated collection views with the application's collection management and data-handling logic
 
-### `npm run eject`
+<img width="1000" alt="collection" src="https://github.com/user-attachments/assets/868a1f7b-6b7e-48f6-b015-0c1541c9e12d" />
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Sorting
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Implemented reusable sorting functionality across multiple areas of the application to help users organize and navigate their data more efficiently.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+* Added sorting controls for:
+  * Play History
+  * Collection
+  * Bookmarks
+  * Friends
+* Integrated sorting with React component state to update displayed results dynamically
+* Supported sorting based on the data available in each section, such as game information, play history, bookmarked games, and friend lists
+* Designed the sorting controls to remain consistent with the application's overall UI and styling
+* Ensured sorting worked alongside each section's existing data display and user interactions
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Statistics & Data Visualization
 
-## Learn More
+* Implemented interactive data visualizations for the statistics pages using **Recharts**
+* Created charts to help users visually understand their game statistics
+* Integrated chart components with the application's existing game data
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### UI/UX & CSS
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- Designed the overall UI/UX of the application
+- Developed the visual layout and styling throughout the application
+- Created and maintained the CSS, including:
+  - Color palette
+  - Typography
+  - Spacing and layout
+  - Buttons, slider windows, and interactive elements
+  - Navigation and page styling
+  - Desktop-focused interface design
 
-### Code Splitting
+## Technologies
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+* **React**
+* **JavaScript**
+* **React Router**
+* **Recharts**
+* **Font Awesome**
+* **HTML5**
+* **CSS3**
+* **Create React App**
 
-### Analyzing the Bundle Size
+## Project Structure
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```text
+bgst/
+├── public/
+├── src/
+│   ├── styles/
+│   ├── AddBoardGameForm.js
+│   ├── AddCollectionForm.js
+│   ├── AddCollectionManager.js
+│   ├── AddFriend.js
+│   ├── App.js
+│   ├── BoardGameDetails.js
+│   ├── BoardgameSearch.js
+│   ├── BookmarkButtons.js
+│   ├── Bookmarks.js
+│   ├── BrowseGames.js
+│   ├── BrowsePage.js
+│   ├── Collection.js
+│   ├── FriendPage.js
+│   ├── FriendsList.js
+│   ├── GameSessionForm.js
+│   ├── GameSessionManager.js
+│   ├── GameStats.js
+│   ├── Navbar.js
+│   ├── PlayHistory.js
+│   ├── SlidePanel.js
+│   ├── Sorting.js
+│   ├── StatsCharts.js
+│   ├── UserStats.js
+│   └── mockAPI.js
+├── package.json
+└── README.md
+```
 
-### Making a Progressive Web App
+## Getting Started
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### Prerequisites
 
-### Advanced Configuration
+* [Node.js](https://nodejs.org/)
+* npm
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### Installation
 
-### Deployment
+Clone the repository and install the dependencies:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+```bash
+git clone https://github.com/kwags/bgst.git
+cd bgst
+npm install
+```
 
-### `npm run build` fails to minify
+### Run the Development Server
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```bash
+npm start
+```
+
+The application will open in your browser at:
+
+```text
+http://localhost:3000
+```
+
+### Create a Production Build
+
+```bash
+npm run build
+```
+
+## Notes
+
+The current version uses mock API data for development and demonstration purposes rather than a production backend or database.

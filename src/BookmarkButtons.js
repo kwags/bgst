@@ -1,48 +1,28 @@
 import React, { useContext } from "react";
-import { toggleWantToOwn, toggleWantToPlay, fetchUserBookmarks } from "./mockAPI";
-import { UserContext } from "./App";   
+import { toggleBookmark, fetchUserBookmarks } from "./mockAPI";
+import { UserContext } from "./App";
 import styles from './styles/SharedStyles.module.css';
 
-function BookmarkButtons({ gameId, bookmarks = [], setBookmarks }) {
+function BookmarkButton({ gameId, bookmarks = [], setBookmarks }) {
   const userId = useContext(UserContext);
 
-  const existingBookmark = bookmarks.find(
+  const isBookmarked = bookmarks.some(
     (b) => b.userId === userId && b.gameId === gameId
   );
 
-  const refreshBookmarks = async () => {
+  const handleToggleBookmark = async () => {
+    await toggleBookmark(userId, gameId);
     const updated = await fetchUserBookmarks(userId);
-    setBookmarks(updated);
-  };
-
-  const handleToggleWantToOwn = async () => {
-    try {
-      await toggleWantToOwn(userId, gameId);
-      await refreshBookmarks();
-    } catch (error) {
-      console.error("Failed to toggle Want to Own", error);
-    }
-  };
-
-  const handleToggleWantToPlay = async () => {
-    try {
-      await toggleWantToPlay(userId, gameId);
-      await refreshBookmarks();
-    } catch (error) {
-      console.error("Failed to toggle Want to Play", error);
-    }
+    setBookmarks(updated); 
   };
 
   return (
-    <div>
-       <button className={styles.bookmarkButton} onClick={handleToggleWantToOwn}>
-        {existingBookmark?.wantToOwn ? "⭐️ Want to Own" : "☆ Want to Own"}
-      </button>
-      <button className={styles.bookmarkButton} onClick={handleToggleWantToPlay}>
-        {existingBookmark?.wantToPlay ? "🎮 Want to Play" : "❌ Want to Play"}
-      </button>
-    </div>
+    <button
+      className={styles.overlayBookmarkButton}
+      onClick={handleToggleBookmark}>
+      <i className={`${isBookmarked ? "fa-solid" : "fa-regular"} fa-bookmark ${isBookmarked ? styles.bookmarkedIcon : styles.unbookmarkedIcon}`} ></i>
+    </button>
   );
 }
 
-export default BookmarkButtons;
+export default BookmarkButton;

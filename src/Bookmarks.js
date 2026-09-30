@@ -7,7 +7,7 @@ import styles from './styles/SharedStyles.module.css';
 import { Link, useNavigate } from 'react-router-dom';
 import Sorting from './Sorting';
 
-function Bookmarks({ items, setItems, onEdit, bookmarks = [], playHistory, setBookmarks, setPlayHistory, setCollection }) {
+function Bookmarks({ bookmarks = [], playHistory, setBookmarks, setPlayHistory, setCollection }) {
   const [showSessionForm, setShowSessionForm] = useState(false);
   const [showCollectionForm, setShowCollectionForm] = useState(false);
   const [selectedGame, setSelectedGame] = useState(null);
@@ -18,7 +18,9 @@ function Bookmarks({ items, setItems, onEdit, bookmarks = [], playHistory, setBo
   useEffect(() => {
     const { sortBy, direction } = sortConfig;
   
-    const sorted = [...bookmarks].sort((a, b) => {
+  const filtered = [...bookmarks];
+
+    const sorted = [...filtered].sort((a, b) => {
       let comparison = 0;
   
       if (sortBy === 'name') {
@@ -45,6 +47,11 @@ function Bookmarks({ items, setItems, onEdit, bookmarks = [], playHistory, setBo
               {bookmark.image && (
                 <div className={styles.imageMask}>
                   <img src={bookmark.image} alt={bookmark.name} className={styles.gameImage} />
+                  <BookmarkButtons
+                    gameId={bookmark.gameId}
+                    bookmarks={bookmarks}
+                    setBookmarks={setBookmarks}
+                  />
                 </div>
               )}
               <div className={`${styles.gameDetails} ${styles.leftDetails}`}>
@@ -71,11 +78,6 @@ function Bookmarks({ items, setItems, onEdit, bookmarks = [], playHistory, setBo
                       item: bookmark } })}>
                     <i className="fas fa-chart-simple"></i>Game Stats
                   </button>
-                  <BookmarkButtons
-                    gameId={bookmark.gameId}
-                    bookmarks={bookmarks}
-                    setBookmarks={setBookmarks}
-                  />
                 </div>
               </div>
             </div>

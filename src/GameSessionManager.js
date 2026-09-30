@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import GameSessionForm from "./GameSessionForm";
 import { enrichWithBoardGameData } from "./mockAPI";
+import { mockData } from "./mockAPI.js";
 
 const GameSessionManager = ({
   playHistory,
@@ -47,7 +48,7 @@ const GameSessionManager = ({
         setSelectedGameForSession("");
         setShowSessionForm(false);
       }}
-      loading={loading}
+      boardgames={mockData.boardgames} 
     />
   );
 };

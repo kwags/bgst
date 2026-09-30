@@ -30,11 +30,11 @@ export const mockData = {
   ],
 
   gameSessions: [
-    { id: 1, userId: 1, gameId: 1, date: "2025-01-04", numPlayers: 4, score: 10, result: "Win", time: 120, comments: "" },
-    { id: 2, userId: 1, gameId: 2, date: "2025-01-02", numPlayers: 3, score: 5, result: "Loss", time: 60, comments: "" },
-    { id: 3, userId: 1, gameId: 3, date: "2025-02-03", numPlayers: 2, score: 8, result: "Win", time: 90, comments: "" },
-    { id: 4, userId: 2, gameId: 4, date: "2025-03-04", numPlayers: 4, score: 12, result: "Loss", time: 45, comments: "" },
-    { id: 5, userId: 2, gameId: 5, date: "2025-02-05", numPlayers: 3, score: 15, result: "Win", time: 30, comments: "" },
+    { id: 1, userId: 1, gameId: 1, date: "2025-01-04", numPlayers: 4, score: 10, result: "Win", time: 120, comments: "Excellent competion!" },
+    { id: 2, userId: 1, gameId: 2, date: "2025-01-02", numPlayers: 3, score: 5, result: "Loss", time: 60, comments: "Exciting game throughout" },
+    { id: 3, userId: 1, gameId: 3, date: "2025-02-03", numPlayers: 2, score: 8, result: "Win", time: 90, comments: "Hard fought win" },
+    { id: 4, userId: 2, gameId: 4, date: "2025-03-04", numPlayers: 4, score: 12, result: "Loss", time: 45, comments: "Quick game." },
+    { id: 5, userId: 2, gameId: 5, date: "2025-02-05", numPlayers: 3, score: 15, result: "Win", time: 30, comments: "Challenging competition." },
     { id: 6, userId: 1, gameId: 14, date: "2025-03-08", numPlayers: 4, score: 4, result: "Win", time: 120, comments: "First time playing this game" },
     { id: 7, userId: 1, gameId: 3, date: "2025-03-13", numPlayers: 3, score: 105, result: "Draw", time: 180, comments: "This was really fun!" },
     { id: 8, userId: 1, gameId: 1, date: "2025-03-27", numPlayers: 3, score: 10, result: "Win", time: 180, comments: "Always a fun game" },
@@ -53,6 +53,10 @@ export const mockData = {
     { id: 21, userId: 1, gameId: 4, date: "2025-05-06", numPlayers: 3, score: 14, result: "Loss", time: 75, comments: "Close match." },
     { id: 22, userId: 2, gameId: 5, date: "2025-05-07", numPlayers: 4, score: 18, result: "Win", time: 100, comments: "Teamwork paid off!" },
     { id: 23, userId: 3, gameId: 6, date: "2025-05-08", numPlayers: 5, score: 25, result: "Draw", time: 150, comments: "Tough competition." },
+    { id: 24, userId: 5, gameId: 7, date: "2025-03-05", numPlayers: 4, score: 18, result: "Loss", time: 90, comments: "Really close one!" },
+    { id: 25, userId: 5, gameId: 8, date: "2025-04-10", numPlayers: 3, score: 25, result: "Win", time: 120, comments: "Interesting strategy!" },
+    { id: 26, userId: 5, gameId: 9, date: "2025-05-07", numPlayers: 2, score: 30, result: "Loss", time: 180, comments: "Tough compotition." },
+    { id: 27, userId: 5, gameId: 10, date: "2025-04-20", numPlayers: 4, score: 50, result: "Win", time: 240, comments: "Great game!" },
   ],
 
   collection: [
@@ -93,73 +97,73 @@ export const mockData = {
   ],
 
   friends: [
-    { userId: 1, friends: [2, 3] },
+    { userId: 1, friends: [2, 3, 4] },
     { userId: 2, friends: [1, 4] },
     { userId: 3, friends: [1] },
     { userId: 4, friends: [2, 5] }, 
     { userId: 5, friends: [4] },
   ],
-
   
 };
 
-
 export const fetchBoardGames = async (searchTerm = '', filter = '') => {
   return new Promise((resolve) => {
-    setTimeout(() => {
-      let filteredGames = mockData.boardgames;
+      setTimeout(() => {
+          let filteredGames = mockData.boardgames;
 
-      const term = typeof searchTerm === 'string' ? searchTerm.trim() : '';
+          const term = typeof searchTerm === 'string' ? searchTerm.trim() : '';
 
-      if (term.trim()) {
-        filteredGames = filteredGames.filter((game) =>
-          game.name.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-      }
+          if (term.trim()) {
+              filteredGames = filteredGames.filter((game) =>
+                  game.name.toLowerCase().includes(searchTerm.toLowerCase())
+              );
+          }
 
-      switch (filter) {
-        case 'mostOwned':
           filteredGames = filteredGames.map((game) => {
-            const ownershipCount = mockData.collection.filter(
-              (item) => item.gameId === game.id
-            ).length;
-            return { ...game, ownershipCount };
-          }).sort((a, b) => b.ownershipCount - a.ownershipCount);
-          break;
+              const ownershipCount = mockData.collection.filter(
+                  (item) => item.gameId === game.id
+              ).length;
 
-        case 'mostTimePlayed':
-          filteredGames = filteredGames.map((game) => {
-            const totalTimePlayed = mockData.gameSessions
-              .filter((session) => session.gameId === game.id)
-              .reduce((sum, session) => sum + session.time, 0);
-            return { ...game, totalTimePlayed };
-          }).sort((a, b) => b.totalTimePlayed - a.totalTimePlayed);
-          break;
+              const totalTimePlayed = mockData.gameSessions
+                  .filter((session) => session.gameId === game.id)
+                  .reduce((sum, session) => sum + session.time, 0);
 
-        case 'byPrice':
-          filteredGames = filteredGames.map((game) => {
-            const price = mockData.collection.find(
-              (item) => item.gameId === game.id
-            )?.purchasePrice || 0;
-            return { ...game, price: parseFloat(price) };
-          }).sort((a, b) => b.price - a.price);
-          break;
+              const price = mockData.collection.find(
+                  (item) => item.gameId === game.id
+              )?.purchasePrice || 0;
 
-        case 'mostWanted':
-          filteredGames = filteredGames.map((game) => {
-            const wantsCount = mockData.bookmarks.filter(
-              (bookmark) => bookmark.gameId === game.id
-            ).length;
-            return { ...game, wantsCount };
-          }).sort((a, b) => b.wantsCount - a.wantsCount);
-          break;
+              const wantsCount = mockData.bookmarks.filter(
+                  (bookmark) => bookmark.gameId === game.id
+              ).length;
 
-        default:
-          break;
-      }
+              return {
+                  ...game,
+                  ownershipCount,
+                  totalTimePlayed,
+                  price: parseFloat(price),
+                  wantsCount,
+              };
+          });
 
-      resolve(filteredGames);
-    }, 500); // Simulated network delay
+          switch (filter) {
+              case 'mostOwned':
+                  filteredGames = filteredGames.sort((a, b) => b.ownershipCount - a.ownershipCount);
+                  break;
+              case 'mostTimePlayed':
+                  filteredGames = filteredGames.sort((a, b) => b.totalTimePlayed - a.totalTimePlayed);
+                  break;
+              case 'byPrice':
+                  filteredGames = filteredGames.sort((a, b) => b.price - a.price);
+                  break;
+              case 'mostWanted':
+                  filteredGames = filteredGames.sort((a, b) => b.wantsCount - a.wantsCount);
+                  break;
+              default:
+                  break;
+          }
+
+          resolve(filteredGames);
+      }, 500);
   });
 };
 
@@ -464,37 +468,24 @@ export const fetchUserStats = async (userId) => {
   });
 };
 
-// Toggle Want to Own
-export const toggleWantToOwn = async (userId, gameId) => {
+// Toggle Bookmark
+export const toggleBookmark = async (userId, gameId) => {
   return new Promise((resolve) => {
     setTimeout(() => {
-      const bookmark = mockData.bookmarks.find(
+      const index = mockData.bookmarks.findIndex(
         (b) => b.userId === userId && b.gameId === gameId
       );
-      if (bookmark) {
-        bookmark.wantToOwn = !bookmark.wantToOwn;
-        resolve({ ...bookmark });
+      if (index !== -1) {
+        // Remove the bookmark if it exists
+        mockData.bookmarks.splice(index, 1);
+        resolve(null);
       } else {
-        const newBookmark = { id: uuidv4(), userId, gameId, wantToOwn: true, wantToPlay: false };
-        mockData.bookmarks.push(newBookmark);
-        resolve(newBookmark);
-      }
-    }, 300);
-  });
-};
-
-// Toggle Want to Play
-export const toggleWantToPlay = async (userId, gameId) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      const bookmark = mockData.bookmarks.find(
-        (b) => b.userId === userId && b.gameId === gameId
-      );
-      if (bookmark) {
-        bookmark.wantToPlay = !bookmark.wantToPlay;
-        resolve({ ...bookmark });
-      } else {
-        const newBookmark = { id: uuidv4(), userId, gameId, wantToOwn: false, wantToPlay: true };
+        // Add a new bookmark
+        const newBookmark = {
+          id: uuidv4(),
+          userId,
+          gameId,
+        };
         mockData.bookmarks.push(newBookmark);
         resolve(newBookmark);
       }

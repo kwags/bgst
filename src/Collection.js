@@ -5,19 +5,28 @@ import { Link, useNavigate } from 'react-router-dom';
 import BookmarkButtons from './BookmarkButtons';
 import styles from './styles/SharedStyles.module.css';
 import Sorting from './Sorting';
+import SlidePanel from './SlidePanel';
+import CollectionManager from "./AddCollectionManager.js";
+import { fetchCollection } from "./mockAPI";
 
-function Collection({ items, setItems, onEdit, bookmarks, playHistory, setBookmarks, readOnly }) {
-  const deleteGame = (id) => {
-    setItems(items.filter(item => item.id !== id));
-  };
+function Collection({ userId, items, setItems, bookmarks, playHistory, setBookmarks, readOnly, showHeading=true }) {
 
   const [sortConfig, setSortConfig] = useState({ sortBy: 'purchaseDate', direction: 'desc' });
   const [sortedItems, setSortedItems] = useState([]);
+  const [showCollectionForm, setShowCollectionForm] = useState(false);
+  const [editingCollectionItem, setEditingCollectionItem] = useState(null);
+  const [collection, setCollection] = useState([]);
 
+  useEffect(() => {
+    const getCollection = async () => {
+     const data = await fetchCollection(userId);
+          setCollection(data);
+        };
+        getCollection();
+      }, [userId]);
 
   useEffect(() => {
     const { sortBy, direction } = sortConfig;
-    
     const sorted = [...items].sort((a, b) => {
       let comparison = 0;
   
@@ -26,17 +35,27 @@ function Collection({ items, setItems, onEdit, bookmarks, playHistory, setBookma
       } else if (sortBy === 'name') {
         comparison = a.name.localeCompare(b.name);
       }
-  
       return direction === 'asc' ? comparison : -comparison;
     });
   
     setSortedItems(sorted);
   }, [items, sortConfig]);
 
-    const navigate = useNavigate();
+
+  const deleteGame = (id) => {
+    setItems(items.filter(item => item.id !== id));
+  };
+
+  const navigate = useNavigate();
 
   return (
     <div className={styles.container}>
+      {showHeading && (
+        <div className="section-header">
+          <h3 className="section-title">Collection</h3>
+          <button className="add-button" onClick={() => setShowCollectionForm(true)}><i className="fas fa-plus-square"></i>Add to Collection</button>
+        </div>
+      )}
         <Sorting onSortChange={setSortConfig} dateField="purchaseDate" />
       <ul className={`${styles.list} ${styles.leftAlignedList}`}>
       {sortedItems.map(item => (
@@ -45,6 +64,11 @@ function Collection({ items, setItems, onEdit, bookmarks, playHistory, setBookma
               {item.image && (
                 <div className={styles.imageMask}>
                   <img src={item.image} alt={item.name} className={styles.gameImage} />
+                    <BookmarkButtons
+                      gameId={item.gameId}
+                      bookmarks={bookmarks}
+                      setBookmarks={setBookmarks}
+                    />
                 </div>
               )}
               <div className={`${styles.gameDetails} ${styles.leftDetails}`}>
@@ -59,13 +83,16 @@ function Collection({ items, setItems, onEdit, bookmarks, playHistory, setBookma
                 </h3>
                 <p className={styles.gameInfo}><strong>Players:</strong> {item.players}</p>
                 <p className={styles.gameInfo}><strong>Playtime:</strong> {item.estimatedTime}</p>
-                <p className={styles.gameInfo}><strong>Purchase Date:</strong> {item.purchaseDate}</p>
-                <p className={styles.gameInfo}><strong>Purchase Price:</strong> {item.purchasePrice}</p>
+                <p className={styles.gameInfo}><strong>Purchase Date:</strong> ${item.purchaseDate}</p>
+                <p className={styles.gameInfo}><strong>Purchase Price:</strong> ${item.purchasePrice}</p>
                 <div className={styles.buttonGroup}>
                   {!readOnly && (
                     <>
-                      <button className="edit-button" onClick={() => onEdit(item)}>
-                        <i className="far fa-edit"></i>Edit Game
+                      <button className="edit-button" onClick={() => {
+                        setEditingCollectionItem(item);
+                        setShowCollectionForm(true);
+                      }}>
+                         <i className="far fa-edit"></i>Edit Game
                       </button>
                       <button className="edit-button" onClick={() => deleteGame(item.id)}>
                         <i className="far fa-trash-can"></i>Delete Game
@@ -73,11 +100,6 @@ function Collection({ items, setItems, onEdit, bookmarks, playHistory, setBookma
                       <button className="edit-button" onClick={() => navigate(`/stats/${item.gameId}`, {state: { gameName: item.name, playHistory: playHistory, item: item }})}>
                         <i className="fas fa-chart-simple"></i>Game Stats
                       </button>
-                    <BookmarkButtons
-                      gameId={item.gameId}
-                      bookmarks={bookmarks}
-                      setBookmarks={readOnly ? () => {} : setBookmarks} // Disable bookmark changes if readOnly
-                    />
 
                     </>
                   )}
@@ -88,6 +110,28 @@ function Collection({ items, setItems, onEdit, bookmarks, playHistory, setBookma
           </li>
         ))}
       </ul>
+      <SlidePanel
+        show={showCollectionForm}
+        onClose={() => {
+          setShowCollectionForm(false);
+          setEditingCollectionItem(null);
+        }}
+        heading={editingCollectionItem ? "Edit Collection Item" : "Add to Collection"}>
+
+        <CollectionManager
+          key={showCollectionForm ? (editingCollectionItem?.id || 'new') : 'closed'}
+          collection={items}
+          setCollection={(newList) => {
+            setCollection(newList);
+            setItems(newList);
+          }}
+          editingCollectionItem={editingCollectionItem}
+          setEditingCollectionItem={setEditingCollectionItem}
+          setShowCollectionForm={setShowCollectionForm}
+          selectedGameForCollection={null}
+          setSelectedGameForCollection={() => {}} 
+        />
+      </SlidePanel>
     </div>
   );
 }

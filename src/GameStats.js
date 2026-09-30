@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import styles from './styles/SharedStyles.module.css';
 import { Link } from 'react-router-dom';
+import BookmarkButtons from './BookmarkButtons';
+
 import ResultDonutChart, { GamesPerMonthChart, ScoreOverTimeChart } from './StatsCharts';
 
 
-const GameStats = () => {
+const GameStats = ({ bookmarks, setBookmarks }) => {
     const location = useLocation();
     const { gameName, playHistory, item } = location.state || {};
     const [activeTab, setActiveTab] = useState("results");
@@ -29,12 +31,23 @@ const GameStats = () => {
   
     return (
       <div className={styles.container}>
+      <div className="section-header">
+        <h3 className="section-title">Game Stats</h3>
+        <Link to={'/stats/'} className="stats-button">
+          <i className="fas fa-chart-simple"></i>Overall Stats
+        </Link>
+      </div>
         <ul className={`${styles.list} ${styles.leftAlignedList}`}>
             <li key={item.id} className={`${styles.listItem} ${styles.leftCard}`}>
               <div className={styles.cardContent}>
                   {item.image && (
                     <div className={styles.imageMask}>
                        <img src={item.image} alt={item.name} className={styles.gameImage} />
+                        <BookmarkButtons
+                          gameId={item.gameId}
+                          bookmarks={bookmarks}
+                          setBookmarks={setBookmarks}
+                        />
                     </div>
                   )}
                     <div className={`${styles.gameDetails} ${styles.leftDetails}`}>

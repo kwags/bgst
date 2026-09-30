@@ -5,11 +5,25 @@ import { Link, useNavigate } from 'react-router-dom';
 import BookmarkButtons from './BookmarkButtons';
 import styles from './styles/SharedStyles.module.css';
 import Sorting from './Sorting';
+import SlidePanel from './SlidePanel';
+import GameSessionManager from "./GameSessionManager.js";
+import { fetchPlayHistory, toggleBookmark } from "./mockAPI";
 
-function PlayHistory({ items, setItems, onEdit, bookmarks, setBookmarks, readOnly }) {
+function PlayHistory({ userId, items, setItems, bookmarks, setBookmarks, readOnly, showHeading=true }) {
 
   const [sortConfig, setSortConfig] = useState({ sortBy: 'date', direction: 'desc' });
   const [sortedItems, setSortedItems] = useState([]);
+  const [showSessionForm, setShowSessionForm] = useState(false);
+  const [editingPlayHistoryItem, setEditingPlayHistoryItem] = useState(null);
+  const [playHistory, setPlayHistory] = useState([]);
+
+  useEffect(() => {
+    const getPlayHistory = async () => {
+      const data = await fetchPlayHistory(userId);
+      setPlayHistory(data);
+    };
+    getPlayHistory();
+  }, [userId]);
 
   useEffect(() => {
     const { sortBy, direction } = sortConfig;
@@ -37,6 +51,14 @@ function PlayHistory({ items, setItems, onEdit, bookmarks, setBookmarks, readOnl
 
   return (
     <div className={styles.container}>
+      {showHeading && (
+        <div className="section-header">
+          <h3 className="section-title">Play History</h3>
+          <button className="add-button" onClick={() => setShowSessionForm(true)}>
+            <i className="fas fa-plus-square"></i>Add Play Session
+          </button>
+        </div>
+      )}
       <Sorting onSortChange={setSortConfig} dateField="date"/>
       <ul className={`${styles.list} ${styles.leftAlignedList}`}>
       {sortedItems.map(item => (
@@ -45,6 +67,11 @@ function PlayHistory({ items, setItems, onEdit, bookmarks, setBookmarks, readOnl
               {item.image && (
                 <div className={styles.imageMask}>
                   <img src={item.image} alt={item.name} className={styles.gameImage} />
+                    <BookmarkButtons
+                      gameId={item.gameId}
+                      bookmarks={bookmarks}
+                      setBookmarks={setBookmarks}
+                    />
                 </div>
               )}
               <div className={`${styles.gameDetails} ${styles.leftDetails}`}>
@@ -66,20 +93,18 @@ function PlayHistory({ items, setItems, onEdit, bookmarks, setBookmarks, readOnl
                 <div className={styles.buttonGroup}>
                   {!readOnly && (
                     <>
-                      <button className="edit-button" onClick={() => onEdit(item)}>
+                      <button className="edit-button" onClick={() => {
+                        setEditingPlayHistoryItem(item);
+                        setShowSessionForm(true);
+                      }}>
                         <i className="far fa-edit"></i>Edit Session
                       </button>
                       <button className="edit-button" onClick={() => deleteGameSession(item.id)}>
                         <i className="far fa-trash-can"></i>Delete Session
                       </button>
                       <button className="edit-button" onClick={() => navigate(`/stats/${item.gameId}`, { state: { gameName: item.name, playHistory: items, item: item } })}>
-                    <i className="fas fa-chart-simple"></i>Game Stats
-                    </button>
-                    <BookmarkButtons
-                      gameId={item.gameId}
-                      bookmarks={bookmarks}
-                      setBookmarks={readOnly ? () => {} : setBookmarks} // Disable bookmark changes if readOnly
-                    />
+                        <i className="fas fa-chart-simple"></i>Game Stats
+                      </button>
                     </>
                   )}
                   
@@ -89,6 +114,24 @@ function PlayHistory({ items, setItems, onEdit, bookmarks, setBookmarks, readOnl
           </li>
         ))}
       </ul>
+      <SlidePanel show={showSessionForm}
+          onClose={() => { setShowSessionForm(false); setEditingPlayHistoryItem(null); }}
+          heading={editingPlayHistoryItem ? "Edit Play Session" : "Add Play Session"}>
+
+          <GameSessionManager
+            key={showSessionForm ? (editingPlayHistoryItem?.id || 'new') : 'closed'}
+            playHistory={items}
+            setPlayHistory={(newList) => {
+              setPlayHistory(newList);
+              setItems(newList);
+            }}
+            editingPlayHistoryItem={editingPlayHistoryItem}
+            setEditingPlayHistoryItem={setEditingPlayHistoryItem}
+            setShowSessionForm={setShowSessionForm}
+            selectedGameForSession={null}
+            setSelectedGameForSession={() => {}} 
+          />
+        </SlidePanel>
     </div>
   );
 }
