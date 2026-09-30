@@ -2,7 +2,7 @@
 
 A React web application designed to help board game players organize their collections, track play history, and view statistics about their games.
 
-The project was developed as a software engineering project and focuses on creating an organized, user-friendly interface for managing board game data.
+The app was developed within a team as a software engineering project and focuses on creating an organized, user-friendly interface for managing board game data across desktop and mobile devices.
 
 [Live Demo](https://bgst-three.vercel.app)
 
@@ -17,10 +17,11 @@ The project was developed as a software engineering project and focuses on creat
 * **Game Search & Browse** — Search for and browse board games
 * **Game Details** — View detailed information about individual games
 * **Sorting** — Sort play history, collection, bookmarks, and friends lists
+* **Responsive Design** — Responsive layouts and navigation for desktop and mobile devices
 
 ## My Contributions
 
-I focused on the application's **front-end development, programming, and implementation of user-facing features** including play history, collection, sorting, and data visualization charts. I also contributed to the application's **styling, layout, and overall user experience**.
+I focused on the application's **front-end development, programming, and implementation of user-facing features** including play history, collection, sorting, and data visualization charts. I also contributed to the application's **styling, responsive layout, and overall user experience**.
 
 ### Play History
 
@@ -29,6 +30,7 @@ I focused on the application's **front-end development, programming, and impleme
 * Structured play history views to display relevant game, player, date, and session information
 * Added client-side sorting functionality to allow users to organize and filter their recorded sessions
 * Integrated play history components with the application's session management and state-handling logic
+* Implemented responsive layouts that adapt game session cards, images, information, and action buttons for smaller screens
   
 <img width="1000" alt="playhistory" src="https://github.com/user-attachments/assets/8aaa9863-c314-4c33-814d-2fef6a636e64" />
 
@@ -39,6 +41,7 @@ I focused on the application's **front-end development, programming, and impleme
 * Designed the collection layout to present game information in a clear and consistent format
 * Added client-side sorting functionality for organizing games within the collection
 * Integrated collection views with the application's collection management and data-handling logic
+* Implemented responsive layouts that adapt game session cards, images, information, and action buttons for smaller screens
 
 <img width="1000" alt="collection" src="https://github.com/user-attachments/assets/868a1f7b-6b7e-48f6-b015-0c1541c9e12d" />
 
