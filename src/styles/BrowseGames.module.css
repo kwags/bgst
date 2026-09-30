@@ -1,50 +1,101 @@
 .container {
-    padding: 1rem;
-    text-align: center;
-  }
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-size: 2rem;
+  margin: 0 0 1rem;
+  overflow-wrap: anywhere;
+}
   
+.sortOptions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+  
+.sortOptions button {
+  padding: 0.5rem 1rem;
+  background-color: #0082bc;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+  
+.sortOptions button:hover {
+  background-color: #005f8a;
+}
+  
+.gamesList {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(min(100%, 200px), 1fr)
+  );
+  gap: 1rem;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  align-items: stretch;
+}
+  
+.gameCard {
+  box-sizing: border-box;
+  min-width: 0;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-wrap: anywhere;
+}
+  
+.gameImage {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+/* Mobile CSS*/
+@media (max-width: 660px) {
   .title {
-    font-size: 2rem;
-    margin-bottom: 1rem;
+    font-size: 1.5rem;
   }
-  
+
   .sortOptions {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    margin-bottom: 1rem;
+    gap: 0.5rem;
   }
-  
+
   .sortOptions button {
-    padding: 0.5rem 1rem;
-    background-color: #0082bc;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+    padding: 0.5rem 0.75rem;
   }
-  
-  .sortOptions button:hover {
-    background-color: #005f8a;
-  }
-  
+
   .gamesList {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    justify-content: center;
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(min(100%, 145px), 1fr)
+    );
+    gap: 0.75rem;
   }
-  
+
   .gameCard {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 1rem;
-    width: 200px;
-    text-align: center;
+    padding: 0.75rem;
   }
-  
-  .gameImage {
-    width: 100%;
-    height: auto;
-    border-radius: 4px;
-  }
+}
+

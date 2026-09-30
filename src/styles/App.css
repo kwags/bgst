@@ -10,7 +10,7 @@
 .topBar {
   background-color: #4AC5B7;
   width: 100%;
-  padding: 0.5rem 2rem;
+  padding: 0.5rem clamp(1rem, 4vw, 2rem);
   box-sizing: border-box;
   display: flex;
   justify-content: flex-end;
@@ -43,15 +43,17 @@
 }
 
 .app-main {
-  padding: 2rem;
-  padding-top: .5rem;
+  width: 98%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0.5rem clamp(1rem, 4vw, 2rem) 2rem;
   display: flex;
   flex-direction: column;
 }
 
 .app-section {
   background: white;
-  padding: 1.5rem;
+  padding: clamp(1rem, 3vw, 1.5rem);
   border-radius: 12px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
 }
@@ -109,7 +111,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-left: 2rem;
+  padding-left: clamp(0rem, 2vw, 2rem);
 }
 
 .center-title {
@@ -122,4 +124,26 @@
 
 .edit-button i {
   padding-right: .5rem;
+}
+
+
+/* Mobile CSS */
+@media (max-width: 600px) {
+  .section-header {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .section-title {
+    padding-left: 0;
+  }
+
+  .center-title {
+    padding-top: 1rem;
+  }
+
+  .add-button,
+  .stats-button {
+    font-size: 0.9rem;
+  }
 }

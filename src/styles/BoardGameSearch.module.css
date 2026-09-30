@@ -1,16 +1,12 @@
 
 .container {
-  padding: 1rem;
-  margin: 1rem auto;
-  border-radius: 8px;
-  height: 100%;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  background: white;
-  padding: 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
 }
+  
 
 .searchWrapper {
   position: relative;
@@ -30,7 +26,7 @@
 
 .searchButton {
   position: absolute;
-  right: -.25rem;
+  right: -0.25rem;
   top: 50%;
   transform: translateY(-50%);
   background-color: #FF815D;
@@ -47,16 +43,27 @@
 }
 
 .results {
+  width: 100%;
+  min-width: 0;
   margin-top: 2rem;
   display: flex;
   justify-content: center;
+  box-sizing: border-box;
 }
 
 .list {
   list-style: none;
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
 
 .listItem {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
   padding: 2rem;
   border-bottom: 1px solid #eee;
 }
@@ -65,25 +72,12 @@
   border-bottom: none;
 }
 
-.gameName {
-  margin: 0 0 0.25rem 0;
-  font-size: 1rem;
-}
-
-.gameInfo {
-  font-size: 1rem;
-  color: #666;
-}
-
-.message {
-  font-size: 0.75rem;
-  color: #555;
-}
-
 .cardContent {
   display: flex;
   align-items: flex-start;
-  gap: 50px;
+  gap: 2rem;
+  width: 100%;
+  min-width: 0;
 }
 
 .imageMask {
@@ -91,7 +85,7 @@
   height: 200px;
   overflow: hidden;
   border-radius: 8px;
-  flex-shrink: 0;
+  flex: 0 0 230px;
   position: relative;
 }
 
@@ -102,23 +96,76 @@
 }
 
 .gameDetails {
-  flex: 1;
+  flex: 1 1 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .gameName {
+  margin: 0 0 0.25rem 0;
   font-size: 1.25rem;
   color: #0082BC;
 }
 
 .gameInfo {
+  font-size: 1rem;
+  color: #666;
   margin: 2px 0;
+  overflow-wrap: anywhere;
 }
 
 .buttonGroup {
   display: flex;
   flex-direction: row;
-  gap: 20px; 
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
   margin-top: 1rem;
+}
+
+.buttonGroup button {
+  max-width: 100%;
+}
+
+.edit-button i {
+  padding-right: 0.5rem;
+}
+
+.sortOptions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  min-width: 0;
+  margin-bottom: 1rem;
+}
+
+.sortOptions button {
+  padding: 8px 16px;
+  border: 1px solid #ccc;
+  border-bottom: none;
+  background: white;
+  color: #111827;
+  cursor: pointer;
+  border-radius: 0;
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s ease;
+
+  box-sizing: border-box;
+}
+
+.sortOptions button:hover {
+  background-color: #D6C4FF;
+  transform: scale(1.05);
+}
+
+.sortOptions button.active {
+  background: #4f46e5;
+  color: white;
+  font-weight: bold;
 }
 
 .filterButton {
@@ -140,43 +187,15 @@
   font-weight: bold;
 }
 
-.sortOptions {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin-bottom: 1rem;
+.message {
+  font-size: 0.75rem;
+  color: #555;
 }
 
-.sortOptions button {
-  padding: 8px 16px;
-  border: 1px solid #ccc;
-  border-bottom: none;
-  background: white;
-  color: #111827;
-  cursor: pointer;
-  border-radius: 0;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.sortOptions button:hover {
-  background-color: #D6C4FF;
-  transform: scale(1.05);
-}
-
-.sortOptions button.active {
-  background: #4f46e5;
-  color: white;
-  font-weight: bold;
-}
-
-.edit-button i {
-  padding-right: .5rem;
-}
-
-  .overlayBookmarkButton {
+.overlayBookmarkButton {
   position: absolute;
   top: 8px;
-  right: 0px;
+  right: 0;
   background: transparent;
   cursor: pointer;
 }
@@ -187,6 +206,51 @@
 }
 
 .unbookmarkedIcon {
-  color:#FF815D;
+  color: #FF815D;
   font-size: 1.5rem;
+}
+
+/* Mobile CS */
+
+@media (max-width: 660px) {
+  .listItem {
+    padding: 1rem;
+  }
+
+  .cardContent {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .imageMask {
+    width: 100%;
+    height: 280px;
+    flex: none;
+  }
+
+  .gameDetails {
+    width: 100%;
+  }
+
+  .buttonGroup {
+    flex-direction: column;
+    align-items: stretch;
+
+    width: 100%;
+
+    gap: 0.5rem;
+  }
+
+  .buttonGroup button {
+    width: 100%;
+  }
+
+  .sortOptions {
+    gap: 0.5rem;
+  }
+
+  .sortOptions button {
+    padding: 8px 12px;
+  }
+
 }
